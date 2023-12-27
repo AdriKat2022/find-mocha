@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: 2-2-SafetyMeasures
+  m_EditorClassIdentifier: 
+  dialogue:
+  - '* Rapport sur une excusion *'
+  - "Un petit groupe ind\xE9pendant de journalistes ont alert\xE9 que le mat\xE9riau
+    sucr\xE9 qui constitue la montagne n'est malheureusement pas comestible."
+  - "Le groupe pr\xE9cise que ce n'est pas parce que c'est indigeste, mais parce
+    que c'est impossible \xE0 couper, d\xE9chirer ou \xE9craser !"
+  - Pour l'amour de votre dentition, je vous conseille chaudement de ne pas essayer
+    d'en manger.
+  - "(Le dernier message vient de Fernand, notre \xE9claireur en piste. Merci Fernand)"

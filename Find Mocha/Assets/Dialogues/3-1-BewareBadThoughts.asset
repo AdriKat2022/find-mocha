@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: 3-1-BewareBadThoughts
+  m_EditorClassIdentifier: 
+  dialogue:
+  - "[Extrait d'un journal du \"Chocolat\xE9\"]"
+  - "-- Attention aux Mauvaises Pens\xE9es --"
+  - "Les Mauvaises Pens\xE9es, ou aussi appel\xE9es - Moutons noirs - sont des cr\xE9atures
+    malicieuses qui r\xF4dent dans ces contr\xE9es."
+  - "Leur unique but est de chasser les \xEAtres heureux pour leur voler tout leur
+    bonheur."
+  - "Entrer en contact avec ces monstres, c'est se faire d\xE9rober de se volont\xE9,
+    alors attention \xE0 ne pas se faire toucher !"

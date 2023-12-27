@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: 1-2-QuickControls
+  m_EditorClassIdentifier: 
+  dialogue:
+  - "\"Ne prenez pas le risque de vous blesser, je reviens bient\xF4t.\""
+  - '"Sauter avec ''Espace'' n''est pas une chose facile, je n''ai pas envie que
+    quelqu''un se fasse mal !"'
+  - "\"(C'est que je suis tomb\xE9 les premi\xE8res fois o\xF9 j'ai essay\xE9...)\""
+  - "Sign\xE9\n--\nMocha"

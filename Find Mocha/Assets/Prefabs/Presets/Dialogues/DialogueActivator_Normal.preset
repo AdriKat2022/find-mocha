@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DialogueActivator_Normal
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 488cf22abd6a4614eaf6da42470daa45, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: dialogue
+    value: 
+    objectReference: {fileID: 11400000, guid: 1a688f3a49a1dea4a8bb1d1028a2a8b4, type: 2}
+  - target: {fileID: 0}
+    propertyPath: defaultColor.r
+    value: 0.8867924
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: defaultColor.g
+    value: 0.76071745
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: defaultColor.b
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: defaultColor.a
+    value: 0.45490196
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: interactableColor.r
+    value: 0.4022853
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: interactableColor.g
+    value: 0.9056604
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: interactableColor.b
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: interactableColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: defaultSpeed
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: interactableSpeed
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: particleSystem
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spaceInteractable
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spaceAnimationDepth
+    value: 0.3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spaceAnimationSpeed
+    value: 1.6
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

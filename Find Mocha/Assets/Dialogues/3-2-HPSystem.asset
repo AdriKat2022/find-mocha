@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: 3-2-HPSystem
+  m_EditorClassIdentifier: 
+  dialogue:
+  - -- Points de bonheur --
+  - "Les 'points de bonheur' sont une notion que les scientifiques sont en train
+    d'\xE9dutier de tr\xE8s pr\xE8s."
+  - "Les derni\xE8res recherches montrent qu'ils auraient un lien avec la volont\xE9
+    et l'humeur actuelle d'une personne."
+  - "Si la personne aurait une grande volont\xE9, alors ses points de bonheur seraient
+    \xE9lev\xE9s."
+  - "De m\xEAme, il a \xE9t\xE9 observ\xE9 que si cette m\xEAme personne se voit
+    \xEAtre bless\xE9e ou d\xE9courag\xE9e d'une certaine mani\xE8re, ses points
+    de bonheur baisseraient."
+  - "Un cas tr\xE8s exceptionnel a \xE9t\xE9 remarqu\xE9 quand la volont\xE9 et d\xE9termination
+    de la personne aie su \xE9craser son ressentiment \xE0 la douleur."
+  - "Ce ph\xE9nom\xE8ne est toujours en cours d'\xE9tude."

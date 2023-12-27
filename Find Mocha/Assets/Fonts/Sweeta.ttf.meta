@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: eb8f9e9b4a4a4094bbca18f1aa60a814
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: 3
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Sweeta
+  fallbackFontReferences: []
+  customCharacters: "A BCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_+=[]{}|\\;:,.<>/?`~0123456789\u010C\u0106\u017E\u0110\u0160\u017Dab\u010D\u0107d\u0111\u0161cefghijklmnopqrstuvwxyz\xF4\xE9\xE0\xEA"
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
