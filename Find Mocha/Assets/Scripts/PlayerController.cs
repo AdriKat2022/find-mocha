@@ -2,6 +2,18 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+public struct PlayerStats
+{
+    public float maxHp;
+    public float hp;
+
+    public PlayerStats(float maxHp, float hp)
+    {
+        this.maxHp = maxHp;
+        this.hp = hp;
+    }
+}
+
 public class PlayerController : MonoBehaviour, IDamageble
 {
     [Header("Milk properties")]
@@ -47,11 +59,12 @@ public class PlayerController : MonoBehaviour, IDamageble
     private ParticleSystem.EmissionModule heartParticlesEmissionModule;
 
     [Header("External components")]
-    [HideInInspector]
-    public DialogueUI DialogueUI;
-    [SerializeField]
+    private DialogueUI dialogueUI;
     private CameraShake cameraShake;
 
+    [Header("Debug")]
+    [SerializeField]
+    private bool debug;
 
     private float currentHp;
     public float CurrentHp => currentHp;
@@ -98,6 +111,8 @@ public class PlayerController : MonoBehaviour, IDamageble
     {
         collider = GetComponent<CapsuleCollider2D>();
 
+        OnPlayerChangeHP?.Invoke(GetPlayerStats());
+
         //Debug.Log(cameraShake);
         //Debug.Log(hpBarRainbow);
         //Debug.Log(gameOverScreen);
@@ -109,6 +124,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void OnDrawGizmosSelected()
     {
+        if (!debug)
+            return;
+
         Vector3 size = collider.bounds.size;
         size.x -= jumpCheckPadding.x;
         size.y -= jumpCheckPadding.y;
@@ -123,18 +141,18 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Awake()
     {
+        // Overwrite method
+        if(Instance != null)
+            Destroy(Instance.gameObject);
+
         Instance = this;
+
 
         TryGetComponent(out rb);
         TryGetComponent(out collider);
-
-        //sprite = transform.Find("Milk Sprite").gameObject;
+        TryGetComponent(out rainbow);
         sprite.TryGetComponent(out animator);
         sprite.TryGetComponent(out spriteRenderer);
-
-        if (DialogueUI == null)
-            DialogueUI = GameObject.Find("GameUI").GetComponent<DialogueUI>();
-
 
         heartParticles.Play();
         heartParticlesEmissionModule = heartParticles.emission;
@@ -144,15 +162,11 @@ public class PlayerController : MonoBehaviour, IDamageble
         isKnockedOut = false;
         isHurting = false;
         isInvulnerable = false;
-
-
         isJumping = false;
 
         invincibleTimer = 0;
-
         jumpForce = defaultJumpForce;
 
-        rainbow = GetComponent<Rainbow>();
 
         _time = 0;
         lastTimeGrounded = -10f;
@@ -162,7 +176,11 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Start()
     {
-        DialogueUI = GameManager.Instance.DialogueUI;
+        dialogueUI = GameManager.Instance.DialogueUI;
+        Camera.main.transform.parent.TryGetComponent(out cameraShake);
+
+        if (dialogueUI == null)
+            dialogueUI = GameObject.Find("GameUI").GetComponent<DialogueUI>();
 
         if (GameManager.Instance.CheckPlayerStats(this, out PlayerStats stats))
         {
@@ -190,7 +208,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         if (isHurting || hasWon)
             return;
 
-        if (DialogueUI.IsOpen)
+        if (dialogueUI.IsOpen)
             return;
 
         MovePlayer();
@@ -404,7 +422,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         if (isHurting || isInvulnerable || isKnockedOut)
             return;
 
-        cameraShake.AddStress(cameraShake.ModerateShake);
+        cameraShake.AddStress((damage+5)/maxHp);
 
         if (isInvincible)
         {

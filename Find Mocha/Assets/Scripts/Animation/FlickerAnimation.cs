@@ -24,9 +24,12 @@ public class FlickerAnimation : MonoBehaviour, IAnimation
     private float speed;
     [SerializeField]
     private float baseAlpha;
-    [SerializeField]
-    [Range(0f, 1f)]
+    [SerializeField, Range(0f, 1f)]
     private float depth;
+    [SerializeField, Range(0f, 2*Mathf.PI)]
+    private float phaseLead;
+    [SerializeField]
+    private bool setPhaseLeadForMax;
 
     [Header("Settings")]
     [SerializeField]
@@ -54,6 +57,15 @@ public class FlickerAnimation : MonoBehaviour, IAnimation
     private bool activated;
 
 
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        CheckParameters();
+    }
+
+#endif
+
 
     private void OnDisable()
     {
@@ -64,24 +76,6 @@ public class FlickerAnimation : MonoBehaviour, IAnimation
     {
         if(activateOnEnable)
             Activate();
-    }
-
-    public void Activate()
-    {
-        if (activated)
-            return;
-
-        activated = true;
-        if (useRealTime)
-            StartCoroutine(ManageFlickerIndependent());
-        else
-            StartCoroutine(ManageFlicker());
-    }
-    public void Deactivate()
-    {
-        activated = false;
-        StopAllCoroutines();
-        ResetAlpha();
     }
 
     private void Awake()
@@ -108,6 +102,44 @@ public class FlickerAnimation : MonoBehaviour, IAnimation
                 else
                     targetImage = GetComponent<Image>();
                 break;
+        }
+
+        CheckParameters();
+    }
+
+
+    public void Activate()
+    {
+        if (activated)
+            return;
+
+        activated = true;
+        if (useRealTime)
+            StartCoroutine(ManageFlickerIndependent());
+        else
+            StartCoroutine(ManageFlicker());
+    }
+    public void Deactivate()
+    {
+        activated = false;
+        StopAllCoroutines();
+        ResetAlpha();
+    }
+
+
+
+    private void CheckParameters()
+    {
+        float max = baseAlpha + depth;
+        float min = baseAlpha - depth;
+
+        if (depth == 0 || min >= 1 || max <= 0)
+        {
+            Debug.LogWarning("Set up settings for " + gameObject + ", does not render any animation.");
+        }
+        else if (setPhaseLeadForMax)
+        {
+            phaseLead = -Mathf.Acos((1 - baseAlpha) / depth);
         }
     }
 
@@ -136,7 +168,7 @@ public class FlickerAnimation : MonoBehaviour, IAnimation
 
     private void UpdateFlicker(float time)
     {
-        float alpha = Mathf.Clamp(baseAlpha + Mathf.Cos(time * speed) * depth, 0f, 1f);
+        float alpha = Mathf.Clamp(baseAlpha + Mathf.Cos(phaseLead + time * speed) * depth, 0f, 1f);
 
         Color color;
 

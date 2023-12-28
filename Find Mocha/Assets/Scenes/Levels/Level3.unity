@@ -13412,17 +13412,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1848705760 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6293404516952334095, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-  m_PrefabInstance: {fileID: 485994402}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58d0d41ecc473c4b8de817b23f970b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2050405689
 GameObject:
   m_ObjectHideFlags: 0
@@ -17435,10 +17424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 687016615176695642, guid: 9f1fc64a208e068469d14d61fab8b026, type: 3}
-      propertyPath: cameraShake
-      value: 
-      objectReference: {fileID: 1848705760}
     - target: {fileID: 5875936856644411170, guid: 9f1fc64a208e068469d14d61fab8b026, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.81

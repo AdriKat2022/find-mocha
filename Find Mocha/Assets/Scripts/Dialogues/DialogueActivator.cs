@@ -48,7 +48,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(PlayerController player)
     {
-        player.DialogueUI.ShowDialogue(dialogue);
+        GameManager.Instance.DialogueUI.ShowDialogue(dialogue);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

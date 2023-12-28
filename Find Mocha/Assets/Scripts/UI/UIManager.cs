@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 
 
-
 public class UIManager : MonoBehaviour
 {
     [Header("Gameover settings")]
@@ -15,7 +14,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private float waitTimeBeforeLoadingScene = .8f;
 
-    [Header("HP Bar Animations")]
+    [Header("Low HP settings")]
+    [SerializeField] [Range(0f, 1f)]
+    private float lowHpThreshold;
+    [SerializeField]
+    private Color lowHPColor;
+
+    [Header("Progressive life bar animation")]
 
     [SerializeField]
     private float hpDeltaDetect;
@@ -27,6 +32,9 @@ public class UIManager : MonoBehaviour
     private Color healBg;
     [SerializeField]
     private Color hurtBg;
+
+    [Header("Blink animation")]
+
     [SerializeField]
     private float blinkLength;
     [SerializeField]
@@ -36,20 +44,21 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Color defaultBlinkColor;
     [SerializeField]
+
+    [Header("Idle bar animation")]
+
     private float healthBarBounceSpeed;
     [SerializeField]
     private float healthBarBounceDepth;
     [SerializeField]
+
+    [Header("References")]
+
     private Image hpBarOverlay;
     [SerializeField]
     private Image hpFill;
     [SerializeField]
     private Image hpFillBg;
-
-
-
-    [SerializeField]
-    private GameObject hpBar;
     [SerializeField]
     private RectTransform hpBarRectTransform;
     [SerializeField]
@@ -57,23 +66,30 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Rainbow hpBarOverlayRainbow;
     [SerializeField]
+    private GameObject hpBar;
+    [SerializeField]
     private Animator gameOverMenuAnimator;
+    [SerializeField]
+    private GameObject screenAura;
+    [SerializeField]
+    private Image screenAuraImg;
 
 
-    private float waitTimeBeforeAnimating = .5f;
-
-    private Vector2 hpBarPos;
+    private readonly float waitTimeBeforeAnimating = 1f;
 
     private float maxHp;
     private float currentHp;
+    private bool isLowHP;
     private float hpChange;
     private float animationTimer;
 
     private float _time;
 
-    private AnimationState currentAnimationState;
+    private bool inGame;
 
-    private enum AnimationState
+    private HPBarAnimationState currentHPBarAnimationState;
+
+    private enum HPBarAnimationState
     {
         None,
         Healing,
@@ -81,8 +97,21 @@ public class UIManager : MonoBehaviour
     }
 
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (GameManager.Instance != null && PlayerController.Instance != null)
+            FetchAndUpdateHP();
+
+        if (screenAuraImg != null)
+            screenAuraImg.color = lowHPColor;
+    }
+
+#endif
+
     private void OnEnable()
     {
+        SetHPAuraActive(false);
         PlayerController.OnPlayerInvincibility += ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd += DeactivateInvincibilityVisuals;
         PlayerController.OnPlayerKnockedOut += PrepareGameOver;
@@ -92,6 +121,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        SetHPAuraActive(false);
         PlayerController.OnPlayerInvincibility -= ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd -= DeactivateInvincibilityVisuals;
         PlayerController.OnPlayerKnockedOut -= PrepareGameOver;
@@ -100,12 +130,16 @@ public class UIManager : MonoBehaviour
         PlayerController.OnPlayerChangeHP -= UpdateCurrentHP;
     }
 
+    private void Awake()
+    {
+        screenAura.TryGetComponent(out screenAuraImg);
+        inGame = false;
+    }
 
     private void Start()
     {
-        hpBarPos = hpBarRectTransform.anchoredPosition;
 
-        currentAnimationState = AnimationState.None;
+        currentHPBarAnimationState = HPBarAnimationState.None;
 
         _time = Time.time;
         hpChange = 0;
@@ -119,18 +153,18 @@ public class UIManager : MonoBehaviour
         CheckHPChange();
     }
 
-    #region HealthBar Animation
-
-    public void ActivateHPBar(bool activate = true)
+    public void SetHPAuraActive(bool active)
     {
-        hpBar.SetActive(activate);
+        screenAura.SetActive(active);
+        screenAuraImg.color = lowHPColor;
     }
 
+
+    #region Health Animation
     private void FetchAndUpdateHP()
     {
         UpdateCurrentHP(PlayerController.Instance.GetPlayerStats());
     }
-
     private void UpdateCurrentHP(PlayerStats stats)
     {
         maxHp = stats.maxHp;
@@ -138,6 +172,14 @@ public class UIManager : MonoBehaviour
         hpChange = stats.hp - currentHp;
 
         currentHp = stats.hp;
+
+        isLowHP = currentHp / maxHp <= lowHpThreshold;
+
+        inGame = GameManager.Instance.InGame;
+    }
+    public void ActivateHPBar(bool activate = true)
+    {
+        hpBar.SetActive(activate);
     }
 
     private void CheckHPChange()
@@ -150,14 +192,14 @@ public class UIManager : MonoBehaviour
 
         if (hpChange < -hpDeltaDetect)
         {
-            currentAnimationState = AnimationState.Hurting;
+            currentHPBarAnimationState = HPBarAnimationState.Hurting;
             animationTimer = 0f;
             StartCoroutine(BlinkHealthBar());
             hpChange = 0;
         }
         else if(hpChange > hpDeltaDetect)
         {
-            currentAnimationState = AnimationState.Healing;
+            currentHPBarAnimationState = HPBarAnimationState.Healing;
             animationTimer = 0f;
             StartCoroutine(BlinkHealthBar());
             hpChange = 0;
@@ -179,9 +221,11 @@ public class UIManager : MonoBehaviour
                 continue;
             }
 
-            switch (currentAnimationState)
+            screenAura.SetActive(isLowHP && inGame);
+
+            switch (currentHPBarAnimationState)
             {
-                case AnimationState.Hurting:
+                case HPBarAnimationState.Hurting:
 
                     hpFill.fillAmount = currentHp/maxHp;
                     hpFillBg.color = hurtBg;
@@ -196,7 +240,7 @@ public class UIManager : MonoBehaviour
 
                     break;
 
-                case AnimationState.Healing:
+                case HPBarAnimationState.Healing:
 
                     hpFillBg.fillAmount = currentHp / maxHp;
                     hpFillBg.color = healBg;
@@ -227,7 +271,7 @@ public class UIManager : MonoBehaviour
     {
         bool flip = false;
 
-        Color color = currentAnimationState == AnimationState.Hurting ? blinkHurtColor : blinkHealColor;
+        Color color = currentHPBarAnimationState == HPBarAnimationState.Hurting ? blinkHurtColor : blinkHealColor;
 
         while(animationTimer < animationHpDelay)
         {

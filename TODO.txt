@@ -1,7 +1,1 @@
 TODO :
-
-CREATE ACTION FOR :
-
-- Invincibility (and invincibility stop)
-- Player KO
-- Player Win

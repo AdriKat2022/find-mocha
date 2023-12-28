@@ -1,19 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 
-public struct PlayerStats
-{
-    public float maxHp;
-    public float hp;
-
-    public PlayerStats(float maxHp, float hp) {
-        this.maxHp = maxHp;
-        this.hp = hp;
-    }
-}
 
 public class GameManager : MonoBehaviour
 {
@@ -32,8 +22,9 @@ public class GameManager : MonoBehaviour
     private bool keepLastStats;
 
     private bool canButtonInteract;
-    private bool inHitStop;
     private bool canPauseGame;
+    private bool inHitStop;
+    private bool inGame;
 
     private PauseMenuManager pauseMenuManager;
     [SerializeField]
@@ -52,6 +43,7 @@ public class GameManager : MonoBehaviour
     public bool CanPauseGame => canPauseGame;
     public bool CanButtonInteract => canButtonInteract;
     public int CurrentSceneIndex => currentLevelIndex;
+    public bool InGame => inGame;
     #endregion
 
     private int currentSceneIndex => SceneManager.GetActiveScene().buildIndex;
@@ -63,6 +55,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+
     }
 
     private void Start()
@@ -84,12 +78,14 @@ public class GameManager : MonoBehaviour
             mainMenu.SetActive(true);
             canPauseGame = false;
             SetCanButtonInteract(false, 7f);
+            inGame = false;
         }
         else
         {
             mainMenu.SetActive(false);
             canPauseGame = true;
             SetCanButtonInteract(true);
+            inGame = true;
         }
 
         uiManager.ActivateHPBar(currentSceneIndex != 0);
@@ -114,16 +110,19 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevelIndex(int index, bool reload)
     {
+        index %= levelsNb;
+
         ClearBeforeLoading(saveLastStats : !reload && index > 1);
         SceneManager.LoadScene(index);
-        mainMenu.SetActive(index == 0);
-        SetCanButtonInteract(false, 7f);
-        canPauseGame = index != 0;
+        //if(index > 1 && !reload)
+        //{
+        //    LoadPlayerStats();
+        //}
+        inGame = index != 0;
         currentLevelIndex = index;
-        if(index > 1 && !reload)
-        {
-            LoadPlayerStats();
-        }
+        SetCanButtonInteract(index != 0, 7f);
+        mainMenu.SetActive(index == 0);
+        canPauseGame = index != 0;
     }
 
     public void ReloadLevel() {

@@ -658,6 +658,8 @@ MonoBehaviour:
   gameOverScreen: {fileID: 1029801522640384565}
   waitTimeBeforeGameOverScreen: 2
   waitTimeBeforeLoadingScene: 1.2
+  lowHpThreshold: 0.25
+  lowHPColor: {r: 1, g: 0, b: 0, a: 0}
   hpDeltaDetect: 0.01
   animationHpDelay: 1
   animationHpSpeed: 5
@@ -672,11 +674,12 @@ MonoBehaviour:
   hpBarOverlay: {fileID: 5679244875629329509}
   hpFill: {fileID: 864358260963146232}
   hpFillBg: {fileID: 237569650623254114}
-  hpBar: {fileID: 2841102567601856544}
   hpBarRectTransform: {fileID: 8167275027565641317}
   hpBarAnimator: {fileID: 5185949484486853851}
   hpBarOverlayRainbow: {fileID: 7316093169391627332}
+  hpBar: {fileID: 2841102567601856544}
   gameOverMenuAnimator: {fileID: 7284742520899282846}
+  screenAura: {fileID: 8453816634615238793}
 --- !u!223 &898167270351652672
 Canvas:
   m_ObjectHideFlags: 0
@@ -1274,7 +1277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Milk
-  levelsNb: 0
+  levelsNb: 5
   mainMenu: {fileID: 3334721726336774872}
   uiManager: {fileID: 8425551456871622474}
   dialogueUI: {fileID: 3197270976864426312}
@@ -1353,6 +1356,8 @@ MonoBehaviour:
   speed: 5
   baseAlpha: 0.5
   depth: 0.5
+  phaseLead: 0
+  setPhaseLeadForMax: 0
   mediaType: 0
   useRealTime: 1
   activateOnEnable: 1
@@ -4389,12 +4394,12 @@ GameObject:
   - component: {fileID: 1696987100000625914}
   - component: {fileID: 1197196960093791795}
   m_Layer: 0
-  m_Name: Low HP Flash
+  m_Name: Screen Aura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1524971899574921201
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4442,7 +4447,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a60f5f75081c61c45b3c8df8f9a61285, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e02399a540d635241932c8666b8b0b64, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4465,8 +4470,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  baseAlpha: 0
-  depth: 0.2
+  baseAlpha: 0.7
+  depth: 1
+  phaseLead: -1.2661036
+  setPhaseLeadForMax: 1
   mediaType: 2
   useRealTime: 0
   activateOnEnable: 1

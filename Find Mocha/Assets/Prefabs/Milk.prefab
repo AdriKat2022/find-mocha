@@ -9832,8 +9832,6 @@ MonoBehaviour:
   slowFastThreshold: 0
   sprite: {fileID: 659961998087491667}
   heartParticles: {fileID: 9141675872897806678}
-  hpBarRainbow: {fileID: 0}
-  gameOverScreen: {fileID: 0}
   DialogueUI: {fileID: 0}
   cameraShake: {fileID: 0}
 --- !u!114 &128965256978059482
