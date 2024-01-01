@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     private void ClearBeforeLoading(bool saveLastStats)
     {
         uiManager.ActivateHPBar(false);
+        uiManager.SetHPAuraActive(false);
         if (saveLastStats)
         {
             SavePlayerStats();

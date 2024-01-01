@@ -133,6 +133,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         screenAura.TryGetComponent(out screenAuraImg);
+        screenAuraImg.color = lowHPColor;
         inGame = false;
     }
 
@@ -156,7 +157,8 @@ public class UIManager : MonoBehaviour
     public void SetHPAuraActive(bool active)
     {
         screenAura.SetActive(active);
-        screenAuraImg.color = lowHPColor;
+        if(screenAuraImg != null)
+            screenAuraImg.color = lowHPColor;
     }
 
 
@@ -176,6 +178,8 @@ public class UIManager : MonoBehaviour
         isLowHP = currentHp / maxHp <= lowHpThreshold;
 
         inGame = GameManager.Instance.InGame;
+        
+        SetHPAuraActive(isLowHP && inGame);
     }
     public void ActivateHPBar(bool activate = true)
     {
@@ -221,7 +225,8 @@ public class UIManager : MonoBehaviour
                 continue;
             }
 
-            screenAura.SetActive(isLowHP && inGame);
+            //Debug.Log("low hp: " + isLowHP);
+            //Debug.Log("ingame: " + inGame);
 
             switch (currentHPBarAnimationState)
             {
@@ -294,8 +299,10 @@ public class UIManager : MonoBehaviour
     {
         GameManager.Instance.SetCanButtonInteract(true);
 
-        if(GameManager.Instance.CurrentSceneIndex != 0)
+        if (GameManager.Instance.InGame)
+        {
             ActivateHPBar();
+        }
         hpBarAnimator.SetBool("hasWon", false);
         hpBarAnimator.SetBool("hasLost", false);
         FetchAndUpdateHP();

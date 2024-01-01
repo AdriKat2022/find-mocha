@@ -659,7 +659,7 @@ MonoBehaviour:
   waitTimeBeforeGameOverScreen: 2
   waitTimeBeforeLoadingScene: 1.2
   lowHpThreshold: 0.25
-  lowHPColor: {r: 1, g: 0, b: 0, a: 0}
+  lowHPColor: {r: 1, g: 0, b: 0, a: 1}
   hpDeltaDetect: 0.01
   animationHpDelay: 1
   animationHpSpeed: 5
@@ -680,6 +680,7 @@ MonoBehaviour:
   hpBar: {fileID: 2841102567601856544}
   gameOverMenuAnimator: {fileID: 7284742520899282846}
   screenAura: {fileID: 8453816634615238793}
+  screenAuraImg: {fileID: 0}
 --- !u!223 &898167270351652672
 Canvas:
   m_ObjectHideFlags: 0

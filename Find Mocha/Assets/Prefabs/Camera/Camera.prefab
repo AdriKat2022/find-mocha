@@ -68,7 +68,7 @@ MonoBehaviour:
   maxOffset: {x: 2, y: 2}
   maxAngle: 5
   maxStress: 1
-  stressRate: 1
+  stressRate: 4
   Camera: {fileID: 8296194592974436334}
 --- !u!1 &8296194592974436334
 GameObject:
