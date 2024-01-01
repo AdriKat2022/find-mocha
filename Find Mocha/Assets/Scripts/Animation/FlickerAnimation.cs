@@ -9,7 +9,7 @@ public interface IAnimation
     public void Deactivate();
 }
 
-enum MediaType
+public enum MediaType
 {
     Text,
     Sprite,

@@ -93,14 +93,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 479956341
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -483700455, guid: 1c87a3839359e33439a57201b176e573, type: 3}
+  m_Sprite: {fileID: -573847273, guid: 5307a0e32b4e4b14282caa4dd09fd846, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.8, y: 10.053691}
+  m_Size: {x: 6.4799995, y: 9.62523}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -9832,8 +9832,7 @@ MonoBehaviour:
   slowFastThreshold: 0
   sprite: {fileID: 659961998087491667}
   heartParticles: {fileID: 9141675872897806678}
-  DialogueUI: {fileID: 0}
-  cameraShake: {fileID: 0}
+  debug: 0
 --- !u!114 &128965256978059482
 MonoBehaviour:
   m_ObjectHideFlags: 0
