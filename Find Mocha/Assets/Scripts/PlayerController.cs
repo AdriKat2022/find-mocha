@@ -297,6 +297,8 @@ public class PlayerController : MonoBehaviour, IDamageble
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpBonus);
         isJumping = true;
+        Debug.Log("Buf");
+        animator.SetTrigger("bufJump");
     }
 
     private void GroundCheck()
