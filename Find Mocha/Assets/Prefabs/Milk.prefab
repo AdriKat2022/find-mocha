@@ -9833,6 +9833,7 @@ MonoBehaviour:
   sprite: {fileID: 659961998087491667}
   heartParticles: {fileID: 9141675872897806678}
   debug: 0
+  lowHpThreshold: 0.25
 --- !u!114 &128965256978059482
 MonoBehaviour:
   m_ObjectHideFlags: 0

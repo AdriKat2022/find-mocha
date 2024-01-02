@@ -1,5 +1,133 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1020223547397773605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2698148607506965524}
+  - component: {fileID: 4591255510115329901}
+  m_Layer: 0
+  m_Name: EffectsLoopSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2698148607506965524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020223547397773605}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2726534795454382036}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &4591255510115329901
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020223547397773605}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 0
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2909091539427773926
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +160,7 @@ Transform:
   m_Children:
   - {fileID: 539620437437030133}
   - {fileID: 6162195323621714953}
+  - {fileID: 2698148607506965524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1087727927102295601
@@ -48,10 +177,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1621398110310668860}
   effectSource: {fileID: 6152417766846096992}
-  mainMenu: {fileID: 0}
-  defaultLevel: {fileID: 0}
+  effectRepeatSource: {fileID: 4591255510115329901}
+  mainMenu: {fileID: 8300000, guid: 3e2a1b301f2d04e4a8a19fcbbc26cf10, type: 3}
+  defaultLevel: {fileID: 8300000, guid: 12eabb3960935cb46985c6a89b5773dc, type: 3}
   invincibility: {fileID: 8300000, guid: 03d43e9d1cca29d4e875c4f7a363882a, type: 3}
-  gameOver: {fileID: 8300000, guid: 09cc01dfa5140b641bf2e4f3d4797060, type: 3}
+  gameOver: {fileID: 8300000, guid: 07898ca60cd1504488f7b792b9ff598e, type: 3}
   jump: {fileID: 8300000, guid: e2cf5c80d10f8db4d85b46224b8b6eb8, type: 3}
   damage: {fileID: 8300000, guid: 51028bcf3d2873c4c812e056b46f26dd, type: 3}
   heal: {fileID: 8300000, guid: b16d8a27c196c8743825fbe5beabc0fb, type: 3}
@@ -69,6 +199,8 @@ MonoBehaviour:
   button_press: {fileID: 8300000, guid: 78270b7ab7d2b0442a2144433ad39960, type: 3}
   level_clear: {fileID: 8300000, guid: 15e82d6500229304daf49005856b63ca, type: 3}
   revive: {fileID: 8300000, guid: 01567af4a9063204ea212179804ac4d1, type: 3}
+  low_hp_sound: {fileID: 8300000, guid: 37f8ca171ef835549a5da0057fe888a7, type: 3}
+  gameOverSound: {fileID: 8300000, guid: f7d0a3b63a601074198c52666c812753, type: 3}
 --- !u!1 &5472833649646196872
 GameObject:
   m_ObjectHideFlags: 0

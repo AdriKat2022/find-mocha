@@ -112,6 +112,7 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         SetHPAuraActive(false);
+        SoundManager.Instance.StopLoopSound(force: true);
         PlayerController.OnPlayerInvincibility += ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd += DeactivateInvincibilityVisuals;
         PlayerController.OnPlayerKnockedOut += PrepareGameOver;
@@ -122,6 +123,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         SetHPAuraActive(false);
+        
         PlayerController.OnPlayerInvincibility -= ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd -= DeactivateInvincibilityVisuals;
         PlayerController.OnPlayerKnockedOut -= PrepareGameOver;
@@ -179,7 +181,16 @@ public class UIManager : MonoBehaviour
 
         inGame = GameManager.Instance.InGame;
         
-        SetHPAuraActive(isLowHP && inGame);
+        if(isLowHP && inGame)
+        {
+            SetHPAuraActive(true);
+            SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
+        }
+        else
+        {
+            SetHPAuraActive(false);
+            SoundManager.Instance.StopLoopSound();
+        }
     }
     public void ActivateHPBar(bool activate = true)
     {
@@ -329,9 +340,16 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator KnockAnimation()
     {
+        SoundManager.Instance.StopMusic();
+        SoundManager.Instance.StopLoopSound();
+
         yield return new WaitForSeconds(waitTimeBeforeGameOverScreen);
 
         gameOverScreen.SetActive(true);
+
+        SoundManager.Instance.PlaySound(SoundManager.Instance.gameOverSound);
+        SoundManager.Instance.PlayMusic(SoundManager.Instance.gameOver, 4f);
+
 
         yield return null;
     }

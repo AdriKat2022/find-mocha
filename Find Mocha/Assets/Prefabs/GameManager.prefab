@@ -809,8 +809,8 @@ MonoBehaviour:
   activateOnAwake: 1
   isActive: 0
   enableRotation: 1
-  rotationDepth: 1
-  rotationSpeed: 3
+  rotationDepth: 1.5
+  rotationSpeed: 4
   enableHoverScale: 1
   hoverDepth: 0.2
   hoverSpeed: 9
@@ -4400,7 +4400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1524971899574921201
 RectTransform:
   m_ObjectHideFlags: 0

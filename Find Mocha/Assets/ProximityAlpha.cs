@@ -49,10 +49,29 @@ public class ProximityAlpha : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, maxDistance);
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, minDistance);
+        switch (checkedAxes)
+        {
+            case Axis.Default:
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, maxDistance);
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(transform.position, minDistance);
+                break;
+
+            case Axis.X:
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(transform.position+Vector3.left*maxDistance, Vector3.right*maxDistance*2);
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(transform.position + Vector3.left * minDistance, Vector3.right * minDistance * 2);
+                break;
+
+            case Axis.Y:
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(transform.position + Vector3.down * maxDistance, Vector3.up * maxDistance * 2);
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(transform.position + Vector3.down * minDistance, Vector3.up * minDistance * 2);
+                break;
+        }
     }
 
 #endif

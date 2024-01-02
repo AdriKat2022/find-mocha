@@ -66,13 +66,21 @@ public class PlayerController : MonoBehaviour, IDamageble
     [SerializeField]
     private bool debug;
 
+    [SerializeField]
+    private float lowHpThreshold;
     private float currentHp;
     public float CurrentHp => currentHp;
     private float jumpForce;
+    [SerializeField]
     private float lastTimeGrounded;
+    [SerializeField]
     private float lastJumpBuffered;
+    [SerializeField]
+    private bool jumpBufferUsed;
+    [SerializeField]
     private bool coyoteUsable;
     private bool jumpEndedEarly;
+    [SerializeField]
     private float _time;
 
     private bool isHurting;
@@ -234,33 +242,44 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 
     public bool CanJump => !isJumping || ((coyoteTime + lastTimeGrounded > _time) && coyoteUsable);
-    private bool IsJumpBuffered => Input.GetKeyDown("space") || lastJumpBuffered + bufferJumpTime > _time;
+    private bool IsJumpBuffered => Input.GetKeyDown("space") || (lastJumpBuffered + bufferJumpTime > _time && !jumpBufferUsed);
 
     private void ManageJump()
     {
         if (Input.GetKeyDown("space"))
+        {
             lastJumpBuffered = _time;
+            jumpBufferUsed = false;
+        }
 
         if (!isJumping)
         {
             lastTimeGrounded = _time;
-            coyoteUsable = true;
+            if(coyoteTime + lastJumpBuffered < _time)
+                coyoteUsable = true;
+
             jumpEndedEarly = false;
         }
 
 
         if (IsJumpBuffered && CanJump)
         {
+            jumpBufferUsed = true;
             Jump();
             coyoteUsable = false;
         }
 
-        if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && Input.GetKeyUp("space"))
+        if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && !Input.GetKey("space"))
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * fastFallMultiplier);
             jumpEndedEarly = true;
         }
 
+    }
+
+    private void EnableCoyote()
+    {
+        coyoteUsable = true;
     }
 
     private void MovePlayer()
@@ -297,7 +316,7 @@ public class PlayerController : MonoBehaviour, IDamageble
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpBonus);
         isJumping = true;
-        Debug.Log("Buf");
+        //Debug.Log("Buf");
         animator.SetTrigger("bufJump");
     }
 
@@ -338,6 +357,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0.01);
         animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("milkSanity", currentHp/maxHp < lowHpThreshold ? 0 : 1);
     }
 
     public bool HasWon()

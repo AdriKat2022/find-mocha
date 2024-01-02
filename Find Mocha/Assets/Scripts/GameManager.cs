@@ -73,22 +73,8 @@ public class GameManager : MonoBehaviour
 
         currentLevelIndex = currentSceneIndex;
 
-        if (currentSceneIndex == 0)
-        {
-            mainMenu.SetActive(true);
-            canPauseGame = false;
-            SetCanButtonInteract(false, 7f);
-            inGame = false;
-        }
-        else
-        {
-            mainMenu.SetActive(false);
-            canPauseGame = true;
-            SetCanButtonInteract(true);
-            inGame = true;
-        }
+        SetSceneParameters(currentSceneIndex);
 
-        uiManager.ActivateHPBar(currentSceneIndex != 0);
 
         inHitStop = false;
     }
@@ -114,15 +100,32 @@ public class GameManager : MonoBehaviour
 
         ClearBeforeLoading(saveLastStats : !reload && index > 1);
         SceneManager.LoadScene(index);
-        //if(index > 1 && !reload)
-        //{
-        //    LoadPlayerStats();
-        //}
+        
+        SetSceneParameters(index);
+    }
+
+
+    private void SetSceneParameters(int index)
+    {
         inGame = index != 0;
         currentLevelIndex = index;
         SetCanButtonInteract(index != 0, 7f);
         mainMenu.SetActive(index == 0);
         canPauseGame = index != 0;
+        uiManager.ActivateHPBar(currentSceneIndex != 0);
+
+        if (index == 0)
+            SoundManager.Instance.PlayMusicNow(SoundManager.Instance.mainMenu);
+        else
+            SoundManager.Instance.PlayMusicNow(SoundManager.Instance.defaultLevel);
+
+    }
+
+    private void PlayAssociatedMusic()
+    {
+        // TODO
+
+        // Check if music is not already the good one (in that case don't change it)
     }
 
     public void ReloadLevel() {
@@ -177,7 +180,7 @@ public class GameManager : MonoBehaviour
         }
 
         RemovePauseScreen();
-        SoundManager.Instance.StopMusic();
+        //SoundManager.Instance.StopMusic();
     }
 
     private void SavePlayerStats() => playerLastStats = playerController.GetPlayerStats();
