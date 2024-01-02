@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public int levelsNb = 1;
 
     private int currentLevelIndex;
+    private int sceneLoadNumber = 0;
 
 
     static public GameManager Instance;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     public bool CanPauseGame => canPauseGame;
     public bool CanButtonInteract => canButtonInteract;
     public int CurrentSceneIndex => currentLevelIndex;
+    public int SceneLoadNumber => sceneLoadNumber;
     public bool InGame => inGame;
     #endregion
 
@@ -79,6 +81,7 @@ public class GameManager : MonoBehaviour
         inHitStop = false;
     }
 
+    public void SetCanPause(bool value) => canPauseGame = value;
 
     public void SetCanButtonInteract(bool active, float time = 0f)
     {
@@ -112,13 +115,13 @@ public class GameManager : MonoBehaviour
         SetCanButtonInteract(index != 0, 7f);
         mainMenu.SetActive(index == 0);
         canPauseGame = index != 0;
-        uiManager.ActivateHPBar(currentSceneIndex != 0);
 
         if (index == 0)
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.mainMenu);
         else
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.defaultLevel);
 
+        sceneLoadNumber++;
     }
 
     private void PlayAssociatedMusic()
@@ -159,10 +162,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator HitStop(float duration)
     {
-        //Debug.Log("HitStop");
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(duration);
-        //Debug.Log("HitResume");
         Time.timeScale = 1f;
 
         canPauseGame = true;
@@ -180,7 +181,6 @@ public class GameManager : MonoBehaviour
         }
 
         RemovePauseScreen();
-        //SoundManager.Instance.StopMusic();
     }
 
     private void SavePlayerStats() => playerLastStats = playerController.GetPlayerStats();

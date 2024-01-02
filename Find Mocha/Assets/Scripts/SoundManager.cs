@@ -29,6 +29,9 @@ public class SoundManager : MonoBehaviour
         low_hp_sound, gameOverSound;
 
 
+
+    private int requiredScene;
+
     private void Awake()
     {
         if(instance == null)
@@ -47,12 +50,9 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound(AudioClip clip)
     {
-        //Debug.Log("PLAY!");
-        //effectSource.clip = clip;
-        //effectSource.PlayScheduled(0);
         effectSource.PlayOneShot(clip);
-        //effectSource.UnPause();
     }
+
     public void PlayLoopSound(AudioClip clip, bool restart = false)
     {
         effectRepeatSource.loop = true;
@@ -97,11 +97,14 @@ public class SoundManager : MonoBehaviour
         musicSource.Stop();
     }
 
-    private IEnumerator PlayMusicAfter(AudioClip clip, float delay)
+    private IEnumerator PlayMusicAfter(AudioClip clip, float delay, bool persist = false)
     {
-        if(delay>0)
+        requiredScene = GameManager.Instance.SceneLoadNumber;
+
+        if (delay>0)
             yield return new WaitForSecondsRealtime(delay);
 
-        PlayMusicNow(clip);
+        if (persist || requiredScene == GameManager.Instance.SceneLoadNumber)
+            PlayMusicNow(clip);
     }
 }

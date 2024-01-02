@@ -658,7 +658,6 @@ MonoBehaviour:
   gameOverScreen: {fileID: 1029801522640384565}
   waitTimeBeforeGameOverScreen: 2
   waitTimeBeforeLoadingScene: 1.2
-  lowHpThreshold: 0.25
   lowHPColor: {r: 1, g: 0, b: 0, a: 1}
   hpDeltaDetect: 0.01
   animationHpDelay: 1
@@ -2176,7 +2175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8167275027565641317
 RectTransform:
   m_ObjectHideFlags: 0

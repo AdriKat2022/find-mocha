@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     private float waitTimeBeforeLoadingScene = .8f;
 
     [Header("Low HP settings")]
-    [SerializeField] [Range(0f, 1f)]
+    //[SerializeField] [Range(0f, 1f)]
     private float lowHpThreshold;
     [SerializeField]
     private Color lowHPColor;
@@ -84,6 +84,7 @@ public class UIManager : MonoBehaviour
     private float animationTimer;
 
     private float _time;
+    private bool isBlinking;
 
     private bool inGame;
 
@@ -112,7 +113,8 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         SetHPAuraActive(false);
-        SoundManager.Instance.StopLoopSound(force: true);
+        SoundManager.Instance?.StopLoopSound(force: true);
+
         PlayerController.OnPlayerInvincibility += ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd += DeactivateInvincibilityVisuals;
         PlayerController.OnPlayerKnockedOut += PrepareGameOver;
@@ -137,6 +139,8 @@ public class UIManager : MonoBehaviour
         screenAura.TryGetComponent(out screenAuraImg);
         screenAuraImg.color = lowHPColor;
         inGame = false;
+        lowHpThreshold = 0;
+        isBlinking = false;
     }
 
     private void Start()
@@ -171,6 +175,8 @@ public class UIManager : MonoBehaviour
     }
     private void UpdateCurrentHP(PlayerStats stats)
     {
+        lowHpThreshold = PlayerController.Instance.LowHpThreshold;
+
         maxHp = stats.maxHp;
 
         hpChange = stats.hp - currentHp;
@@ -184,12 +190,13 @@ public class UIManager : MonoBehaviour
         if(isLowHP && inGame)
         {
             SetHPAuraActive(true);
-            SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
+            if(currentHp != 0)
+                SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
         }
         else
         {
             SetHPAuraActive(false);
-            SoundManager.Instance.StopLoopSound();
+            SoundManager.Instance.StopLoopSound(force: true);
         }
     }
     public void ActivateHPBar(bool activate = true)
@@ -208,14 +215,12 @@ public class UIManager : MonoBehaviour
         if (hpChange < -hpDeltaDetect)
         {
             currentHPBarAnimationState = HPBarAnimationState.Hurting;
-            animationTimer = 0f;
             StartCoroutine(BlinkHealthBar());
             hpChange = 0;
         }
         else if(hpChange > hpDeltaDetect)
         {
             currentHPBarAnimationState = HPBarAnimationState.Healing;
-            animationTimer = 0f;
             StartCoroutine(BlinkHealthBar());
             hpChange = 0;
         }
@@ -285,6 +290,13 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator BlinkHealthBar()
     {
+        animationTimer = 0f;
+
+        if (isBlinking)
+            yield break;
+
+        isBlinking = true;
+
         bool flip = false;
 
         Color color = currentHPBarAnimationState == HPBarAnimationState.Hurting ? blinkHurtColor : blinkHealColor;
@@ -300,6 +312,8 @@ public class UIManager : MonoBehaviour
         }
 
         hpBarOverlay.color = defaultBlinkColor;
+
+        isBlinking = false;
     }
 
     #endregion
@@ -311,9 +325,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.SetCanButtonInteract(true);
 
         if (GameManager.Instance.InGame)
-        {
             ActivateHPBar();
-        }
+        
         hpBarAnimator.SetBool("hasWon", false);
         hpBarAnimator.SetBool("hasLost", false);
         FetchAndUpdateHP();
@@ -334,6 +347,7 @@ public class UIManager : MonoBehaviour
 
     private void PrepareGameOver()
     {
+        GameManager.Instance.SetCanPause(false);
         hpBarAnimator.SetBool("hasLost", true);
         StartCoroutine(KnockAnimation());
     }

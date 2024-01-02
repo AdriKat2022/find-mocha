@@ -26,6 +26,10 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 
     [Header("Animation properties")]
     [SerializeField]
+    private float animationStartPhase;
+    [SerializeField]
+    private bool randomizeStartPhase;
+    [SerializeField]
     private float animationSpeed;
     [SerializeField]
     private float animationDepth;
@@ -49,6 +53,9 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 
     private void Start()
     {
+        if(randomizeStartPhase)
+            animationStartPhase = Random.Range(0f,Mathf.PI*2);
+
         originalPos = transform.position;
         isConsumed = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -64,10 +71,7 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 
 
                 if (healthBonus != 0)
-                {
-                    SoundManager.Instance.PlaySound(SoundManager.Instance.heal);
                     script.Heal(healthBonus);
-                }
 
                 PlayerController.Instance.ApplyBonuses(powerUps);
 
@@ -84,7 +88,7 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 
     private IEnumerator AnimateCollectible()
     {
-        float timer = 0;
+        float timer = animationSpeed != 0 ? animationStartPhase/animationSpeed : 0;
 
         while (true)
         {

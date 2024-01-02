@@ -39,6 +39,10 @@ public class PlayerController : MonoBehaviour, IDamageble
     public float fastBlinking;
     [Range(0f,1f)]
     public float slowFastThreshold;
+    [SerializeField]
+    private float lowHpThreshold;
+
+    public float LowHpThreshold => lowHpThreshold;
 
     public IInteractable Interactable;
 
@@ -66,8 +70,6 @@ public class PlayerController : MonoBehaviour, IDamageble
     [SerializeField]
     private bool debug;
 
-    [SerializeField]
-    private float lowHpThreshold;
     private float currentHp;
     public float CurrentHp => currentHp;
     private float jumpForce;
@@ -146,6 +148,26 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 #endif
 
+#if true
+    private void Debug()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            Damage(null, 2, null);
+
+        if (Input.GetKeyDown(KeyCode.A))
+            Heal(2);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            Heal(200);
+
+        if (Input.GetKeyDown(KeyCode.S))
+            Damage(null, 200, null);
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            Damage(null, currentHp - 1, null);
+    }
+
+#endif
 
     private void Awake()
     {
@@ -206,6 +228,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Update()
     {
+        Debug();
+
         if (isKnockedOut)
             return;
 
@@ -275,11 +299,6 @@ public class PlayerController : MonoBehaviour, IDamageble
             jumpEndedEarly = true;
         }
 
-    }
-
-    private void EnableCoyote()
-    {
-        coyoteUsable = true;
     }
 
     private void MovePlayer()
@@ -357,7 +376,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0.01);
         animator.SetFloat("yVelocity", rb.velocity.y);
-        animator.SetFloat("milkSanity", currentHp/maxHp < lowHpThreshold ? 0 : 1);
+        animator.SetFloat("milkSanity", currentHp/maxHp <= lowHpThreshold ? 0 : 1);
     }
 
     public bool HasWon()
@@ -449,7 +468,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         if (isInvincible)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.invincibled);
-            from.InstaKill(this, -knockback);
+            from?.InstaKill(this, -knockback);
             GameManager.Instance.CreateHitStop(0.1f);
             return;
         }
@@ -475,6 +494,8 @@ public class PlayerController : MonoBehaviour, IDamageble
     {
         if (isKnockedOut)
             return;
+
+        SoundManager.Instance.PlaySound(SoundManager.Instance.heal);
 
         currentHp += heal;
 

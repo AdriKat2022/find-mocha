@@ -51,6 +51,8 @@ MonoBehaviour:
   itemType: 0
   healthBonus: 4
   powerUps: []
+  animationStartPhase: 0
+  randomizeStartPhase: 1
   animationSpeed: 2.5
   animationDepth: 0.1
   timeBeforeDestroy: 1
