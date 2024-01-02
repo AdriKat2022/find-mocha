@@ -548,6 +548,8 @@ MonoBehaviour:
   itemType: 0
   healthBonus: 0
   powerUps: []
+  animationStartPhase: 0
+  randomizeStartPhase: 0
   animationSpeed: 0
   animationDepth: 0
   timeBeforeDestroy: 1
@@ -1694,14 +1696,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: deadZoneOffset.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneFromCenter.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneFromCenter.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3556157593171931670, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}

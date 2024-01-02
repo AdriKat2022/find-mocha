@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-
+        inGame = currentSceneIndex != 0;
     }
 
     private void Start()
@@ -73,10 +74,10 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
 
+
         currentLevelIndex = currentSceneIndex;
 
         SetSceneParameters(currentSceneIndex);
-
 
         inHitStop = false;
     }

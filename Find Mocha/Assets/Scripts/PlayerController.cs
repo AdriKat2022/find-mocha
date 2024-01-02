@@ -53,7 +53,8 @@ public class PlayerController : MonoBehaviour, IDamageble
     private GameObject sprite;
 
     private new Collider2D collider;
-    private Rigidbody2D rb;
+    [HideInInspector]
+    public Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Rainbow rainbow;
@@ -228,7 +229,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Update()
     {
-        Debug();
+        //Debug();
 
         if (isKnockedOut)
             return;

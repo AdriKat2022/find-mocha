@@ -145,11 +145,15 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
         currentHPBarAnimationState = HPBarAnimationState.None;
 
         _time = Time.time;
         hpChange = 0;
+
+
+        if(GameManager.Instance != null && GameManager.Instance.InGame) {
+            ActivateHPBar();
+        }
 
         IEnumerator animation_CR = AnimateHealthBar();
         StartCoroutine(animation_CR);
@@ -326,7 +330,7 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.Instance.InGame)
             ActivateHPBar();
-        
+
         hpBarAnimator.SetBool("hasWon", false);
         hpBarAnimator.SetBool("hasLost", false);
         FetchAndUpdateHP();

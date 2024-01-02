@@ -456,14 +456,6 @@ PrefabInstance:
       propertyPath: deadZoneOffset.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneFromCenter.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneFromCenter.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3556157593171931670, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_Name
       value: Camera

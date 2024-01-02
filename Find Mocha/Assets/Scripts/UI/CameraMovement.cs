@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -23,6 +24,10 @@ public class CameraMovement : MonoBehaviour
     [Header("Settings")]
     [SerializeField]
     private float followSpeed;
+    [SerializeField]
+    private float followAheadSpeed;
+    [SerializeField]
+    private float aheadFactor;
 
     [Header("Offsets and deadzones")]
     public Vector3 offset;
@@ -32,10 +37,14 @@ public class CameraMovement : MonoBehaviour
     public Vector2 deadZoneOffset;
 
 
+    [SerializeField]
     private Vector2 lastTargetPosition;
 
+    [SerializeField]
     private GameObject target;
 
+    [SerializeField]
+    private Vector2 currentAheadOffset;
 
 #if UNITY_EDITOR
 
@@ -57,6 +66,9 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
+        currentAheadOffset = Vector2.zero;
+        //desiredAheadOffset = Vector2.zero;
+
         target = GameObject.Find(targetName);
         lastTargetPosition = transform.position;
     }
@@ -71,14 +83,27 @@ public class CameraMovement : MonoBehaviour
     {
         Vector3 computedPosition = transform.position;
 
-        lastTargetPosition = GetDesiredPosition();
+        lastTargetPosition = GetDesiredPosition() + GetAheadOffset();
 
         computedPosition.x = Mathf.Clamp(lastTargetPosition.x, movingZoneX.x, movingZoneX.y);
         computedPosition.y = Mathf.Clamp(lastTargetPosition.y, movingZoneY.x, movingZoneY.y);
 
+
         transform.position = Vector3.Lerp(transform.position, computedPosition+offset, Time.deltaTime * followSpeed);
 
         lastTargetPosition = computedPosition;
+    }
+
+    private Vector2 GetAheadOffset()
+    {
+        Vector2 offset = Vector2.right * PlayerController.Instance.rb.velocity.x * aheadFactor;
+
+        offset = Vector2.Lerp(currentAheadOffset, offset, Time.deltaTime * followAheadSpeed);
+
+
+        currentAheadOffset = offset;
+
+        return offset;
     }
 
     private Vector2 GetDesiredPosition()
@@ -87,6 +112,7 @@ public class CameraMovement : MonoBehaviour
 
         desPosition.x = IsTargetInDeadzone(RectangleCheck.X) ? lastTargetPosition.x : target.transform.position.x;
         desPosition.y = IsTargetInDeadzone(RectangleCheck.Y) ? lastTargetPosition.y : target.transform.position.y;
+
         return desPosition;
     }
 
