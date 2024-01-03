@@ -289,7 +289,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -426,12 +426,12 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: e7c61c7d85698ca4d95f02c8387f69cf, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: -2003714457, guid: 7378be64405cf724494938e6859fc04a, type: 3}
-  - m_RefCount: 2
-    m_Data: {fileID: 1932550531, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 1932550531, guid: 7378be64405cf724494938e6859fc04a, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -2003714457, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 1279505039, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 3
@@ -1661,10 +1661,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: offset.y
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: movingZoneX.x
       value: -1
       objectReference: {fileID: 0}
@@ -1681,12 +1677,16 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneOffset.x
-      value: 0
+      propertyPath: cameraZone.endX
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
-      propertyPath: deadZoneOffset.y
-      value: 0
+      propertyPath: cameraZone.endY
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
+      propertyPath: cameraZone.startY
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: 3556157593171931670, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_Name
