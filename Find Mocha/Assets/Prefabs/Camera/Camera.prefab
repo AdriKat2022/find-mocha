@@ -47,17 +47,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetName: Milk
-  followSpeed: 1
-  followAheadSpeed: 0.5
+  followSpeed: {x: 2, y: 5}
+  followAheadSpeedFactor: 0.5
   aheadFactor: 2
-  offset: {x: 0, y: 1, z: 0}
-  movingZoneX: {x: -2, y: 14}
-  movingZoneY: {x: -2, y: 2}
+  moveYOnPlatformOnly: 1
+  useDeadZone: 0
+  cameraZone:
+    startX: -13
+    endX: 30
+    startY: -6.84
+    endY: 15
+  offset: {x: 0, y: -1.5, z: 0}
   deadZoneFromCenter: {x: 0, y: 2}
-  deadZoneOffset: {x: -0.5, y: -1}
-  lastTargetPosition: {x: 0, y: 0}
-  target: {fileID: 0}
-  currentAheadOffset: {x: 0, y: 0}
+  deadZoneOffset: {x: 0, y: 0}
+  lastValidPosition: {x: 0, y: 0}
 --- !u!114 &6293404516952334095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +146,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

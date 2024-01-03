@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 
@@ -13,6 +15,45 @@ public struct Rectangle
     }
 }
 
+[Serializable]
+public struct Zone2D
+{
+    public float startX;
+    public float endX;
+    public float startY;
+    public float endY;
+
+    private float width;
+    private float height;
+
+    private Vector3 center;
+
+    public Zone2D(float startX, float endX, float startY, float endY)
+    {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+
+        width = endX - startX;
+        height = endY - startY;
+
+        center = new Vector3((endX + startX)/2, (endY + startY) / 2);
+    }
+
+    public void UpdateZoneProperties()
+    {
+        width = endX - startX;
+        height = endY - startY;
+
+        center = new Vector3((endX + startX) / 2, (endY + startY) / 2);
+    }
+
+    public readonly Vector3 Center => center;
+    public readonly float Width => width;
+    public readonly float Height => height;
+}
+
 public class CameraMovement : MonoBehaviour
 {
     [Header("Target")]
@@ -20,45 +61,61 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField]
-    private float followSpeed;
+    private Vector2 followSpeed;
     [SerializeField]
-    private float followAheadSpeed;
+    private float followAheadSpeedFactor;
     [SerializeField]
     private float aheadFactor;
+    [SerializeField]
+    private bool moveYOnPlatformOnly;
+    [SerializeField]
+    private bool useDeadZone;
 
     [Header("Offsets and deadzones")]
+    [SerializeField]
+    private Zone2D cameraZone;
     public Vector3 offset;
-    public Vector2 movingZoneX;
-    public Vector2 movingZoneY;
     public Vector2 deadZoneFromCenter;
     public Vector2 deadZoneOffset;
 
-
     [SerializeField]
-    private Vector2 lastTargetPosition;
+    private Vector2 lastValidPosition;
 
-    [SerializeField]
-    private GameObject target;
 
-    [SerializeField]
     private Vector2 currentAheadOffset;
 
 
-    //private Camera mainCamera;
-    //private Vector2 cameraZoneX;
-    //private Vector2 cameraZoneY;
-    //private Vector2 cameraBoundsX;
-    //private Vector2 cameraBoundsY;
+    private GameObject target;
+    private Camera mainCamera;
+    private Zone2D cameraBoundsZone;
 
+
+    private PlayerController player;
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    private void OnValidate()
+    {
+        player = PlayerController.Instance;
+
+        mainCamera = Camera.main;
+
+        cameraZone.UpdateZoneProperties();
+        UpdateCameraBounds();
+    }
+
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(
-            new Vector3((movingZoneX.x + movingZoneX.y) / 2, (movingZoneY.x + movingZoneY.y) / 2),
-            new Vector3(movingZoneX.y - movingZoneX.x, movingZoneY.y - movingZoneY.x));
+            cameraZone.Center,
+            new Vector3(cameraZone.Width, cameraZone.Height));
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(
+            cameraBoundsZone.Center,
+            new Vector3(cameraBoundsZone.Width, cameraBoundsZone.Height));
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(
             transform.position + (Vector3)deadZoneOffset,
@@ -72,49 +129,76 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        target = GameObject.Find(targetName);
+        player = PlayerController.Instance;
+
 
         currentAheadOffset = Vector2.zero;
-        //desiredAheadOffset = Vector2.zero;
+        lastValidPosition = transform.position;
 
-        target = GameObject.Find(targetName);
-        lastTargetPosition = transform.position;
+
+        cameraZone.UpdateZoneProperties();
+        UpdateCameraBounds();
     }
 
     private void Update()
     {
         FollowTarget();
+        UpdateCameraBounds();
     }
 
-    private void UpdateMovingZone()
+    private void UpdateCameraBounds()
     {
+        // cameraZone is the renderable zone (given)
+        // cameraBoundsZone is the accessible zone by the camera transform
+        // mainCamera.size represente the semi-height of the camera (given)
+        // 1 size unit = 2 blocks (unit) height = 2*screen_ratio blocks width (given)
+
         // Calculate new bounds with the camera size.
         // The new bounds shall only allow the camera to render alone and only the movingX and movingY zone.
 
+        // Calculate x bounds :
 
+        if (mainCamera == null)
+            return;
 
+        cameraBoundsZone.startX = cameraZone.startX + mainCamera.orthographicSize * mainCamera.aspect;
+        cameraBoundsZone.endX = cameraZone.endX - mainCamera.orthographicSize * mainCamera.aspect;
+
+        // Calculate y bounds :
+
+        cameraBoundsZone.startY = cameraZone.startY + mainCamera.orthographicSize;
+        cameraBoundsZone.endY = cameraZone.endY - mainCamera.orthographicSize;
+
+        cameraBoundsZone.UpdateZoneProperties();
     }
 
     private void FollowTarget()
     {
         Vector3 computedPosition = transform.position;
 
-        lastTargetPosition = GetDesiredPosition() + GetAheadOffset();
 
-        computedPosition.x = Mathf.Clamp(lastTargetPosition.x, movingZoneX.x, movingZoneX.y);
-        computedPosition.y = Mathf.Clamp(lastTargetPosition.y, movingZoneY.x, movingZoneY.y);
+        // Compute the desired position 
+        Vector2 newDesiredPosition = GetDesiredPosition() + GetAheadXOffset() + (Vector2)offset;
+
+        computedPosition.x = Mathf.Clamp(newDesiredPosition.x, cameraBoundsZone.startX, cameraBoundsZone.endX);
+        computedPosition.y = Mathf.Clamp(newDesiredPosition.y, cameraBoundsZone.startY, cameraBoundsZone.endY);
+
+        lastValidPosition = computedPosition;
 
 
-        transform.position = Vector3.Lerp(transform.position, computedPosition+offset, Time.deltaTime * followSpeed);
+        // Lerp and move
+        computedPosition.x = Mathf.Lerp(transform.position.x, computedPosition.x, Time.deltaTime * followSpeed.x);
+        computedPosition.y = Mathf.Lerp(transform.position.y, computedPosition.y, Time.deltaTime * followSpeed.y);
 
-        lastTargetPosition = computedPosition;
+        transform.position = computedPosition;
     }
 
-    private Vector2 GetAheadOffset()
+    private Vector2 GetAheadXOffset()
     {
-        Vector2 offset = Vector2.right * PlayerController.Instance.rb.velocity.x * aheadFactor;
+        Vector2 offset = aheadFactor * player.rb.velocity.x * Vector2.right;
 
-        offset = Vector2.Lerp(currentAheadOffset, offset, Time.deltaTime * followAheadSpeed);
-
+        offset = Vector2.Lerp(currentAheadOffset, offset, Time.deltaTime * followAheadSpeedFactor);
 
         currentAheadOffset = offset;
 
@@ -123,16 +207,26 @@ public class CameraMovement : MonoBehaviour
 
     private Vector2 GetDesiredPosition()
     {
-        Vector2 desPosition = lastTargetPosition;
+        Vector2 desPosition = lastValidPosition - (Vector2)offset; // By default don't change the last valid position
 
-        desPosition.x = IsTargetInDeadzone(RectangleCheck.X) ? lastTargetPosition.x : target.transform.position.x;
-        desPosition.y = IsTargetInDeadzone(RectangleCheck.Y) ? lastTargetPosition.y : target.transform.position.y;
+        desPosition.x = IsTargetInDeadzone(RectangleCheck.X) ? desPosition.x : target.transform.position.x ;
+
+        Debug.Log()
+
+        if (moveYOnPlatformOnly && player != null)
+            desPosition.y = !player.CanJump ? desPosition.y : target.transform.position.y;
+        else
+            desPosition.y = IsTargetInDeadzone(RectangleCheck.Y) ? desPosition.y : target.transform.position.y;
+        
 
         return desPosition;
     }
 
     private bool IsTargetInDeadzone(RectangleCheck check = RectangleCheck.Full)
     {
+        if (!useDeadZone)
+            return false;
+
         Rectangle deadzone = new Rectangle(transform.position + (Vector3)deadZoneOffset, new Vector3(deadZoneFromCenter.x, deadZoneFromCenter.y));
         return IsInsideRect((Vector2)target.transform.position, deadzone, check);
     }

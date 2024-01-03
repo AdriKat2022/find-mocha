@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 #endif
 
 #if true
-    private void Debug()
+    private void DebugFunc()
     {
         if (Input.GetKeyDown(KeyCode.E))
             Damage(null, 2, null);
@@ -401,6 +401,8 @@ public class PlayerController : MonoBehaviour, IDamageble
         {
             if(!isJumping)
                 Jump();
+
+            //Debug.Log(CanJump);
 
             yield return null;
         }
