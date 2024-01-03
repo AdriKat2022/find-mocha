@@ -95,7 +95,7 @@ SpriteRenderer:
   m_SortingLayerID: 479956341
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -573847273, guid: 5307a0e32b4e4b14282caa4dd09fd846, type: 3}
+  m_Sprite: {fileID: 1917305130, guid: 5307a0e32b4e4b14282caa4dd09fd846, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9830,10 +9830,16 @@ MonoBehaviour:
   slowBlinking: 0
   fastBlinking: 0.08
   slowFastThreshold: 0
+  lowHpThreshold: 0.25
   sprite: {fileID: 659961998087491667}
+  rb: {fileID: 0}
   heartParticles: {fileID: 9141675872897806678}
   debug: 0
-  lowHpThreshold: 0.25
+  lastTimeGrounded: 0
+  lastJumpBuffered: 0
+  jumpBufferUsed: 0
+  coyoteUsable: 0
+  _time: 0
 --- !u!114 &128965256978059482
 MonoBehaviour:
   m_ObjectHideFlags: 0

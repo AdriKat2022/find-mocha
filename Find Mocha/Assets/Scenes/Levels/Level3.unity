@@ -575,6 +575,10 @@ PrefabInstance:
       value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 414425368557585793, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: movingZoneX.x
       value: -1
       objectReference: {fileID: 0}
@@ -598,6 +602,14 @@ PrefabInstance:
       propertyPath: deadZoneOffset.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1667956305213771936, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667956305213771936, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3556157593171931670, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_Name
       value: Camera
@@ -612,7 +624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3640421875276380855, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.0673852
+      value: -7.54
       objectReference: {fileID: 0}
     - target: {fileID: 3640421875276380855, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -640,6 +652,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3640421875276380855, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293404516952334095, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

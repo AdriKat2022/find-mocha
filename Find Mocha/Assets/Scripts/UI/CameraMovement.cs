@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -46,6 +43,14 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private Vector2 currentAheadOffset;
 
+
+    //private Camera mainCamera;
+    //private Vector2 cameraZoneX;
+    //private Vector2 cameraZoneY;
+    //private Vector2 cameraBoundsX;
+    //private Vector2 cameraBoundsY;
+
+
 #if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
@@ -66,6 +71,8 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
+
         currentAheadOffset = Vector2.zero;
         //desiredAheadOffset = Vector2.zero;
 
@@ -78,6 +85,14 @@ public class CameraMovement : MonoBehaviour
         FollowTarget();
     }
 
+    private void UpdateMovingZone()
+    {
+        // Calculate new bounds with the camera size.
+        // The new bounds shall only allow the camera to render alone and only the movingX and movingY zone.
+
+
+
+    }
 
     private void FollowTarget()
     {
