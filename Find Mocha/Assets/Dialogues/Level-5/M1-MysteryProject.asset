@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: M1-MysteryProject
+  m_EditorClassIdentifier: 
+  dialogue:
+  - "-- Journal de Mocha * Entr\xE9e 1 --"
+  - "Cela fait des mois que j'ai ce projet en t\xEAte, mais je n'arrive pas \xE0
+    me donner le temps pour plus m'y pencher."
+  - Il permettrait d'accomplir tellement...

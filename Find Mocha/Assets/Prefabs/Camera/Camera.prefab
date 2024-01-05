@@ -52,6 +52,7 @@ MonoBehaviour:
   aheadFactor: 2
   moveYOnPlatformOnly: 1
   useDeadZone: 0
+  cameraSize: 0
   cameraZone:
     startX: -13
     endX: 30

@@ -73,6 +73,8 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Offsets and deadzones")]
     [SerializeField]
+    private float cameraSize;
+    [SerializeField]
     private Zone2D cameraZone;
     public Vector3 offset;
     public Vector2 deadZoneFromCenter;
@@ -88,9 +90,9 @@ public class CameraMovement : MonoBehaviour
     private GameObject target;
     private Camera mainCamera;
     private Zone2D cameraBoundsZone;
-
-
     private PlayerController player;
+
+
 
 #if UNITY_EDITOR
 
@@ -99,6 +101,7 @@ public class CameraMovement : MonoBehaviour
         player = PlayerController.Instance;
 
         mainCamera = Camera.main;
+        mainCamera.orthographicSize = cameraSize;
 
         cameraZone.UpdateZoneProperties();
         UpdateCameraBounds();
@@ -129,9 +132,10 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        mainCamera.orthographicSize = cameraSize;
+
         target = GameObject.Find(targetName);
         player = PlayerController.Instance;
-
 
         currentAheadOffset = Vector2.zero;
         lastValidPosition = transform.position;
