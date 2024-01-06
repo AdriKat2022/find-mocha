@@ -75,10 +75,14 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private float cameraSize;
     [SerializeField]
+    private bool useMaxCameraSize;
+    [SerializeField]
+    private Vector2 margins;
+    [SerializeField]
     private Zone2D cameraZone;
     public Vector3 offset;
-    public Vector2 deadZoneFromCenter;
-    public Vector2 deadZoneOffset;
+    public Vector2 deadZoneFromCenter; // deprecated on X
+    public Vector2 deadZoneOffset; // deprecated on X
 
     [SerializeField]
     private Vector2 lastValidPosition;
@@ -89,6 +93,7 @@ public class CameraMovement : MonoBehaviour
 
     private GameObject target;
     private Camera mainCamera;
+    [SerializeField]
     private Zone2D cameraBoundsZone;
     private PlayerController player;
 
@@ -101,13 +106,21 @@ public class CameraMovement : MonoBehaviour
         player = PlayerController.Instance;
 
         mainCamera = Camera.main;
-        mainCamera.orthographicSize = cameraSize;
 
         cameraZone.UpdateZoneProperties();
+
+        if(mainCamera != null)
+        {
+            if(useMaxCameraSize)
+                mainCamera.orthographicSize = GetMaxCameraSize();
+            else
+                mainCamera.orthographicSize = cameraSize;
+        }
+
         UpdateCameraBounds();
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(
@@ -132,7 +145,11 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        mainCamera.orthographicSize = cameraSize;
+
+        if (useMaxCameraSize)
+            mainCamera.orthographicSize = GetMaxCameraSize();
+        else
+            mainCamera.orthographicSize = cameraSize;
 
         target = GameObject.Find(targetName);
         player = PlayerController.Instance;
@@ -151,6 +168,16 @@ public class CameraMovement : MonoBehaviour
         UpdateCameraBounds();
     }
 
+    private float GetMaxCameraSize(bool auto = true, bool isYLarger = false)
+    {
+        if(auto)
+            isYLarger = cameraZone.Width/cameraZone.Height < mainCamera.aspect;
+
+        if(isYLarger)
+            return ((cameraZone.endX - cameraZone.startX) / 2 - margins.x)/mainCamera.aspect;
+        else
+            return (cameraZone.endY - cameraZone.startY) / 2 - margins.y;
+    }
     private void UpdateCameraBounds()
     {
         // cameraZone is the renderable zone (given)
@@ -161,18 +188,25 @@ public class CameraMovement : MonoBehaviour
         // Calculate new bounds with the camera size.
         // The new bounds shall only allow the camera to render alone and only the movingX and movingY zone.
 
-        // Calculate x bounds :
 
         if (mainCamera == null)
             return;
 
-        cameraBoundsZone.startX = cameraZone.startX + mainCamera.orthographicSize * mainCamera.aspect;
-        cameraBoundsZone.endX = cameraZone.endX - mainCamera.orthographicSize * mainCamera.aspect;
+        float aspect = mainCamera.aspect;
+        float size = mainCamera.orthographicSize;
+
+        // Calculate x bounds :
+
+        cameraBoundsZone.startX = cameraZone.startX + size * aspect + margins.x;
+        cameraBoundsZone.endX = cameraZone.endX - size * aspect - margins.x;
 
         // Calculate y bounds :
 
-        cameraBoundsZone.startY = cameraZone.startY + mainCamera.orthographicSize;
-        cameraBoundsZone.endY = cameraZone.endY - mainCamera.orthographicSize;
+        cameraBoundsZone.startY = cameraZone.startY + size + margins.y;
+        cameraBoundsZone.endY = cameraZone.endY - size - margins.y;
+
+        if (cameraBoundsZone.startX > cameraBoundsZone.endX + .01f || cameraBoundsZone.startY > cameraBoundsZone.endY + .01f)
+            Debug.LogError("Camera is too big for the defined camera zone.");
 
         cameraBoundsZone.UpdateZoneProperties();
     }
@@ -214,8 +248,6 @@ public class CameraMovement : MonoBehaviour
         Vector2 desPosition = lastValidPosition - (Vector2)offset; // By default don't change the last valid position
 
         desPosition.x = IsTargetInDeadzone(RectangleCheck.X) ? desPosition.x : target.transform.position.x ;
-
-        //Debug.Log()
 
         if (moveYOnPlatformOnly && player != null)
             desPosition.y = !player.CanJump ? desPosition.y : target.transform.position.y;
