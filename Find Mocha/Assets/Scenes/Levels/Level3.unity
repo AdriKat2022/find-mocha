@@ -486,8 +486,8 @@ Transform:
   - {fileID: 2757063975242633814}
   - {fileID: 1316699}
   - {fileID: 685578490}
-  - {fileID: 1288935100}
   - {fileID: 753592792}
+  - {fileID: 1288935100}
   - {fileID: 1516412226}
   - {fileID: 443014853}
   - {fileID: 1604206559}
@@ -679,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4821894719706377863, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: orthographic size
-      value: 6.2
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1633,6 +1633,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 109181453}
     m_Modifications:
+    - target: {fileID: 2651677748662529770, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
+      propertyPath: endPath.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651677748662529770, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
+      propertyPath: endPath.y
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 4704298449033161112, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
       propertyPath: endLag
       value: 2
@@ -1775,6 +1783,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 109181453}
     m_Modifications:
+    - target: {fileID: 2651677748662529770, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
+      propertyPath: endPath.x
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4704298449033161112, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
       propertyPath: endPath.x
       value: 12
