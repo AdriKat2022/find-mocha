@@ -56,8 +56,11 @@ public struct Zone2D
 
 public class CameraMovement : MonoBehaviour
 {
+    private const float Default_camera_size = 5;
+
     [Header("Target")]
-    public string targetName;
+    [SerializeField]
+    private string targetName;
 
     [Header("Settings")]
     [SerializeField]
@@ -138,7 +141,6 @@ public class CameraMovement : MonoBehaviour
             new Vector3(deadZoneFromCenter.x, deadZoneFromCenter.y));
     }
 
-
 #endif
 
 
@@ -150,6 +152,12 @@ public class CameraMovement : MonoBehaviour
             mainCamera.orthographicSize = GetMaxCameraSize();
         else
             mainCamera.orthographicSize = cameraSize;
+
+        if(cameraSize < 0)
+        {
+            mainCamera.orthographicSize = Default_camera_size;
+            Debug.LogWarning("Camera may have not been properly set up, since the camera size is null or negative.\nDefault value used.");
+        }
 
         target = GameObject.Find(targetName);
         player = PlayerController.Instance;
