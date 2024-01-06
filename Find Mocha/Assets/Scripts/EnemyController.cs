@@ -19,6 +19,10 @@ public class EnemyController : MonoBehaviour, IDamageble
     private float knockbackAngle;
     [SerializeField]
     private float knockbackForce;
+    [SerializeField]
+    private bool overridePlayerHitstun;
+    [SerializeField]
+    private float hitStun;
 
     private GameObject player;
     private PlayerController playerController;
