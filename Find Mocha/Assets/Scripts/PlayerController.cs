@@ -16,6 +16,8 @@ public struct PlayerStats
 
 public class PlayerController : MonoBehaviour, IDamageble
 {
+    private readonly float Fall_height = -15;
+
     [Header("Milk properties")]
     public float maxHp;
     public float speed;
@@ -92,6 +94,7 @@ public class PlayerController : MonoBehaviour, IDamageble
     private bool isJumping;
     private bool hasWon;
     private bool isKnockedOut;
+    private bool hasFallen;
 
 
 
@@ -236,6 +239,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 
         CheckAlive();
 
+        if (isKnockedOut)
+            return;
+
         GroundCheck();
 
         if (isHurting || hasWon)
@@ -356,6 +362,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private bool CheckAlive()
     {
+        hasFallen = CheckFallen();
+
         if(currentHp <= 0f)
         {
             if (!isKnockedOut) // Triggers once
@@ -370,6 +378,19 @@ public class PlayerController : MonoBehaviour, IDamageble
         }
 
         return true;
+    }
+
+    private bool CheckFallen()
+    {
+        if (transform.position.y < Fall_height)
+        {
+            rb.velocity = Vector2.zero;
+            SoundManager.Instance.PlaySound(SoundManager.Instance.fell_sound);
+            RawDamage(maxHp, hasShake: true, updateVisuals: true);
+            return true;
+        }
+        
+        return false;
     }
 
     private void AnimatorUpdate()
@@ -452,6 +473,18 @@ public class PlayerController : MonoBehaviour, IDamageble
 
         isInvulnerable = false;
         spriteRenderer.enabled = true;
+    }
+
+    private void RawDamage(float damage, bool hasShake = false, bool updateVisuals = false) // Bypasses everything, triggers nothing and doesn't check for KO
+    {
+        currentHp -= damage;
+        if(updateVisuals)
+            OnPlayerChangeHP?.Invoke(GetPlayerStats());
+
+        if (hasShake)
+            cameraShake.AddStress((damage+5)/maxHp);
+        
+
     }
 
     public void InstaKill(IDamageble from, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)

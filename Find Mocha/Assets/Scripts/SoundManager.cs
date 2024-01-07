@@ -26,7 +26,8 @@ public class SoundManager : MonoBehaviour
         text_char,
         button_press,
         level_clear, revive,
-        low_hp_sound, gameOverSound;
+        low_hp_sound, gameOverSound,
+        fell_sound;
 
 
 

@@ -201,6 +201,7 @@ MonoBehaviour:
   revive: {fileID: 8300000, guid: 01567af4a9063204ea212179804ac4d1, type: 3}
   low_hp_sound: {fileID: 8300000, guid: 37f8ca171ef835549a5da0057fe888a7, type: 3}
   gameOverSound: {fileID: 8300000, guid: f7d0a3b63a601074198c52666c812753, type: 3}
+  fell_sound: {fileID: 8300000, guid: f20ce095c4e8b0540880b18e12f09329, type: 3}
 --- !u!1 &5472833649646196872
 GameObject:
   m_ObjectHideFlags: 0
