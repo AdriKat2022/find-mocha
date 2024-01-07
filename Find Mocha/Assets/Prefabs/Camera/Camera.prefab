@@ -47,12 +47,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetName: Milk
-  followSpeed: {x: 2, y: 5}
   followAheadSpeedFactor: 0.5
-  aheadFactor: 2
+  maxHorizontalAheadFactor: 1
+  followSpeed: {x: 2, y: 5}
   moveYOnPlatformOnly: 1
   useDeadZone: 0
-  cameraSize: 0
+  cameraSize: 6.5
+  useMaxCameraSize: 0
+  margins: {x: 0, y: 0}
   cameraZone:
     startX: -13
     endX: 30
@@ -61,7 +63,6 @@ MonoBehaviour:
   offset: {x: 0, y: -1.5, z: 0}
   deadZoneFromCenter: {x: 0, y: 2}
   deadZoneOffset: {x: 0, y: 0}
-  lastValidPosition: {x: 0, y: 0}
 --- !u!114 &6293404516952334095
 MonoBehaviour:
   m_ObjectHideFlags: 0

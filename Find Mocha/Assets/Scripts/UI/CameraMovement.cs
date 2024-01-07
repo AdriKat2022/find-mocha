@@ -62,13 +62,15 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private string targetName;
 
-    [Header("Settings")]
-    [SerializeField]
-    private Vector2 followSpeed;
+    [Header("Follow Ahead")]
     [SerializeField]
     private float followAheadSpeedFactor;
     [SerializeField]
-    private float aheadFactor;
+    private float maxHorizontalAheadFactor;
+
+    [Header("Settings")]
+    [SerializeField]
+    private Vector2 followSpeed;
     [SerializeField]
     private bool moveYOnPlatformOnly;
     [SerializeField]
@@ -87,17 +89,13 @@ public class CameraMovement : MonoBehaviour
     public Vector2 deadZoneFromCenter; // deprecated on X
     public Vector2 deadZoneOffset; // deprecated on X
 
-    [SerializeField]
     private Vector2 lastValidPosition;
-
-
     private Vector2 currentAheadOffset;
+    private Zone2D cameraBoundsZone;
 
 
     private GameObject target;
     private Camera mainCamera;
-    [SerializeField]
-    private Zone2D cameraBoundsZone;
     private PlayerController player;
 
 
@@ -242,9 +240,11 @@ public class CameraMovement : MonoBehaviour
 
     private Vector2 GetAheadXOffset()
     {
-        Vector2 offset = aheadFactor * player.rb.velocity.x * Vector2.right;
+        Vector2 offset = Mathf.Clamp(player.rb.velocity.x,-maxHorizontalAheadFactor, maxHorizontalAheadFactor) * Vector2.right;
 
-        offset = Vector2.Lerp(currentAheadOffset, offset, Time.deltaTime * followAheadSpeedFactor);
+        float aheadSpeedFactor = player.rb.velocity.x == 0 ? 1 : followAheadSpeedFactor;
+
+        offset = Vector2.Lerp(currentAheadOffset, offset, Time.deltaTime * aheadSpeedFactor);
 
         currentAheadOffset = offset;
 

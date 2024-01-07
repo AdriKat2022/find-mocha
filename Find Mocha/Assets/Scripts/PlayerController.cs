@@ -370,6 +370,7 @@ public class PlayerController : MonoBehaviour, IDamageble
             {
                 OnPlayerKnockedOut?.Invoke();
                 animator.SetTrigger("isKnockedOut");
+                SoundManager.Instance.PlaySound(SoundManager.Instance.milk_squeak, 1f/2f);
             }
 
             isKnockedOut = true;

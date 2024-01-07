@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour
         button_press,
         level_clear, revive,
         low_hp_sound, gameOverSound,
-        fell_sound;
+        fell_sound, milk_squeak;
 
 
 
@@ -49,9 +49,20 @@ public class SoundManager : MonoBehaviour
         //effectSource.Pause();
     }
 
-    public void PlaySound(AudioClip clip)
+    public void PlaySound(AudioClip clip, float waitTime = 0)
     {
+        if(waitTime > 0)
+        {
+            StartCoroutine(PlayOneShotAfterTime(effectSource, clip, waitTime));
+            return;
+        }
         effectSource.PlayOneShot(clip);
+    }
+
+    private IEnumerator PlayOneShotAfterTime(AudioSource source, AudioClip clip, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        source.PlayOneShot(clip);
     }
 
     public void PlayLoopSound(AudioClip clip, bool restart = false)
@@ -77,7 +88,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip, float wait = 0)
     {
-        StartCoroutine(PlayMusicAfter(clip, wait));
+        StartCoroutine(PlayMusicAfterTime(clip, wait));
     }
 
     public void PlayMusicNow(AudioClip clip, bool restart = false)
@@ -98,7 +109,7 @@ public class SoundManager : MonoBehaviour
         musicSource.Stop();
     }
 
-    private IEnumerator PlayMusicAfter(AudioClip clip, float delay, bool persist = false)
+    private IEnumerator PlayMusicAfterTime(AudioClip clip, float delay, bool persist = false)
     {
         requiredScene = GameManager.Instance.SceneLoadNumber;
 
