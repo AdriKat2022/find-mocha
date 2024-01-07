@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour, IDamageble
     private void DebugFunc()
     {
         if (Input.GetKeyDown(KeyCode.E))
-            Damage(null, 2, null);
+            Damage(2);
 
         if (Input.GetKeyDown(KeyCode.A))
             Heal(2);
@@ -162,10 +162,10 @@ public class PlayerController : MonoBehaviour, IDamageble
             Heal(200);
 
         if (Input.GetKeyDown(KeyCode.S))
-            Damage(null, 200, null);
+            Damage(200);
 
         if (Input.GetKeyDown(KeyCode.Q))
-            Damage(null, currentHp - 1, null);
+            Damage(currentHp - 1);
     }
 
 #endif
@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Update()
     {
-        //Debug();
+        DebugFunc();
 
         if (isKnockedOut)
             return;
@@ -402,13 +402,11 @@ public class PlayerController : MonoBehaviour, IDamageble
             if(!isJumping)
                 Jump();
 
-            //Debug.Log(CanJump);
-
             yield return null;
         }
     }
 
-    IEnumerator HurtPhase()
+    private IEnumerator HurtPhase(bool overrideHitstun = false, float hitstun = 0)
     {
         if (isHurting || isInvulnerable)
             yield break;
@@ -416,7 +414,7 @@ public class PlayerController : MonoBehaviour, IDamageble
         isHurting = true;
         animator.SetBool("isHurting", true);
 
-        yield return new WaitForSeconds(hurtingFrames);
+        yield return new WaitForSeconds(overrideHitstun ? hitstun : hurtingFrames);
 
 
         animator.SetBool("isHurting", false);
@@ -461,36 +459,38 @@ public class PlayerController : MonoBehaviour, IDamageble
         isKnockedOut = true;
     }
 
-    public void Damage(IDamageble from, float damage, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)
+    public void Damage(IDamageble from, DamageData damageData)
     {
         if (isHurting || isInvulnerable || isKnockedOut)
             return;
 
-        cameraShake.AddStress((damage+5)/maxHp);
+        cameraShake.AddStress((damageData.damage+5)/maxHp);
 
         if (isInvincible)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.invincibled);
-            from?.InstaKill(this, -knockback);
+            from?.InstaKill(this, -damageData.knockback);
             GameManager.Instance.CreateHitStop(0.1f);
             return;
         }
 
         SoundManager.Instance.PlaySound(SoundManager.Instance.damage);
 
-        currentHp -= damage;
+        currentHp -= damageData.damage;
         OnPlayerChangeHP?.Invoke(GetPlayerStats());
 
         if (CheckAlive())
         {
-            if (knockback != null)
-                Knockback((Vector2)knockback);
-            else
-                Knockback(knockbackAngle, knockbackForce);
+            if (damageData.knockback != null)
+                Knockback((Vector2)damageData.knockback);
 
-            StartCoroutine(HurtPhase());
+            StartCoroutine(HurtPhase(damageData.overrideHitstun, damageData.hitstun));
         }
+    }
 
+    public void Damage(float dmg)
+    {
+        Damage(null, new DamageData(dmg));
     }
 
     public void Heal(float heal)

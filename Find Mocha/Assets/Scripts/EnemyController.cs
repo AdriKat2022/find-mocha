@@ -61,9 +61,9 @@ public class EnemyController : MonoBehaviour, IDamageble
         hp += heal;
         hp = Mathf.Clamp(hp, 0, maxHp);
     }
-    public void Damage(IDamageble from, float damage, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)
+    public void Damage(IDamageble from, DamageData damageData)
     {
-        hp -= damage;
+        hp -= damageData.damage;
         CheckAlive();
     }
     public void InstaKill(IDamageble from, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)
@@ -120,7 +120,9 @@ public class EnemyController : MonoBehaviour, IDamageble
     {
         if(!isDead && collision.gameObject == player)
         {
-            playerController.Damage(this, attack, -collision.contacts[0].normal * knockbackForce);
+            DamageData damageData = BuildDamageData(-collision.contacts[0].normal * knockbackForce);
+
+            playerController.Damage(this, damageData);
         }
     }
 
