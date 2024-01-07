@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour, IDamageble
 {
@@ -16,9 +13,9 @@ public class EnemyController : MonoBehaviour, IDamageble
 
     [Header("Knockback")]
     [SerializeField]
-    private float knockbackAngle;
-    [SerializeField]
     private float knockbackForce;
+
+    [Header("Player Hitstun")]
     [SerializeField]
     private bool overridePlayerHitstun;
     [SerializeField]
@@ -52,6 +49,12 @@ public class EnemyController : MonoBehaviour, IDamageble
         pathController.Activate();
     }
 
+    private DamageData BuildDamageData(Vector2 knockback)
+    {
+        DamageData data = new DamageData(attack, overridePlayerHitstun, hitStun);
+        data.SetKnockback(knockback);
+        return data;
+    }
 
     public void Heal(float heal)
     {
