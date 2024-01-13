@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -6,11 +7,14 @@ public class HeartGun : MonoBehaviour
 {
     [SerializeField]
     private GameObject heartPrefab;
-
     [SerializeField]
     private PlayerController controller;
+
+    [Header("Heart Gun")]
     [SerializeField]
-    private int heartNumber;
+    private float shootCooldown;
+    [SerializeField]
+    private int heartNumberPerShot;
     [SerializeField]
     private float heartRate;
 
@@ -46,8 +50,10 @@ public class HeartGun : MonoBehaviour
     private bool activateOnAwake;
 
 
+    private float time;
 
     private bool isActive;
+    private bool isUnlocked;
 
 
 #if UNITY_EDITOR
@@ -61,25 +67,60 @@ public class HeartGun : MonoBehaviour
 
 #endif
 
-
-    public void SetGunActive(bool activate)
+    private void OnEnable()
     {
-        isActive = activate;
+        PlayerController.OnPlayerKnockedOut += DisableHeartGun;
+        PlayerController.OnPlayerReady += EnableHeartGun;
+    }
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerKnockedOut -= DisableHeartGun;
+        PlayerController.OnPlayerReady -= EnableHeartGun;
     }
 
 
-    private void Start()
+    private void Awake()
     {
         SetGunActive(activateOnAwake);
+        if (activateOnAwake)
+            Debug.LogWarning("Activate on awake is enabled for the heart gun");
+
+        time = 0f;
+    }
+
+    private void DisableHeartGun()
+    {
+        isActive = false;
+    }
+    private void EnableHeartGun()
+    {
+        isActive = true;
+    }
+    public void UnlockHeartGun()
+    {
+        isUnlocked = true;
+    }
+    private void SetGunActive(bool activate)
+    {
+        isActive = activate;
+        isUnlocked = activate;
     }
 
     private void Update()
     {
-        if(isActive)
-        {
-            if (Input.GetKeyDown(KeyCode.Z))
-                StartCoroutine(SendHeartsBurst(heartNumber));
-        }
+        if (isActive && isUnlocked)
+            CheckForShot();
+    }
+
+    private void CheckForShot()
+    {
+        time += Time.deltaTime;
+
+        if (time < shootCooldown)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            StartCoroutine(SendHeartsBurst(heartNumberPerShot));
     }
 
     private Vector3 GetCurrentOffset()
@@ -89,6 +130,8 @@ public class HeartGun : MonoBehaviour
 
     private void SendHeart()
     {
+        SoundManager.Instance.PlaySound(SoundManager.Instance.heartSpawn);
+
         GameObject heartInstance = Instantiate(heartPrefab, transform.position + GetCurrentOffset(), Quaternion.identity);
         heartInstance.TryGetComponent(out HeartProjectile projectile);
         projectile.Launch(
@@ -115,6 +158,8 @@ public class HeartGun : MonoBehaviour
 
     private IEnumerator SendHeartsBurst(int heartsNumberBurst)
     {
+        time = 0;
+
         float timer = 0;
         int spawnedHearts = 0;
 

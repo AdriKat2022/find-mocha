@@ -27,8 +27,14 @@ public class SoundManager : MonoBehaviour
         button_press,
         level_clear, revive,
         low_hp_sound, gameOverSound,
-        fell_sound, milk_squeak;
+        fell_sound, milk_squeak,
+        heartSpawn;
 
+
+    public AudioClip GetCurrentMusic()
+    {
+        return musicSource.clip;
+    }
 
 
     private int requiredScene;

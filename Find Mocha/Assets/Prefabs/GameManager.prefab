@@ -676,10 +676,11 @@ MonoBehaviour:
   hpBarRectTransform: {fileID: 8167275027565641317}
   hpBarAnimator: {fileID: 5185949484486853851}
   hpBarOverlayRainbow: {fileID: 7316093169391627332}
+  hpBarFillRainbow: {fileID: 2163403340463820851}
   hpBar: {fileID: 2841102567601856544}
   gameOverMenuAnimator: {fileID: 7284742520899282846}
   screenAura: {fileID: 8453816634615238793}
-  screenAuraImg: {fileID: 0}
+  screenAuraImg: {fileID: 1696987100000625914}
 --- !u!223 &898167270351652672
 Canvas:
   m_ObjectHideFlags: 0
@@ -4399,7 +4400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1524971899574921201
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4440,7 +4441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.16159391, a: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

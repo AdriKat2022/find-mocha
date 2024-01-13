@@ -66,6 +66,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Rainbow hpBarOverlayRainbow;
     [SerializeField]
+    private Rainbow hpBarFillRainbow;
+    [SerializeField]
     private GameObject hpBar;
     [SerializeField]
     private Animator gameOverMenuAnimator;
@@ -424,9 +426,11 @@ public class UIManager : MonoBehaviour
     private void ActivateInvincibilityVisuals()
     {
         StartRainbow(hpBarOverlayRainbow);
+        StartRainbow(hpBarFillRainbow);
     }
     private void DeactivateInvincibilityVisuals()
     {
         StartRainbow(hpBarOverlayRainbow, false);
+        StartRainbow(hpBarFillRainbow, false);
     }
 }

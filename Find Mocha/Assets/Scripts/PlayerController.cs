@@ -6,17 +6,20 @@ public struct PlayerStats
 {
     public float maxHp;
     public float hp;
+    public bool heartGunUnlocked;
 
-    public PlayerStats(float maxHp, float hp)
+    public PlayerStats(float maxHp, float hp, bool heartGunUnlocked)
     {
         this.maxHp = maxHp;
         this.hp = hp;
+        this.heartGunUnlocked = heartGunUnlocked;
     }
 }
 
 public class PlayerController : MonoBehaviour, IDamageble
 {
     [Header("Team")]
+    [SerializeField]
     private Team team;
 
 
@@ -36,7 +39,6 @@ public class PlayerController : MonoBehaviour, IDamageble
     public float fastFallMultiplier;
     public Vector2 jumpCheckPadding;
     public float jumpCheckDown = .4f;
-    //public float fallMultiplier;
 
     [Header("INV and hurt animation")]
     public float hurtingFrames;
@@ -69,6 +71,9 @@ public class PlayerController : MonoBehaviour, IDamageble
     private ParticleSystem heartParticles;
     private ParticleSystem.EmissionModule heartParticlesEmissionModule;
 
+    [SerializeField]
+    private HeartGun heartgun;
+
     [Header("External components")]
     private DialogueUI dialogueUI;
     private CameraShake cameraShake;
@@ -100,7 +105,7 @@ public class PlayerController : MonoBehaviour, IDamageble
     private bool isKnockedOut;
     private bool hasFallen;
 
-
+    private bool hasUnlockedHeartGun;
 
     #region Bonuses variables
 
@@ -236,7 +241,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void Update()
     {
-        DebugFunc();
+        //DebugFunc();
 
         if (isKnockedOut)
             return;
@@ -265,7 +270,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     private void CheckInteraction()
     {
-        if (Input.GetKey("e"))
+        if (Input.GetKey(KeyCode.E))
         {
             if(Interactable != null)
             {
@@ -277,11 +282,11 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 
     public bool CanJump => !isJumping || ((coyoteTime + lastTimeGrounded > _time) && coyoteUsable);
-    private bool IsJumpBuffered => Input.GetKeyDown("space") || (lastJumpBuffered + bufferJumpTime > _time && !jumpBufferUsed);
+    private bool IsJumpBuffered => Input.GetKeyDown(KeyCode.Space) || (lastJumpBuffered + bufferJumpTime > _time && !jumpBufferUsed);
 
     private void ManageJump()
     {
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             lastJumpBuffered = _time;
             jumpBufferUsed = false;
@@ -304,7 +309,7 @@ public class PlayerController : MonoBehaviour, IDamageble
             coyoteUsable = false;
         }
 
-        if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && !Input.GetKey("space"))
+        if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * fastFallMultiplier);
             jumpEndedEarly = true;
@@ -318,12 +323,12 @@ public class PlayerController : MonoBehaviour, IDamageble
 
         Vector2 newVelocity = rb.velocity;
 
-        if (Input.GetKey("right"))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             newVelocity.x = Mathf.Max(rb.velocity.x, speed + speedBonus);
             spriteRenderer.flipX = false;
         }
-        else if (Input.GetKey("left"))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
             newVelocity.x = Mathf.Min(rb.velocity.x, -speed - speedBonus);
             spriteRenderer.flipX = true;
@@ -346,7 +351,7 @@ public class PlayerController : MonoBehaviour, IDamageble
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpBonus);
         isJumping = true;
-        //Debug.Log("Buf");
+
         animator.SetTrigger("bufJump");
     }
 
@@ -486,13 +491,12 @@ public class PlayerController : MonoBehaviour, IDamageble
     private void RawDamage(float damage, bool hasShake = false, bool updateVisuals = false) // Bypasses everything, triggers nothing and doesn't check for KO
     {
         currentHp -= damage;
+
         if(updateVisuals)
             OnPlayerChangeHP?.Invoke(GetPlayerStats());
 
         if (hasShake)
             cameraShake.AddStress((damage+5)/maxHp);
-        
-
     }
 
     public void InstaKill(IDamageble from, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)
@@ -562,17 +566,20 @@ public class PlayerController : MonoBehaviour, IDamageble
         rb.velocity = knockback;
     }
 
-
     public PlayerStats GetPlayerStats()
     {
-        return new PlayerStats(maxHp, currentHp);
+        return new PlayerStats(maxHp, currentHp, hasUnlockedHeartGun);
     }
+
     public void LoadPlayerStats(PlayerStats stats)
     {
         maxHp = stats.maxHp;
         currentHp = stats.hp;
-    }
+        hasUnlockedHeartGun = stats.heartGunUnlocked;
 
+        if(hasUnlockedHeartGun)
+            heartgun.UnlockHeartGun();
+    }
 
     public void ApplyBonuses(PowerUp[] powerUps)
     {
@@ -644,6 +651,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
                 heartParticlesEmissionModule.enabled = true;
 
+                AudioClip lastMusic = SoundManager.Instance.GetCurrentMusic();
+
                 SoundManager.Instance.PlayMusic(SoundManager.Instance.invincibility);
 
                 rainbow.Activate();
@@ -670,7 +679,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
                 rb.mass = previousMass;
 
-                SoundManager.Instance.StopMusic();
+                SoundManager.Instance.PlayMusic(lastMusic);
 
                 break;
 

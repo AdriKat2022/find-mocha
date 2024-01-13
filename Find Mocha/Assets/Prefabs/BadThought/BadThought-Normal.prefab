@@ -154,11 +154,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373e68ce105443441aff89899fccdd2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 1
   maxHp: 10
   attack: 4
   speed: 2
-  knockbackAngle: 0
   knockbackForce: 10
+  overridePlayerHitstun: 0
+  hitStun: 0
 --- !u!114 &2651677748662529770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +174,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSpeed: 0
+  totalTime: 0
+  useTotalTime: 0
   activateOnAwake: 1
+  phaseNormalized: 0
   endLag: 1
   startPath: {x: 0, y: 0}
   endPath: {x: 4, y: 0}

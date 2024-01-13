@@ -4980,12 +4980,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heartPrefab: {fileID: 8818799023470350062, guid: a2b16565e73496740a346d105dff3312, type: 3}
   controller: {fileID: 687016615176695642}
-  heartNumber: 100
-  heartRate: 100
-  damagePerHeart: 5
-  heartAngle: 0
-  heartAngleVariance: 10
-  heartSpan: 1.5
+  shootCooldown: 2
+  heartNumberPerShot: 10
+  heartRate: 25
+  damagePerHeart: 3
+  heartAngle: 10
+  heartAngleVariance: 30
+  heartSpan: 1.1
   heartSpanVariance: 0.3
   heartSpeed: 12
   heartSpeedVariance: 2
@@ -9893,6 +9894,7 @@ MonoBehaviour:
   sprite: {fileID: 659961998087491667}
   rb: {fileID: 0}
   heartParticles: {fileID: 9141675872897806678}
+  heartgun: {fileID: 7361189355703272606}
   debug: 0
   lastTimeGrounded: 0
   lastJumpBuffered: 0

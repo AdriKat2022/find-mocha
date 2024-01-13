@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour, IDamageble
 {
     [Header("Team")]
+    [SerializeField]
     private Team team;
 
     [Header("Main properties")]
@@ -90,13 +91,16 @@ public class EnemyController : MonoBehaviour, IDamageble
 
         float angle = Mathf.PI * Random.Range(baseAngleDir - 15, baseAngleDir + 15) / 180;
 
-        direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-
         float timer = 0;
 
-        while(timer < 5f)
+        direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+
+        Vector3 basePosition = transform.position;
+
+
+        while (timer < 5f)
         {
-            transform.SetPositionAndRotation(20 * Time.deltaTime * direction.normalized, Quaternion.Euler(0, 0, timer * 720));
+            transform.SetPositionAndRotation(basePosition + 20 * timer * direction.normalized, Quaternion.Euler(0, 0, timer * 720));
 
             timer += Time.deltaTime;
 

@@ -14,7 +14,13 @@ public class HeartProjectile : MonoBehaviour
     private const float baseScale = 4;
     private const float randomScale = 1;
 
+    private const float alphaTimeThreshold = .75f;
+
     private Vector2 baseDirection;
+
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
 
     public void Launch(Vector2 direction)
     {
@@ -58,6 +64,20 @@ public class HeartProjectile : MonoBehaviour
         }
     }
 
+    private void SetAlphaForTimer(float timer)
+    {
+        if (alphaTimeThreshold == 1)
+            return;
+
+        float x = timer / baseLifetime;
+        float factor = 1 - alphaTimeThreshold;
+
+        Color color = spriteRenderer.color;
+        color.a = Mathf.Clamp01((1-x)/factor);
+    
+        spriteRenderer.color = color;
+    }
+
     private IEnumerator ManageProjectileLifetime()
     {
         float timer = 0;
@@ -65,7 +85,9 @@ public class HeartProjectile : MonoBehaviour
         while(timer < baseLifetime) {
 
             MoveProjectileParticle();
-            
+
+            SetAlphaForTimer(timer);
+
             timer += Time.deltaTime;
             yield return null;
         }
