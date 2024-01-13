@@ -179,7 +179,8 @@ public class UIManager : MonoBehaviour
     }
     private void UpdateCurrentHP(PlayerStats stats)
     {
-        lowHpThreshold = PlayerController.Instance.LowHpThreshold;
+        if(PlayerController.Instance != null)
+            lowHpThreshold = PlayerController.Instance.LowHpThreshold;
 
         maxHp = stats.maxHp;
 

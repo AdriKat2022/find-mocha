@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6970398244903659361}
   - component: {fileID: 3117067450923688125}
+  - component: {fileID: 4505553404642879415}
+  - component: {fileID: 4791248947940332298}
   m_Layer: 0
   m_Name: InteractableKey
   m_TagString: Untagged
@@ -84,6 +86,46 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4505553404642879415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241614413947812885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af0269ba60aef7488b43e3fc0bb1808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkedAxes: 0
+  maxDistance: 4
+  minDistance: 2
+  maxAlpha: 1
+  minAlpha: 0
+  mediaType: 1
+  overrideTargetImage: {fileID: 0}
+  overrideTargetSpriteRenderer: {fileID: 0}
+  overrideTargetText: {fileID: 0}
+--- !u!114 &4791248947940332298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241614413947812885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e81763bc063ae4a842e0dd1fa3d4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  depth: 0.3
+  animationAxis: 2
+  useRealTime: 0
+  activateOnAwake: 1
+  overrideObjectToAnimate: {fileID: 0}
+  activated: 0
 --- !u!1 &5955345850564756450
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,13 +176,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue: {fileID: 0}
   defaultColor: {r: 0.8867924, g: 0.76071745, b: 0, a: 0.45490196}
-  interactableColor: {r: 0.4022853, g: 0.9056604, b: 0, a: 1}
   defaultSpeed: 5
+  interactableColor: {r: 0.4022853, g: 0.9056604, b: 0, a: 1}
   interactableSpeed: 10
   particleSystem: {fileID: 8026257456882299572}
-  spaceInteractable: {fileID: 1241614413947812885}
-  spaceAnimationDepth: 0.3
-  spaceAnimationSpeed: 1.6
 --- !u!212 &5445536839078033700
 SpriteRenderer:
   m_ObjectHideFlags: 0
