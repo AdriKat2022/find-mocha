@@ -16,6 +16,10 @@ public struct PlayerStats
 
 public class PlayerController : MonoBehaviour, IDamageble
 {
+    [Header("Team")]
+    private Team team;
+
+
     private readonly float Fall_height = -15;
 
     [Header("Milk properties")]
@@ -394,6 +398,9 @@ public class PlayerController : MonoBehaviour, IDamageble
         return false;
     }
 
+
+    public bool IsFacingRight => !spriteRenderer.flipX;
+
     private void AnimatorUpdate()
     {
         animator.SetBool("isJumping", isJumping);
@@ -540,6 +547,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
         currentHp = Mathf.Clamp(currentHp, 0f, maxHp);
     }
+
+    public Team GetTeam() => team;
 
     public void Knockback(float angle, float force)
     {

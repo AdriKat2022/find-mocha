@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamageble
 {
+    [Header("Team")]
+    private Team team;
+
     [Header("Main properties")]
     [SerializeField]
     private float maxHp;
@@ -66,6 +69,8 @@ public class EnemyController : MonoBehaviour, IDamageble
         hp -= damageData.damage;
         CheckAlive();
     }
+    public Team GetTeam() => team;
+
     public void InstaKill(IDamageble from, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0)
     {
         pathController.Deactivate();
