@@ -403,6 +403,11 @@ public class PlayerController : MonoBehaviour, IDamageble
         return false;
     }
 
+    public void UnlockHeartGun()
+    {
+        hasUnlockedHeartGun = true;
+        heartgun.UnlockHeartGun();
+    }
 
     public bool IsFacingRight => !spriteRenderer.flipX;
 

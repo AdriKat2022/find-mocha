@@ -25,6 +25,12 @@ public class EnemyController : MonoBehaviour, IDamageble
     [SerializeField]
     private float hitStun;
 
+
+    [Header("Death Animation")]
+    [SerializeField]
+    private GameObject explosionPrefab;
+
+
     private GameObject player;
     private PlayerController playerController;
 
@@ -67,8 +73,13 @@ public class EnemyController : MonoBehaviour, IDamageble
     }
     public void Damage(IDamageble from, DamageData damageData)
     {
+
         hp -= damageData.damage;
+
         CheckAlive();
+
+        if (damageData.damage > 0 && !isDead)
+            SoundManager.Instance.PlaySound(SoundManager.Instance.monsterHit);
     }
     public Team GetTeam() => team;
 
@@ -83,8 +94,6 @@ public class EnemyController : MonoBehaviour, IDamageble
 
     private IEnumerator SuperDeathAnimation(Vector2? knockback)
     {
-        //rb.bodyType = RigidbodyType2D.Static;
-
         Vector3 direction = (Vector2)knockback;
 
         float baseAngleDir = Vector3.Angle(Vector3.right, direction);
@@ -120,8 +129,11 @@ public class EnemyController : MonoBehaviour, IDamageble
 
     private void Death()
     {
-        pathController.Deactivate();
         isDead = true;
+        pathController.Deactivate();
+        if (explosionPrefab != null)
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 
@@ -133,6 +145,11 @@ public class EnemyController : MonoBehaviour, IDamageble
 
             playerController.Damage(this, damageData);
         }
+    }
+
+    private IEnumerator IsDefeated()
+    {
+        yield return null;
     }
 
 }

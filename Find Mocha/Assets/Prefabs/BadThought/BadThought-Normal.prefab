@@ -161,6 +161,7 @@ MonoBehaviour:
   knockbackForce: 10
   overridePlayerHitstun: 0
   hitStun: 0
+  explosionPrefab: {fileID: 7043130454249730154, guid: ee05b641261e5644bb65d1669cb8bab7, type: 3}
 --- !u!114 &2651677748662529770
 MonoBehaviour:
   m_ObjectHideFlags: 0

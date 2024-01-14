@@ -73,7 +73,7 @@ public class FallingPlatform : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("going to respawn");
+        //Debug.Log("going to respawn");
 
         if(!respawn)
             Destroy(gameObject);

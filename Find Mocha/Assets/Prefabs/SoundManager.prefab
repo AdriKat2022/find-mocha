@@ -187,7 +187,9 @@ MonoBehaviour:
   heal: {fileID: 8300000, guid: b16d8a27c196c8743825fbe5beabc0fb, type: 3}
   hit1: {fileID: 8300000, guid: ae65a5f826d762746bff19d9d14d008b, type: 3}
   hit2: {fileID: 8300000, guid: 3bc8c6db61c79e145bd5b98760d5e227, type: 3}
+  monsterHit: {fileID: 8300000, guid: c737c9f441d0c3f43b1589ba258cf652, type: 3}
   invincibled: {fileID: 8300000, guid: 4d4fac4a66002274c8ece9c8884e688e, type: 3}
+  explosion: {fileID: 8300000, guid: f6892b3d505bdfe45b23fb67b449cceb, type: 3}
   select1: {fileID: 8300000, guid: c511bd6faf672f74a8abb7e20273d750, type: 3}
   select2: {fileID: 8300000, guid: 9d5cc5c5a0771364b8d76196ac6da7df, type: 3}
   select3: {fileID: 8300000, guid: b42b524f0af79d247875aafa5dc9040e, type: 3}

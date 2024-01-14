@@ -4992,7 +4992,7 @@ MonoBehaviour:
   heartSpeedVariance: 2
   offsetX: 0.35
   offsetY: -0.24
-  activateOnAwake: 1
+  activateOnAwake: 0
 --- !u!1 &7111332031717893843
 GameObject:
   m_ObjectHideFlags: 0
@@ -9872,6 +9872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b56bcca1173a14bbd432ec5c7617e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
   maxHp: 20
   speed: 5
   wonJumpForce: 20

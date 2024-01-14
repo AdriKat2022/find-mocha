@@ -19,7 +19,11 @@ public class SoundManager : MonoBehaviour
     [Header("Sound effects")]
 
     public AudioClip jump;
-    public AudioClip damage, heal, hit1, hit2, invincibled,
+    public AudioClip damage, heal,
+        hit1, hit2,
+        monsterHit,
+        invincibled,
+        explosion,
         select1, select2, select3,
         collect1, collect2, collect3,
         onground,
