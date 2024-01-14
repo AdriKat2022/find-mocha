@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathController : MonoBehaviour
 {
-    private readonly float Time_before_instantiation = .5f;
+    private readonly float Time_before_instantiation = 1f;
     private readonly float precision = .2f;
 
     [Header("Options")]

@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 #endif
 
-#if true
+#if false
     private void DebugFunc()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -228,12 +228,10 @@ public class PlayerController : MonoBehaviour, IDamageble
         if (GameManager.Instance.CheckPlayerStats(this, out PlayerStats stats))
         {
             LoadPlayerStats(stats);
-            //Debug.Log("Loading !");
         }
         else
         {
             currentHp = maxHp;
-            //Debug.Log("Set max hp by default");
         }
 
         OnPlayerReady?.Invoke();
