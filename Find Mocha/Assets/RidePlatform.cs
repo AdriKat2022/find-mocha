@@ -39,13 +39,13 @@ public class RidePlatform : MonoBehaviour
 	}
 
 
-	public void MoveTarget(float xDisplacement)
+	public void MoveRiders(float xDisplacement)
 	{
 		if(target_rb != null)
 		{
 			Debug.Log(target_rb.transform.position + xDisplacement * Vector3.right);
 
-            target_rb.transform.position = target_rb.transform.position + xDisplacement * Vector3.right;
+            target_rb.transform.Translate(xDisplacement * Vector3.right);
 		}
 	}
 

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class FallingPlatform : MonoBehaviour
 {
-    [SerializeField]
-    private bool useRideModule;
-    [SerializeField]
-    private RidePlatform ridePlatform;
+	[SerializeField]
+	private bool useRideModule;
+	[SerializeField]
+	private RidePlatform ridePlatform;
 
 	[Header("Speed")]
-    [SerializeField]
+	[SerializeField]
 	private float maxSpeed;
 	[SerializeField]
 	private float acceleration;
@@ -116,21 +116,21 @@ public class FallingPlatform : MonoBehaviour
 		{
 			if (useRideModule)
 			{
-				rb.velocity = new Vector2(0, speedDirection.y * speed);
-
 				float xDisplacement = speed * Time.deltaTime * speedDirection.x;
 
-				transform.Translate(xDisplacement * Vector2.right);
+				transform.Translate(xDisplacement * Vector3.right);
 
-				ridePlatform.MoveTarget(xDisplacement);
+				ridePlatform.MoveRiders(xDisplacement);
+
+				rb.velocity = new Vector2(0, speedDirection.y * speed);
 			}
 			else
 			{
-                rb.velocity = speedDirection * speed;
-            }
+				rb.velocity = speedDirection * speed;
+			}
 
 
-            speed += acceleration * Time.deltaTime;
+			speed += acceleration * Time.deltaTime;
 
 			speed = Mathf.Clamp(speed, 0, maxSpeed);
 
