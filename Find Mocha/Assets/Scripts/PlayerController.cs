@@ -22,7 +22,7 @@ public struct PlayerInput
 {
 	public bool jump;
 	public bool jump_let;
-    public bool right;
+	public bool right;
 	public bool left;
 	public bool shoot;
 	public bool interact;
@@ -277,11 +277,11 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		if (isHurting || hasWon || dialogueUI.IsOpen)
 		{
-			if (dialogueUI.IsOpen)
+			if (dialogueUI.IsOpen || hasWon)
 				ResetInput();
 
-            AnimatorUpdate();
-            return;
+			AnimatorUpdate();
+			return;
 		}
 
 		GetPlayerInput();
@@ -323,7 +323,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 		playerInput.jump_let = Input.GetKeyUp(KeyCode.Space);
 		playerInput.jump = Input.GetKeyDown(KeyCode.Space);
 
-        playerInput.right = Input.GetKey(KeyCode.RightArrow);
+		playerInput.right = Input.GetKey(KeyCode.RightArrow);
 		playerInput.left = Input.GetKey(KeyCode.LeftArrow);
 
 		playerInput.shoot = Input.GetKeyDown(KeyCode.Z);
@@ -334,7 +334,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	{
 		playerInput.jump_let = false;
 		playerInput.jump = false;
-        playerInput.right = false;
+		playerInput.right = false;
 		playerInput.left = false;
 		playerInput.shoot = false;
 		playerInput.interact = false;
@@ -382,39 +382,47 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		Vector2 currentVelocity = rb.velocity;
 
-		Vector2 force = Vector2.zero;
+		//Vector2 force = Vector2.zero;
 
 		if (playerInput.right)
 		{
-			force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+            //force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+            currentVelocity.x = Mathf.Max(currentVelocity.x, topSpeed + speedBonus);
 
-			spriteRenderer.flipX = false;
+            spriteRenderer.flipX = false;
 		}
 		else if (playerInput.left)
 		{
-			force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+            //force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+            currentVelocity.x = Mathf.Min(rb.velocity.x, -topSpeed - speedBonus);
 
-			spriteRenderer.flipX = true;
+            spriteRenderer.flipX = true;
 		}
 		else if (Mathf.Abs(rb.velocity.x) > .1f)
 		{
-			force.x = -currentVelocity.x * rb.mass * brakeForce;
+			//force.x = -currentVelocity.x * rb.mass * brakeForce;
 
-			//if (rb.velocity.x < -.01f)
-			//	spriteRenderer.flipX = true;
-			//else if (rb.velocity.x > .01f)
-			//	spriteRenderer.flipX = false;
-		}
+			if (rb.velocity.x < -.01f)
+				spriteRenderer.flipX = true;
+			else if (rb.velocity.x > .01f)
+				spriteRenderer.flipX = false;
+
+			currentVelocity.x = 0;
+		}/*
 		else
 		{
-			rb.velocity = new Vector2(0, currentVelocity.y);
-		}
-		
-		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(-maxYSpeed, currentVelocity.y));
+			currentVelocity.x = 0;
+		}*/
+
+		currentVelocity.y = Mathf.Max(-maxYSpeed, currentVelocity.y);
+
+		rb.velocity = currentVelocity;
+
+        //rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(-maxYSpeed, currentVelocity.y));
 
 
-		rb.AddForce(force);
-	}
+        //rb.AddForce(force);
+    }
 
 	private void Jump()
 	{
