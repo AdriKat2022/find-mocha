@@ -49,9 +49,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 15
   acceleration: 10
+  dispawnAxis: 2
+  xDispawn: 0
   yDispawn: -20
   respawn: 1
+  disappearingTime: 0
   respawnTime: 0
+  useDecelerate: 0
+  brakeDistance: {x: 0, y: 0}
+  brakeForce: 1
   useSpecialDirection: 0
   specialDirection: {x: 0, y: 0}
   animator: {fileID: 7930144036968640231}

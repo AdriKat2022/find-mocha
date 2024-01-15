@@ -7,12 +7,28 @@ public class FallingPlatform : MonoBehaviour
     private float maxSpeed;
     [SerializeField]
     private float acceleration;
+
+    [Header("Spawns and dispawns")]
+    [SerializeField]
+    private Axis dispawnAxis;
+    [SerializeField]
+    private float xDispawn;
     [SerializeField]
     private float yDispawn;
     [SerializeField]
     private bool respawn;
     [SerializeField]
+    private float disappearingTime;
+    [SerializeField]
     private float respawnTime;
+
+    [Header("Deceleration")]
+    [SerializeField]
+    private bool useDecelerate;
+    [SerializeField]
+    private Vector2 brakeDistance;
+    [SerializeField]
+    private float brakeForce;
 
     [Header("Direction")]
 
@@ -27,11 +43,31 @@ public class FallingPlatform : MonoBehaviour
     private Vector2 startPosition;
 
     [Header("References")]
+    //[SerializeField]
+    //private Transform slime;
     [SerializeField]
     private Animator animator;
     private PlayerController playerController;
     private Rigidbody2D rb;
-    
+
+
+
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 destination = transform.position + Vector3.right * xDispawn + Vector3.up * yDispawn;
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, destination);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(destination, destination - (Vector3)brakeDistance);
+    }
+
+#endif
+
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -50,6 +86,11 @@ public class FallingPlatform : MonoBehaviour
 
     private void Reset()
     {
+        //Debug.Log(playerController.transform.parent);
+
+        //if(playerController.transform.parent == slime)
+        //    playerController.transform.SetParent(null, true);
+
         rb.velocity = Vector2.zero;
         speed = 0;
         isFalling = false;
@@ -62,9 +103,10 @@ public class FallingPlatform : MonoBehaviour
     {
         animator.SetBool("isFalling", true);
 
-        while(transform.position.y > yDispawn)
+        while(!MustPlatformStop())
         {
-            rb.velocity = speedDirection * speed;
+            //rb.velocity = speedDirection * speed;
+            transform.Translate(speed * Time.deltaTime * speedDirection);
 
             speed += acceleration * Time.deltaTime;
 
@@ -73,14 +115,56 @@ public class FallingPlatform : MonoBehaviour
             yield return null;
         }
 
+        yield return PlatformDecelerate();
+    }
+
+    private IEnumerator PlatformDecelerate()
+    {
+        while(useDecelerate && speed > .01f)
+        {
+            speed = Mathf.Lerp(speed, 0, Time.deltaTime * brakeForce);
+
+            transform.Translate(speed * speedDirection * Time.deltaTime);
+
+            //rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * brakeForce);
+
+            yield return null;
+        }
+
+        rb.velocity = Vector3.zero;
+
+        yield return new WaitForSeconds(disappearingTime);
+
         if(!respawn)
             Destroy(gameObject);
 
         yield return new WaitForSeconds(respawnTime);
 
         Reset();
+    }
 
-        yield break;
+    private bool MustPlatformStop()
+    {
+        if (!useSpecialDirection)
+            return transform.position.y < yDispawn;
+
+
+        bool isOutXBounds = specialDirection.x >= 0 ?
+            transform.position.x > startPosition.x + xDispawn - brakeDistance.x :
+            transform.position.x < startPosition.x + xDispawn + brakeDistance.x ;
+
+        bool isOutYBounds = specialDirection.y >= 0 ?
+            transform.position.y > startPosition.y + yDispawn - brakeDistance.y :
+            transform.position.y < startPosition.y + yDispawn + brakeDistance.y ;
+
+
+        return dispawnAxis switch
+        {
+            Axis.Default => isOutXBounds || isOutYBounds,
+            Axis.X => isOutXBounds,
+            Axis.Y => isOutYBounds,
+            _ => false,
+        };
     }
 
     private void OnCollisionStay2D(Collision2D collision)

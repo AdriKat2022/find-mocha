@@ -50,9 +50,9 @@ public class HeartProjectile : MonoBehaviour
         transform.Translate(baseSpeed * Time.deltaTime * baseDirection);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.TryGetComponent(out IDamageble enemy)){
+        if(collision.gameObject.TryGetComponent(out IDamageble enemy)){
 
             if (enemy.GetTeam() == Team.Player)
                 return;

@@ -25,10 +25,8 @@ public class DestructibleTiles : MonoBehaviour
     private GameObject destructionEffect;
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision);
-
         if (collision == null)
             return;
 
@@ -36,17 +34,15 @@ public class DestructibleTiles : MonoBehaviour
         {
             Vector3 hitPosition = Vector3.zero;
 
-            ContactPoint2D[] hits = new ContactPoint2D[10];
+            //ContactPoint2D[] hits = new ContactPoint2D[10];
 
-            collision.GetContacts(hits);
+            //collision.GetContacts(hits);
  
-            foreach(ContactPoint2D hit in hits)
+            foreach(ContactPoint2D hit in collision.contacts)
             {
                 // This ensures we are deleting the correct tile
                 hitPosition.x = hit.point.x - .01f * hit.normal.x;
                 hitPosition.y = hit.point.y - .01f * hit.normal.y;
-
-                Debug.Log(hitPosition);
             }
 
             DestroyTile(hitPosition);

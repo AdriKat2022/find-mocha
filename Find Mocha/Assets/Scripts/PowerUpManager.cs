@@ -24,6 +24,13 @@ public class PowerUpManager : MonoBehaviour, ICollectible
     private PowerUp[] powerUps;
     #endregion Bonuses granted
 
+    [Header("Option")]
+    [SerializeField]
+    private bool respawns;
+    [SerializeField]
+    private float respawnTime;
+
+
     [Header("Animation properties")]
     [SerializeField]
     private float animationStartPhase;
@@ -63,6 +70,28 @@ public class PowerUpManager : MonoBehaviour, ICollectible
         StartCoroutine(AnimateCollectible());
     }
 
+    private void Refresh()
+    {
+        isConsumed = false;
+        spriteRenderer.color = Color.white;
+
+        if(hasRainbow)
+            rainbow.Activate();
+    }
+
+    private void Consume()
+    {
+        if(hasRainbow)
+            rainbow.Deactivate();
+
+        spriteRenderer.color = Color.clear;
+
+        if (respawns)
+            StartCoroutine(RefreshAfterTime(respawnTime));
+        else
+            Destroy(gameObject, timeBeforeDestroy);
+    }
+
     public void Collect(PlayerController script)
     {
         switch(itemType)
@@ -83,7 +112,15 @@ public class PowerUpManager : MonoBehaviour, ICollectible
                 break;
         }
         particles.Play();
-        Destroy(gameObject, timeBeforeDestroy);
+
+        Consume();
+    }
+
+    private IEnumerator RefreshAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Refresh();
     }
 
     private IEnumerator AnimateCollectible()
