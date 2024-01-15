@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStats
@@ -16,8 +17,21 @@ public struct PlayerStats
 	}
 }
 
+[Serializable]
+public struct PlayerInput
+{
+	public bool jump;
+	public bool jump_let;
+    public bool right;
+	public bool left;
+	public bool shoot;
+	public bool interact;
+}
+
 public class PlayerController : MonoBehaviour, IDamageble
 {
+	#region Variables
+
 	[Header("Team")]
 	[SerializeField]
 	private Team team;
@@ -28,10 +42,10 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	[Header("Milk properties")]
 	public float maxHp;
-    public float topSpeed;
-    public float acceleration;
-    public float brakeForce;
-    public float wonJumpForce;
+	public float topSpeed;
+	public float acceleration;
+	public float brakeForce;
+	public float wonJumpForce;
 	public LayerMask jumpableGround;
 	public float maxYSpeed;
 
@@ -110,6 +124,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	private bool hasUnlockedHeartGun;
 
+	private PlayerInput playerInput;
+
 	#region Bonuses variables
 
 	private float speedBonus;
@@ -119,6 +135,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	#endregion Bonuses variables
 
 
+	#endregion
 
 	public static PlayerController Instance;
 
@@ -129,6 +146,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 	public static event Action OnPlayerReady;
 
 	public static event Action<PlayerStats> OnPlayerChangeHP;
+
+
 
 
 #if UNITY_EDITOR
@@ -237,6 +256,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 			currentHp = maxHp;
 		}
 
+		playerInput = new PlayerInput();
+
 		OnPlayerReady?.Invoke();
 	}
 
@@ -254,24 +275,40 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		GroundCheck();
 
-		if (isHurting || hasWon)
-			return;
+		if (isHurting || hasWon || dialogueUI.IsOpen)
+		{
+			if (dialogueUI.IsOpen)
+				ResetInput();
 
-		if (dialogueUI.IsOpen)
-			return;
+            AnimatorUpdate();
+            return;
+		}
 
-		MovePlayer();
+		GetPlayerInput();
 
-		AnimatorUpdate();
+		ManageJump();
 
 		CheckInteraction();
+
+		AnimatorUpdate();
 
 		_time += Time.deltaTime;
 	}
 
+	
+	private bool CanPlayerMove => !isHurting || !hasWon || !isKnockedOut;
+
+	private void FixedUpdate()
+	{
+		if (CanPlayerMove)
+		{
+			MovePlayer();
+		}
+	}
+
 	private void CheckInteraction()
 	{
-		if (Input.GetKey(KeyCode.E))
+		if (playerInput.interact)
 		{
 			if(Interactable != null)
 			{
@@ -281,13 +318,34 @@ public class PlayerController : MonoBehaviour, IDamageble
 		}
 	}
 
+	private void GetPlayerInput()
+	{
+		playerInput.jump_let = Input.GetKeyUp(KeyCode.Space);
+		playerInput.jump = Input.GetKeyDown(KeyCode.Space);
+
+        playerInput.right = Input.GetKey(KeyCode.RightArrow);
+		playerInput.left = Input.GetKey(KeyCode.LeftArrow);
+
+		playerInput.shoot = Input.GetKeyDown(KeyCode.Z);
+		playerInput.interact = Input.GetKeyDown(KeyCode.E);
+	}
+
+	private void ResetInput()
+	{
+		playerInput.jump_let = false;
+		playerInput.jump = false;
+        playerInput.right = false;
+		playerInput.left = false;
+		playerInput.shoot = false;
+		playerInput.interact = false;
+	}
 
 	public bool CanJump => !isJumping || ((coyoteTime + lastTimeGrounded > _time) && coyoteUsable);
-	private bool IsJumpBuffered => Input.GetKeyDown(KeyCode.Space) || (lastJumpBuffered + bufferJumpTime > _time && !jumpBufferUsed);
+	private bool IsJumpBuffered => playerInput.jump || (lastJumpBuffered + bufferJumpTime > _time && !jumpBufferUsed);
 
 	private void ManageJump()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (playerInput.jump)
 		{
 			lastJumpBuffered = _time;
 			jumpBufferUsed = false;
@@ -310,7 +368,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 			coyoteUsable = false;
 		}
 
-		if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+		if(!jumpEndedEarly && isJumping && rb.velocity.y > 0 && playerInput.jump_let)
 		{
 			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * fastFallMultiplier);
 			jumpEndedEarly = true;
@@ -320,40 +378,42 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	private void MovePlayer()
 	{
-		ManageJump();
+		//ManageJump();
 
 		Vector2 currentVelocity = rb.velocity;
 
 		Vector2 force = Vector2.zero;
 
-		if (Input.GetKey(KeyCode.RightArrow))
+		if (playerInput.right)
 		{
 			force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
 
 			spriteRenderer.flipX = false;
 		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
+		else if (playerInput.left)
 		{
-            force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+			force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
 
-            spriteRenderer.flipX = true;
+			spriteRenderer.flipX = true;
 		}
-        else if (rb.velocity.magnitude != 0f)
+		else if (Mathf.Abs(rb.velocity.x) > .1f)
 		{
-            force.x = -currentVelocity.x * rb.mass * brakeForce;
+			force.x = -currentVelocity.x * rb.mass * brakeForce;
 
-            //if (rb.velocity.x < -.01f)
-            //	spriteRenderer.flipX = true;
-            //else if (rb.velocity.x > .01f)
-            //	spriteRenderer.flipX = false;
-
-            
+			//if (rb.velocity.x < -.01f)
+			//	spriteRenderer.flipX = true;
+			//else if (rb.velocity.x > .01f)
+			//	spriteRenderer.flipX = false;
 		}
-		currentVelocity.y = Mathf.Max(-maxYSpeed, currentVelocity.y);
+		else
+		{
+			rb.velocity = new Vector2(0, currentVelocity.y);
+		}
+		
+		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(-maxYSpeed, currentVelocity.y));
+
 
 		rb.AddForce(force);
-
-		//rb.velocity = currentVelocity;
 	}
 
 	private void Jump()
@@ -423,7 +483,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	private void AnimatorUpdate()
 	{
 		animator.SetBool("isJumping", isJumping);
-		animator.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0.01);
+		animator.SetBool("isWalking", Mathf.Abs(rb.velocity.x) > 0.1f);
 		animator.SetFloat("yVelocity", rb.velocity.y);
 		animator.SetFloat("milkSanity", currentHp/maxHp <= lowHpThreshold ? 0 : 1);
 	}

@@ -9875,8 +9875,8 @@ MonoBehaviour:
   team: 0
   maxHp: 20
   topSpeed: 5
-  acceleration: 2
-  brakeForce: 5
+  acceleration: 8
+  brakeForce: 15
   wonJumpForce: 20
   jumpableGround:
     serializedVersion: 2
