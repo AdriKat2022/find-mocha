@@ -44,9 +44,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 	public float maxHp;
 	public float topSpeed;
 	public float acceleration;
-    public float brakeForce;
-    public float brakeForceInHitStun;
-    public float wonJumpForce;
+	public float brakeForce;
+	public float brakeForceInHitStun;
+	public float wonJumpForce;
 	public LayerMask jumpableGround;
 	public float maxYSpeed;
 
@@ -72,9 +72,16 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	public IInteractable Interactable;
 
+	[Header("Power up visuals")]
+    [SerializeField]
+    private ParticleSystem jumpBoostVisual;
+    [SerializeField]
+    private ParticleSystem speedBoostVisual;
 
+	private ParticleSystem.EmissionModule jumpBoostVisualModule;
+	private ParticleSystem.EmissionModule speedBoostVisualModule;
 
-	[Header("Internal components")]
+    [Header("Internal components")]
 	[SerializeField]
 	private GameObject sprite;
 
@@ -224,7 +231,15 @@ public class PlayerController : MonoBehaviour, IDamageble
 		heartParticlesEmissionModule = heartParticles.emission;
 		heartParticlesEmissionModule.enabled = false;
 
-		hasWon = false;
+        jumpBoostVisual.Play();
+        jumpBoostVisualModule = jumpBoostVisual.emission;
+        jumpBoostVisualModule.enabled = false;
+
+        speedBoostVisual.Play();
+        speedBoostVisualModule = speedBoostVisual.emission;
+        speedBoostVisualModule.enabled = false;
+
+        hasWon = false;
 		isKnockedOut = false;
 		isHurting = false;
 		isInvulnerable = false;
@@ -392,17 +407,17 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		if (playerInput.right)
 		{
-            //force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
-            currentVelocity.x = Mathf.Max(currentVelocity.x, topSpeed + speedBonus);
+			//force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+			currentVelocity.x = Mathf.Max(currentVelocity.x, topSpeed + speedBonus);
 
-            spriteRenderer.flipX = false;
+			spriteRenderer.flipX = false;
 		}
 		else if (playerInput.left)
 		{
-            //force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
-            currentVelocity.x = Mathf.Min(rb.velocity.x, -topSpeed - speedBonus);
+			//force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+			currentVelocity.x = Mathf.Min(rb.velocity.x, -topSpeed - speedBonus);
 
-            spriteRenderer.flipX = true;
+			spriteRenderer.flipX = true;
 		}
 		else if (Mathf.Abs(rb.velocity.x) > .1f)
 		{
@@ -420,11 +435,11 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		rb.velocity = currentVelocity;
 
-        //rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(-maxYSpeed, currentVelocity.y));
+		//rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(-maxYSpeed, currentVelocity.y));
 
 
-        //rb.AddForce(force);
-    }
+		//rb.AddForce(force);
+	}
 
 	private void Jump()
 	{
@@ -665,7 +680,12 @@ public class PlayerController : MonoBehaviour, IDamageble
 			heartgun.UnlockHeartGun();
 	}
 
-	public void ApplyBonuses(PowerUp[] powerUps)
+	#region PowerUps
+
+	private int jumpPowerUpsActive = 0;
+	private int speedPowerUpsActive = 0;
+
+    public void ApplyBonuses(PowerUp[] powerUps)
 	{
 		if (isKnockedOut)
 			return;
@@ -684,6 +704,10 @@ public class PlayerController : MonoBehaviour, IDamageble
 		{
 			case PowerUpType.speedBoost:
 
+				speedPowerUpsActive++;
+
+				speedBoostVisualModule.enabled = true;
+
 				while (timer < powerUp.duration) {
 					if (isKnockedOut)
 						yield break;
@@ -695,7 +719,12 @@ public class PlayerController : MonoBehaviour, IDamageble
 					yield return null;
 				}
 
-				speedBonus = 0;
+				speedPowerUpsActive--;
+
+				if (speedPowerUpsActive == 0)
+					speedBoostVisualModule.enabled = false;
+
+                speedBonus = 0;
 
 				break;
 
@@ -703,9 +732,13 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 
 			case PowerUpType.jumpBoost:
-				
-				while (timer < powerUp.duration)
-				{
+
+                jumpPowerUpsActive++;
+
+				jumpBoostVisualModule.enabled = true;
+
+                while (timer < powerUp.duration)
+                {
 					if (isKnockedOut)
 						yield break;
 
@@ -717,7 +750,14 @@ public class PlayerController : MonoBehaviour, IDamageble
 					yield return null;
 				}
 
-				jumpBonus = 0;
+
+                jumpPowerUpsActive--;
+
+                if (jumpPowerUpsActive == 0)
+                    jumpBoostVisualModule.enabled = false;
+
+
+                jumpBonus = 0;
 
 				break;
 
@@ -727,9 +767,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 				invincibleTimer = 0;
 
 				if (isInvincible)
-				{
 					yield break;
-				}
+
 
 				OnPlayerInvincibility?.Invoke();
 
@@ -769,4 +808,5 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		}
 	}
+    #endregion
 }
