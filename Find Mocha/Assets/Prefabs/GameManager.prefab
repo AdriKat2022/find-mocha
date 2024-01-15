@@ -1279,7 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Milk
-  levelsNb: 6
+  levelsNb: 7
   mainMenu: {fileID: 3334721726336774872}
   uiManager: {fileID: 8425551456871622474}
   dialogueUI: {fileID: 3197270976864426312}
