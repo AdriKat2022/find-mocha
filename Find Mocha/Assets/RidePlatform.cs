@@ -1,70 +1,52 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class RidePlatform : MonoBehaviour
 {
-    [SerializeField]
-    private LayerMask riders;
+	[SerializeField]
+	private LayerMask riders;
 
-    [SerializeField]
-    private Rigidbody2D platform;
+	//[SerializeField]
+	//private Rigidbody2D platform;
 
-    private List<Rigidbody2D> targets;
+	//private List<Rigidbody2D> targets;
 
-/*
-    private void Start()
-    {
-        targets = new List<Rigidbody2D>();
-    }
+	private Rigidbody2D target_rb;
+
+	//[SerializeField]
+	//private Rigidbody2D rb;
 
 
-    private void LateUpdate()
-    {
-        //MoveRiders();
-    }
-*/
 
-    private void MoveRiders()
-    {
-        float speed = platform.velocity.x;
+	private void Start() {
 
-        Debug.Log(speed);
+		target_rb = null;
+		//StartCoroutine(CarryTarget());
+	}
 
-        foreach (Rigidbody2D rb in targets)
-        {
-            rb.MovePosition(rb.position + Time.deltaTime * speed * Vector2.right);
-        }
-    }
+	private void OnTriggerStay2D(Collider2D col){
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        //other.gameObject.transform.SetParent(transform, true);
+		if (!Helper.IsLayerInLayerMask(col.gameObject.layer, riders))
+			return;
 
-        //return;
-/*
-        if (!Helper.IsLayerInLayerMask(other.gameObject.layer, riders))
-            return;
+		col.gameObject.TryGetComponent(out target_rb);
+	}
 
-        if(other.gameObject.TryGetComponent(out Rigidbody2D rb)){
-            targets.Add(rb);
-        }*/
-    }
+	private void OnTriggerExit2D(Collider2D col){
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        //other.gameObject.transform.SetParent(null, true);
+		target_rb = null;
 
-        //return;
+	}
 
-        /*if (!Helper.IsLayerInLayerMask(other.gameObject.layer, riders))
-            return;
 
-        if (other.gameObject.TryGetComponent(out Rigidbody2D rb))
-        {
-            if (!targets.Contains(rb))
-                return;
+	public void MoveTarget(float xDisplacement)
+	{
+		if(target_rb != null)
+		{
+			Debug.Log(target_rb.transform.position + xDisplacement * Vector3.right);
 
-            targets.Remove(rb);
-        }*/
-    }
+            target_rb.transform.position = target_rb.transform.position + xDisplacement * Vector3.right;
+		}
+	}
+
 }
