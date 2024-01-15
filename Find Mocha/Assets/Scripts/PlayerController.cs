@@ -25,10 +25,13 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	private readonly float Fall_height = -15;
 
+
 	[Header("Milk properties")]
 	public float maxHp;
-	public float speed;
-	public float wonJumpForce;
+    public float topSpeed;
+    public float acceleration;
+    public float brakeForce;
+    public float wonJumpForce;
 	public LayerMask jumpableGround;
 	public float maxYSpeed;
 
@@ -319,30 +322,38 @@ public class PlayerController : MonoBehaviour, IDamageble
 	{
 		ManageJump();
 
-		Vector2 newVelocity = rb.velocity;
+		Vector2 currentVelocity = rb.velocity;
+
+		Vector2 force = Vector2.zero;
 
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
-			newVelocity.x = Mathf.Max(rb.velocity.x, speed + speedBonus);
+			force.x = Mathf.Max((topSpeed + speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
+
 			spriteRenderer.flipX = false;
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow))
 		{
-			newVelocity.x = Mathf.Min(rb.velocity.x, -speed - speedBonus);
-			spriteRenderer.flipX = true;
-		}
-		else if (rb.velocity.magnitude != 0f)
-		{
-			if (rb.velocity.x < -.01f)
-				spriteRenderer.flipX = true;
-			else if (rb.velocity.x > .01f)
-				spriteRenderer.flipX = false;
-			
-			newVelocity.x = 0f;
-		}
-		newVelocity.y = Mathf.Max(-maxYSpeed, newVelocity.y);
+            force.x = Mathf.Min((-topSpeed - speedBonus - currentVelocity.x) * rb.mass * acceleration, 0);
 
-		rb.velocity = newVelocity;
+            spriteRenderer.flipX = true;
+		}
+        else if (rb.velocity.magnitude != 0f)
+		{
+            force.x = -currentVelocity.x * rb.mass * brakeForce;
+
+            //if (rb.velocity.x < -.01f)
+            //	spriteRenderer.flipX = true;
+            //else if (rb.velocity.x > .01f)
+            //	spriteRenderer.flipX = false;
+
+            
+		}
+		currentVelocity.y = Mathf.Max(-maxYSpeed, currentVelocity.y);
+
+		rb.AddForce(force);
+
+		//rb.velocity = currentVelocity;
 	}
 
 	private void Jump()

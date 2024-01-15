@@ -9874,7 +9874,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   maxHp: 20
-  speed: 5
+  topSpeed: 5
+  acceleration: 2
+  brakeForce: 5
   wonJumpForce: 20
   jumpableGround:
     serializedVersion: 2
