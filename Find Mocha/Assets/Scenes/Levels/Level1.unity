@@ -954,7 +954,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 24
-      m_TileSpriteIndex: 24
+      m_TileSpriteIndex: 27
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -964,7 +964,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 23
-      m_TileSpriteIndex: 23
+      m_TileSpriteIndex: 26
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -1375,16 +1375,16 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 4
+    m_Data: {fileID: 106844590, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 599151016, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -2006861069, guid: 7378be64405cf724494938e6859fc04a, type: 3}
-  - m_RefCount: 4
-    m_Data: {fileID: 106844590, guid: 7378be64405cf724494938e6859fc04a, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 588725584, guid: 7378be64405cf724494938e6859fc04a, type: 3}
   - m_RefCount: 1
@@ -44449,6 +44449,10 @@ PrefabInstance:
     - target: {fileID: 1440125617984959263, guid: fab1e96ef8b963a4396bec6584572752, type: 3}
       propertyPath: m_Name
       value: WorldCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866881167448594848, guid: fab1e96ef8b963a4396bec6584572752, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8593929450904089555, guid: fab1e96ef8b963a4396bec6584572752, type: 3}
       propertyPath: m_Pivot.x
