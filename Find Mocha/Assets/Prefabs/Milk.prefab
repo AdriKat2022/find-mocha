@@ -4990,7 +4990,7 @@ MonoBehaviour:
   heartSpanVariance: 0.3
   heartSpeed: 12
   heartSpeedVariance: 2
-  offsetX: 0.35
+  offsetX: 2
   offsetY: -0.24
   activateOnAwake: 0
 --- !u!1 &7111332031717893843
@@ -9877,6 +9877,7 @@ MonoBehaviour:
   topSpeed: 5
   acceleration: 8
   brakeForce: 15
+  brakeForceInHitStun: 3
   wonJumpForce: 20
   jumpableGround:
     serializedVersion: 2

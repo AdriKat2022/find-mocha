@@ -144,11 +144,11 @@ public class FallingPlatform : MonoBehaviour
 	{
 		while(useDecelerate && rb.velocity.magnitude > .01f)
 		{
-			//speed = Mathf.Lerp(speed, 0, Time.deltaTime * brakeForce);
+			speed = Mathf.Lerp(speed, 0, Time.deltaTime * brakeForce);
 
-			//transform.Translate(speed * speedDirection * Time.deltaTime);
+			transform.Translate(speed * Time.deltaTime * speedDirection);
 
-			rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * brakeForce);
+			//rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * brakeForce);
 
 			yield return null;
 		}

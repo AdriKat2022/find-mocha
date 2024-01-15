@@ -44,8 +44,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 	public float maxHp;
 	public float topSpeed;
 	public float acceleration;
-	public float brakeForce;
-	public float wonJumpForce;
+    public float brakeForce;
+    public float brakeForceInHitStun;
+    public float wonJumpForce;
 	public LayerMask jumpableGround;
 	public float maxYSpeed;
 
@@ -296,11 +297,10 @@ public class PlayerController : MonoBehaviour, IDamageble
 	}
 
 	
-	private bool CanPlayerMove => !isHurting || !hasWon || !isKnockedOut;
 
 	private void FixedUpdate()
 	{
-		if (CanPlayerMove)
+		if (!hasWon)
 		{
 			MovePlayer();
 		}
@@ -378,11 +378,17 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	private void MovePlayer()
 	{
-		//ManageJump();
+		if (isHurting || isKnockedOut)
+		{
+			float xVel = Mathf.Lerp(rb.velocity.x, 0, Time.deltaTime * brakeForceInHitStun);
+
+			rb.velocity = new Vector2(xVel, rb.velocity.y);
+
+			return;
+		}
 
 		Vector2 currentVelocity = rb.velocity;
 
-		//Vector2 force = Vector2.zero;
 
 		if (playerInput.right)
 		{
@@ -408,11 +414,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 				spriteRenderer.flipX = false;
 
 			currentVelocity.x = 0;
-		}/*
-		else
-		{
-			currentVelocity.x = 0;
-		}*/
+		}
 
 		currentVelocity.y = Mathf.Max(-maxYSpeed, currentVelocity.y);
 

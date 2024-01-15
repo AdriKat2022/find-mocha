@@ -13,8 +13,4 @@ MonoBehaviour:
   m_Name: E2-ProjectMotive
   m_EditorClassIdentifier: 
   dialogue:
-  - "-- Journal de Mocha * Entr\xE9e 2 --"
-  - "J'ai l'impression que les responsabilit\xE9s s'accumulent. Pourtant, je n'ai
-    pas la sensation d'\xEAtre un vrai adulte."
-  - "J'oublie des choses, je suis t\xEAte en l'air, je suis en retard... Je n'arrive
-    pas \xE0 comprendre pourquoi !"
+  - 

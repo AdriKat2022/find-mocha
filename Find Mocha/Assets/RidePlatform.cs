@@ -43,7 +43,7 @@ public class RidePlatform : MonoBehaviour
 	{
 		if(target_rb != null)
 		{
-			Debug.Log(target_rb.transform.position + xDisplacement * Vector3.right);
+			//Debug.Log(target_rb.transform.position + xDisplacement * Vector3.right);
 
             target_rb.transform.Translate(xDisplacement * Vector3.right);
 		}
