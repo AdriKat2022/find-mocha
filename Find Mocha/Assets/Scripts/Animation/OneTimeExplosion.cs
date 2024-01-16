@@ -9,8 +9,10 @@ public class OneTimeExplosion : MonoBehaviour
 
 	private enum Explosion_Sound
 	{
+		None,
 		Aggressive,
-		Soft
+		Soft,
+		Hearts
 	}
 
 	private void Start()
@@ -27,9 +29,13 @@ public class OneTimeExplosion : MonoBehaviour
 				SoundManager.Instance.PlaySound(SoundManager.Instance.explosion);
 				break;
 
-			case Explosion_Sound.Soft:
-				SoundManager.Instance.PlaySound(SoundManager.Instance.monsterHit);
-				break;
-		}
+            case Explosion_Sound.Soft:
+                SoundManager.Instance.PlaySound(SoundManager.Instance.monsterHit);
+                break;
+
+            case Explosion_Sound.Hearts:
+                SoundManager.Instance.PlaySound(SoundManager.Instance.low_hp_sound);
+                break;
+        }
 	}
 }

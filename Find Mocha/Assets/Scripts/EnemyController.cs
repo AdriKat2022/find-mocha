@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour, IDamageble
 
     [Header("Death Animation")]
     [SerializeField]
-    private GameObject explosionPrefab;
+    private GameObject[] explosionPrefabs;
 
 
     private GameObject player;
@@ -131,8 +131,13 @@ public class EnemyController : MonoBehaviour, IDamageble
     {
         isDead = true;
         pathController.Deactivate();
-        if (explosionPrefab != null)
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        if (explosionPrefabs != null)
+        {
+            foreach (GameObject go in explosionPrefabs)
+            {
+                Instantiate(go, transform.position, Quaternion.identity);
+            }
+        }
 
         Destroy(gameObject);
     }

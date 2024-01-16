@@ -1347,7 +1347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4821894719706377863, guid: af41297cd50054240a98c69a8fce4ca4, type: 3}
       propertyPath: orthographic size
-      value: 6.2
+      value: 6.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -99403,6 +99403,14 @@ PrefabInstance:
     - target: {fileID: 3172083352446053640, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594428763415575121, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
+      propertyPath: displayHint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594428763415575121, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
+      propertyPath: hintDuration
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
