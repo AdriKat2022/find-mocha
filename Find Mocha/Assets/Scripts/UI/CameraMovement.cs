@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 
 
@@ -73,6 +72,8 @@ public class CameraMovement : MonoBehaviour
     private Vector2 followSpeed;
     [SerializeField]
     private bool moveYOnPlatformOnly;
+    [SerializeField, Tooltip("If outside of this zone, the camera won't wait for the player to be grounded.")]
+    private Zone2D moveYOnPlatformOnlyZone;
     [SerializeField]
     private bool useDeadZone;
 
@@ -94,6 +95,8 @@ public class CameraMovement : MonoBehaviour
     private Zone2D cameraBoundsZone;
 
 
+    private bool isInZoneFreeFall;
+
     private GameObject target;
     private Camera mainCamera;
     private PlayerController player;
@@ -109,6 +112,7 @@ public class CameraMovement : MonoBehaviour
         mainCamera = Camera.main;
 
         cameraZone.UpdateZoneProperties();
+        moveYOnPlatformOnlyZone.UpdateZoneProperties();
 
         if(mainCamera != null)
         {
@@ -124,19 +128,34 @@ public class CameraMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(
-            cameraZone.Center,
-            new Vector3(cameraZone.Width, cameraZone.Height));
+        DrawZone(cameraZone, false);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(
-            cameraBoundsZone.Center,
-            new Vector3(cameraBoundsZone.Width, cameraBoundsZone.Height));
+        DrawZone(cameraBoundsZone, false);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(
             transform.position + (Vector3)deadZoneOffset,
             new Vector3(deadZoneFromCenter.x, deadZoneFromCenter.y));
+
+        Gizmos.color = Color.blue;
+        DrawZone(moveYOnPlatformOnlyZone, true);
+    }
+
+    private void DrawZone(Zone2D zoneToDraw, bool isPositionRelative)
+    {
+        if (isPositionRelative)
+        {
+            Gizmos.DrawWireCube(
+                    transform.position + zoneToDraw.Center,
+                    new Vector3(zoneToDraw.Width, zoneToDraw.Height));
+        }
+        else
+        {
+            Gizmos.DrawWireCube(
+                    zoneToDraw.Center,
+                    new Vector3(zoneToDraw.Width, zoneToDraw.Height));
+        }
     }
 
 #endif
@@ -163,6 +182,7 @@ public class CameraMovement : MonoBehaviour
         currentAheadOffset = Vector2.zero;
         lastValidPosition = transform.position;
 
+        isInZoneFreeFall = false;
 
         cameraZone.UpdateZoneProperties();
         UpdateCameraBounds();
@@ -255,18 +275,23 @@ public class CameraMovement : MonoBehaviour
     {
         Vector2 desPosition = lastValidPosition - (Vector2)offset; // By default don't change the last valid position
 
-        desPosition.x = IsTargetInDeadzone(RectangleCheck.X) ? desPosition.x : target.transform.position.x ;
+        desPosition.x = IsTargetInDeadzone(ZoneCheck.X) ? desPosition.x : target.transform.position.x ;
 
         if (moveYOnPlatformOnly && player != null)
-            desPosition.y = !player.CanJump ? desPosition.y : target.transform.position.y;
+        {
+            isInZoneFreeFall |= !IsInsideZone2D((Vector2)player.transform.position, moveYOnPlatformOnlyZone, true, ZoneCheck.Y);
+            isInZoneFreeFall &= !player.CanJump;
+
+            desPosition.y = player.CanJump || isInZoneFreeFall ? target.transform.position.y : desPosition.y ;
+        }
         else
-            desPosition.y = IsTargetInDeadzone(RectangleCheck.Y) ? desPosition.y : target.transform.position.y;
+            desPosition.y = !IsTargetInDeadzone(ZoneCheck.Y) ?  target.transform.position.y :desPosition.y;
         
 
         return desPosition;
     }
 
-    private bool IsTargetInDeadzone(RectangleCheck check = RectangleCheck.Full)
+    private bool IsTargetInDeadzone(ZoneCheck check = ZoneCheck.Full)
     {
         if (!useDeadZone)
             return false;
@@ -275,7 +300,7 @@ public class CameraMovement : MonoBehaviour
         return IsInsideRect((Vector2)target.transform.position, deadzone, check);
     }
 
-    private bool IsInsideRect(Vector2 point, Rectangle rect, RectangleCheck check = RectangleCheck.Full)
+    private bool IsInsideRect(Vector2 point, Rectangle rect, ZoneCheck check = ZoneCheck.Full)
     {
         bool checkX =
             point.x > rect.center.x - rect.size.x / 2 &&
@@ -287,13 +312,13 @@ public class CameraMovement : MonoBehaviour
 
         switch (check)
         {
-            case RectangleCheck.Full:
+            case ZoneCheck.Full:
                 return checkX && checkY;
 
-            case RectangleCheck.X:
+            case ZoneCheck.X:
                 return checkX;
 
-            case RectangleCheck.Y:
+            case ZoneCheck.Y:
                 return checkY;
 
             default:
@@ -301,7 +326,23 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    private enum RectangleCheck
+    private bool IsInsideZone2D(Vector2 point, Zone2D zone, bool isRelative, ZoneCheck check = ZoneCheck.Full)
+    {
+        Rectangle rect; 
+
+        if (isRelative)
+        {
+            rect = new Rectangle(transform.position + zone.Center, new Vector2(zone.Width, zone.Height));
+        }
+        else
+        {
+            rect = new Rectangle(zone.Center, new Vector2(zone.Width, zone.Height));
+        }
+
+        return IsInsideRect(point, rect, check);
+    }
+
+    private enum ZoneCheck
     {
         Full,
         X,

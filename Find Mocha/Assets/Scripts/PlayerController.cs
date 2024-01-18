@@ -13,7 +13,7 @@ public struct PlayerStats
 	{
 		this.maxHp = maxHp;
 		this.hp = hp;
-		this.heartGunUnlocked = heartGunUnlocked;
+		this.heartGunUnlocked = false;
 	}
 }
 
@@ -173,6 +173,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 #if UNITY_EDITOR
 
+    #region Debug stuff
+
     private void OnValidate()
 	{
 		collider = GetComponent<CapsuleCollider2D>();
@@ -202,25 +204,29 @@ public class PlayerController : MonoBehaviour, IDamageble
 		Gizmos.DrawWireCube(collider.bounds.center+Vector3.down*jumpCheckDown, size);
 	}
 
-#endif
+    #endregion
 
-#if true
-	private bool warnedAboutDebugMode = false;
+    #region Debug events
+    private bool warnedAboutDebugMode = false;
 
 	private void DebugFunc()
 	{
-        if (!warnedAboutDebugMode)
+		if (!warnedAboutDebugMode)
+		{
 			Debug.LogWarning("WARNING: DEBUG MODE IS ENABLED");
+			warnedAboutDebugMode = true;
+		}
 
-		warnedAboutDebugMode = true;
-
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.R))
+			GameManager.Instance.ReloadLevel();
+	
+        if (Input.GetKeyDown(KeyCode.E))
 			Damage(2);
 
 		if (Input.GetKeyDown(KeyCode.A))
 			Heal(2);
 
-		if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetKeyDown(KeyCode.F))
 			Heal(200);
 
 		if (Input.GetKeyDown(KeyCode.S))
@@ -231,11 +237,35 @@ public class PlayerController : MonoBehaviour, IDamageble
 
         if (Input.GetKeyDown(KeyCode.W))
             FlagManager.Instance.PlayerWin();
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            speedBonus += 1;
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+            speedBonus = 0;
+
+        if (Input.GetKeyDown(KeyCode.I))
+		{
+			isInvincible = !isInvincible;
+			if (isInvincible)
+				rainbow.Activate();
+			else
+				rainbow.Deactivate();
+		}
+
+        if (Input.GetKeyDown(KeyCode.U))
+		{
+			Debug.LogWarning("WARNING: HEARTGUN UNLOCKED");
+			UnlockHeartGun();
+		}
     }
+
+    #endregion
 
 #endif
 
-	private void Awake()
+    private void Awake()
 	{
 		// Overwrite method
 		if(Instance != null)
