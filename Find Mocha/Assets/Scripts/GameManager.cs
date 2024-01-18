@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject bigNonoPanel;
 
+
+    #region Events
+
+    public static event Action<bool> OnSceneLoaded; // True = main menu ; False = in game
+
+    #endregion
 
     #region Giveaway variables
 
@@ -121,6 +128,8 @@ public class GameManager : MonoBehaviour
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.defaultLevel);
 
         sceneLoadNumber++;
+
+        OnSceneLoaded?.Invoke(index == 0);
     }
 
     private void PlayAssociatedMusic()

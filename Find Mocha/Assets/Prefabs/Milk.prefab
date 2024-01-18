@@ -19603,7 +19603,7 @@ MonoBehaviour:
   topSpeed: 5
   acceleration: 8
   brakeForce: 15
-  brakeForceInHitStun: 3
+  brakeForceInHitStun: 1
   wonJumpForce: 20
   jumpableGround:
     serializedVersion: 2

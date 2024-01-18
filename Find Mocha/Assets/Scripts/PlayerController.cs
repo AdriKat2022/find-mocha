@@ -204,9 +204,16 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 #endif
 
-#if false
+#if true
+	private bool warnedAboutDebugMode = false;
+
 	private void DebugFunc()
 	{
+        if (!warnedAboutDebugMode)
+			Debug.LogWarning("WARNING: DEBUG MODE IS ENABLED");
+
+		warnedAboutDebugMode = true;
+
 		if (Input.GetKeyDown(KeyCode.E))
 			Damage(2);
 
@@ -219,9 +226,12 @@ public class PlayerController : MonoBehaviour, IDamageble
 		if (Input.GetKeyDown(KeyCode.S))
 			Damage(200);
 
-		if (Input.GetKeyDown(KeyCode.Q))
-			Damage(currentHp - 1);
-	}
+        if (Input.GetKeyDown(KeyCode.Q))
+            Damage(currentHp - 1);
+
+        if (Input.GetKeyDown(KeyCode.W))
+            FlagManager.Instance.PlayerWin();
+    }
 
 #endif
 
@@ -292,7 +302,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	private void Update()
 	{
-		//DebugFunc();
+		DebugFunc();
 
 		if (isKnockedOut)
 			return;

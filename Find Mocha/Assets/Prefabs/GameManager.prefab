@@ -1311,7 +1311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858a23da5aa40c64984ddd02c2297e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinText: {fileID: 5165977542196310447}
+  coinTextCount: {fileID: 5165977542196310447}
+  coinText: {fileID: 55023152678111160}
 --- !u!1 &1982164635790034878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,7 +2160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8167275027565641317
 RectTransform:
   m_ObjectHideFlags: 0

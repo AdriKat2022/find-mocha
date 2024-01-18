@@ -174,7 +174,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    #region Health Animation
+    #region Health Bar Animation
     private void FetchAndUpdateHP()
     {
         UpdateCurrentHP(PlayerController.Instance.GetPlayerStats());

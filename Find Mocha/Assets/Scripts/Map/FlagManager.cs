@@ -10,15 +10,24 @@ public class FlagManager : MonoBehaviour
     [SerializeField] private new ParticleSystem particleSystem;
 
     private bool hasWon;
-
+    private PlayerController playerController;
 
     public static event Action OnPlayerWin;
 
+    public static FlagManager Instance;
 
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
-
+        playerController = PlayerController.Instance;
         hasWon = false;
     }
 
@@ -30,10 +39,15 @@ public class FlagManager : MonoBehaviour
         int colliderLayer = collider.gameObject.layer;
 
         if ((playerMask & (1 << colliderLayer)) != 0)
-            StartCoroutine(LevelCompleted(collider.gameObject.GetComponent<PlayerController>()));
+            StartCoroutine(LevelCompleted());
     }
 
-    IEnumerator LevelCompleted(PlayerController playerController)
+    public void PlayerWin()
+    {
+        StartCoroutine(LevelCompleted());
+    }
+
+    IEnumerator LevelCompleted()
     {
         hasWon = true;
 
