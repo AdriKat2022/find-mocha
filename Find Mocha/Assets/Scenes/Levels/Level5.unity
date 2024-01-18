@@ -99405,12 +99405,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5594428763415575121, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
+      propertyPath: hintWait
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594428763415575121, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
       propertyPath: displayHint
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5594428763415575121, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
       propertyPath: hintDuration
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684499363672105776, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
+      propertyPath: depth
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684499363672105776, guid: 2d769b25891a9704ba0abf432ea4d836, type: 3}
+      propertyPath: speed
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

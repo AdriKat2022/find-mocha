@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4704298449033161112, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
       propertyPath: maxHp
-      value: 18
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4704298449033161112, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
       propertyPath: attack
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5687560986988918358, guid: 6ba0260784e2de04a9c663efa7e4aa92, type: 3}
       propertyPath: m_LocalPosition.x

@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 659961998087491667}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2216629, y: -0.04492214, z: 0.039335}
+  m_LocalPosition: {x: -0.22167628, y: -0.04492865, z: 0.039334998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5875936856644411170}
+  m_Father: {fileID: 9074182594023299579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7395795055915383989
 Animator:
@@ -329,7 +329,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.19339621, b: 0.19339621, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9780,6 +9780,38 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &4454138825897318183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9074182594023299579}
+  m_Layer: 0
+  m_Name: MilkSpriteContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9074182594023299579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454138825897318183}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3407986580924552505}
+  m_Father: {fileID: 5875936856644411170}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4900339178339665446
 GameObject:
   m_ObjectHideFlags: 0
@@ -19546,7 +19578,7 @@ Transform:
   m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3407986580924552505}
+  - {fileID: 9074182594023299579}
   - {fileID: 2568376986956558059}
   - {fileID: 9012187850682170457}
   - {fileID: 1673450536413167642}
@@ -19589,6 +19621,10 @@ MonoBehaviour:
   fastBlinking: 0.08
   slowFastThreshold: 0
   lowHpThreshold: 0.25
+  minStunAnimationStart: 1
+  stunAnimationMaxSpeed: 80
+  stunAnimationMaxStrength: 0.8
+  isStunAnimationDeprogressive: 1
   jumpBoostVisual: {fileID: 5683277507214819333}
   speedBoostVisual: {fileID: 4047178842506553591}
   sprite: {fileID: 659961998087491667}

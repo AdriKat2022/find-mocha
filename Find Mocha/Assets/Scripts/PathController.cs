@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PathController : MonoBehaviour
@@ -7,9 +6,12 @@ public class PathController : MonoBehaviour
 	private readonly float Time_before_instantiation = 1f;
 	private readonly float precision = .2f;
 
-	[Header("Options")]
+	[Header("Speed")]
 	[SerializeField]
-	private float startSpeed;
+    private float startSpeed;
+	[SerializeField]
+	private bool noLeftoverSpeed;
+	[Header("Options")]
 	[SerializeField]
 	private float totalTime;
 	[SerializeField, Tooltip("If true, uses totalTime as reference for one cycle and ignores startSpeed.\nIf false, uses startSpeed and ignores totalTime.")]
@@ -121,7 +123,11 @@ public class PathController : MonoBehaviour
 			if (Mathf.Abs(pointB.x - transform.position.x) < precision && Mathf.Abs(pointB.y - transform.position.y) < precision)
 			{
 				(pointA, pointB) = (pointB, pointA);
+				if(noLeftoverSpeed)
+					rb.velocity = Vector2.zero;
+
 				yield return new WaitForSeconds(endLag);
+				
 			}
 
 			yield return null;

@@ -54,7 +54,7 @@ MonoBehaviour:
   acceleration: 10
   dispawnAxis: 2
   xDispawn: 0
-  yDispawn: -20
+  yDispawn: -20.5
   respawn: 1
   disappearingTime: 0
   respawnTime: 0

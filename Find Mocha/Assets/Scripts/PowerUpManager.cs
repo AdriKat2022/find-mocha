@@ -14,8 +14,16 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 	[SerializeField]
 	private ItemType itemType;
 
-	#region Bonuses granted
-	[Header("One time bonuses")]
+	#region Collection
+
+	[Header("Collection")]
+	[SerializeField]
+	private int value = 1;
+
+    #endregion
+
+    #region Bonuses granted
+    [Header("Power-up")]
 	[SerializeField]
 	private float healthBonus;
 
@@ -24,7 +32,7 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 	private PowerUp[] powerUps;
 	#endregion Bonuses granted
 
-	[Header("Option")]
+	[Header("Respawn")]
 	[SerializeField]
 	private bool respawns;
 	[SerializeField]
@@ -42,10 +50,12 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 	private float animationDepth;
 	[SerializeField]
 	private float timeBeforeDestroy = 1f;
-	[SerializeField]
-	private ParticleSystem particles;
+    [SerializeField]
+    private ParticleSystem particles;
+    [SerializeField]
+    private SpriteRenderer overrideSpriteRenderer;
 
-	private Vector2 originalPos;
+    private Vector2 originalPos;
 	private SpriteRenderer spriteRenderer;
 	private bool isConsumed;
 	private Rainbow rainbow;
@@ -55,17 +65,22 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 	private enum ItemType
 	{
 		powerUp,
-		collection
+		collection // Deprecated
 	}
 
 	private void Start()
 	{
-		if(randomizeStartPhase)
+		if(itemType == ItemType.collection)
+			CollectibleManager.Instance.RegisterCollectibleForLevel();
+
+        if (randomizeStartPhase)
 			animationStartPhase = Random.Range(0f,Mathf.PI*2);
 
 		originalPos = transform.position;
 		isConsumed = false;
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		if (spriteRenderer == null)
+			spriteRenderer = overrideSpriteRenderer;
 		hasRainbow = TryGetComponent(out rainbow);
 		StartCoroutine(AnimateCollectible());
 	}
@@ -108,10 +123,13 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 				
 
 			case ItemType.collection:
-				// TODO
-				break;
+
+                SoundManager.Instance.PlaySound(SoundManager.Instance.coin);
+                CollectibleManager.Instance.AddCoin(value);
+
+                break;
 		}
-		particles.Play();
+		particles?.Play();
 
 		Consume();
 	}

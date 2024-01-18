@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip jump;
     public AudioClip damage, heal,
         hit1, hit2,
+        coin,
         monsterHit,
         invincibled,
         explosion,

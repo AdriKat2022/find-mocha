@@ -68,7 +68,18 @@ public class PlayerController : MonoBehaviour, IDamageble
 	[SerializeField]
 	private float lowHpThreshold;
 
-	public float LowHpThreshold => lowHpThreshold;
+	[Header("Stun")]
+    [SerializeField]
+    private float minStunAnimationStart;
+    [SerializeField]
+    private float stunAnimationMaxSpeed;
+    [SerializeField]
+    private float stunAnimationMaxStrength;
+    [SerializeField]
+    private bool isStunAnimationDeprogressive;
+
+
+    public float LowHpThreshold => lowHpThreshold;
 
 	public IInteractable Interactable;
 
@@ -130,6 +141,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	private bool isKnockedOut;
 	private bool hasFallen;
 
+
 	private bool hasUnlockedHeartGun;
 
 	private PlayerInput playerInput;
@@ -147,20 +159,21 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	public static PlayerController Instance;
 
+    #region Events
 
-	public static event Action OnPlayerInvincibility;
+    public static event Action OnPlayerInvincibility;
 	public static event Action OnPlayerInvincibilityEnd;
 	public static event Action OnPlayerKnockedOut;
 	public static event Action OnPlayerReady;
 
 	public static event Action<PlayerStats> OnPlayerChangeHP;
 
-
+    #endregion
 
 
 #if UNITY_EDITOR
 
-	private void OnValidate()
+    private void OnValidate()
 	{
 		collider = GetComponent<CapsuleCollider2D>();
 
@@ -525,7 +538,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 		return !isKnockedOut;
 	}
 
-	IEnumerator VictoryDance()
+    #region Animations
+    private IEnumerator VictoryDance()
 	{
 		jumpForce = wonJumpForce;
 		rb.velocity = Vector3.zero;
@@ -539,13 +553,64 @@ public class PlayerController : MonoBehaviour, IDamageble
 		}
 	}
 
-	private IEnumerator HurtPhase(bool overrideHitstun = false, float hitstun = 0)
+
+	private IEnumerator StunAnimation(float duration)
+	{
+		float timer = 0;
+		float total_time = 0;
+        float timeBetweenElementaryShake = 1 / stunAnimationMaxSpeed;
+
+		bool _switch = true;
+
+		Vector2 basePosition = spriteRenderer.transform.parent.localPosition;
+
+		float strength = stunAnimationMaxStrength;
+
+        while (total_time < duration)
+		{
+			if(isStunAnimationDeprogressive)
+				strength = Mathf.Lerp(stunAnimationMaxStrength, 0, total_time/duration);
+
+			Debug.Log(_switch);
+
+            if (_switch)
+			{
+				if(timer > timeBetweenElementaryShake)
+					_switch = false;
+
+                spriteRenderer.transform.parent.localPosition = basePosition + Vector2.right * strength;
+
+				timer += Time.deltaTime;
+            }
+            else
+			{
+                if (timer < 0)
+                    _switch = true;
+
+                spriteRenderer.transform.parent.localPosition = basePosition + Vector2.left * strength;
+
+                timer -= Time.deltaTime;
+			}
+
+			total_time += Time.deltaTime;
+
+			yield return null;
+		}
+		spriteRenderer.transform.localPosition = basePosition;
+	}
+
+    #endregion
+
+    private IEnumerator HurtPhase(bool overrideHitstun = false, float hitstun = 0)
 	{
 		if (isHurting || isInvulnerable)
 			yield break;
 
 		isHurting = true;
 		animator.SetBool("isHurting", true);
+
+		if(hitstun > minStunAnimationStart)
+			StartCoroutine(StunAnimation(hitstun));
 
 		yield return new WaitForSeconds(overrideHitstun ? hitstun : hurtingFrames);
 
