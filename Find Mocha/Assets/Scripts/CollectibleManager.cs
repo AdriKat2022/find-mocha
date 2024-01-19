@@ -15,7 +15,7 @@ public class CollectibleManager : MonoBehaviour
     [SerializeField]
     private TMP_Text coinTextCount;
     [SerializeField]
-    private TMP_Text coinText;
+    private GameObject coinDisplayer;
 
 
     private int nLevelCoinsCollected;
@@ -28,14 +28,14 @@ public class CollectibleManager : MonoBehaviour
     {
         FlagManager.OnPlayerWin += OnLevelWin;
         PlayerController.OnPlayerKnockedOut += OnLevelLose;
-        PlayerController.OnPlayerReady += ShowCoinNumber;
+        PlayerController.OnPlayerReady += OnLevelStart;
         GameManager.OnSceneLoaded += OnSceneLoad;
     }
     private void OnDisable()
     {
         FlagManager.OnPlayerWin -= OnLevelWin;
         PlayerController.OnPlayerKnockedOut -= OnLevelLose;
-        PlayerController.OnPlayerReady -= ShowCoinNumber;
+        PlayerController.OnPlayerReady -= OnLevelStart;
         GameManager.OnSceneLoaded -= OnSceneLoad;
     }
 
@@ -59,6 +59,9 @@ public class CollectibleManager : MonoBehaviour
 
     private void OnSceneLoad(bool isMainMenu)
     {
+        nLevelCoinsCollected = 0;
+        nLevelCoinsReferenced = 0;
+
         if (isMainMenu)
             ToogleCoinNumber(false);
         else
@@ -77,7 +80,10 @@ public class CollectibleManager : MonoBehaviour
         nLevelCoinsCollected = 0;
         nLevelCoinsReferenced = 0;
     }
-
+    private void OnLevelStart()
+    {
+        ShowCoinNumber();
+    }
     #endregion
 
     #region Public commands
@@ -93,16 +99,7 @@ public class CollectibleManager : MonoBehaviour
     }
     public void ToogleCoinNumber(bool show)
     {
-        if (show)
-        {
-            coinText.alpha = 1;
-            coinTextCount.alpha = 1;
-        }
-        else
-        {
-            coinText.alpha = 0;
-            coinTextCount.alpha = 0;
-        }
+        coinDisplayer.SetActive(show);
 
         UpdateUI();
     }

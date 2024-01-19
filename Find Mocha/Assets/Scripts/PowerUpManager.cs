@@ -10,6 +10,8 @@ public enum PowerUpType
 
 public class PowerUpManager : MonoBehaviour, ICollectible
 {
+	// in units per period
+	private const float PHASE_SPACIAL_PERIOD = 10;
 
 	[SerializeField]
 	private ItemType itemType;
@@ -42,9 +44,9 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 	[Header("Animation properties")]
 	[SerializeField]
 	private float animationStartPhase;
-	[SerializeField]
-	private bool randomizeStartPhase;
-	[SerializeField]
+    [SerializeField]
+    private StartingPhase startingPhaseType;
+    [SerializeField]
 	private float animationSpeed;
 	[SerializeField]
 	private float animationDepth;
@@ -68,13 +70,29 @@ public class PowerUpManager : MonoBehaviour, ICollectible
 		collection // Deprecated
 	}
 
+	private enum StartingPhase
+	{
+		Custom,
+		RandomizePhase,
+		InWave
+	}
+
 	private void Start()
 	{
 		if(itemType == ItemType.collection)
 			CollectibleManager.Instance.RegisterCollectibleForLevel();
 
-        if (randomizeStartPhase)
-			animationStartPhase = Random.Range(0f,Mathf.PI*2);
+		switch (startingPhaseType)
+		{
+			case StartingPhase.RandomizePhase:
+                animationStartPhase = Random.Range(0f, Mathf.PI * 2);
+                break;
+
+			case StartingPhase.InWave:
+				animationStartPhase = transform.position.x / PHASE_SPACIAL_PERIOD * Mathf.PI * 2;
+				break;
+		}
+			
 
 		originalPos = transform.position;
 		isConsumed = false;

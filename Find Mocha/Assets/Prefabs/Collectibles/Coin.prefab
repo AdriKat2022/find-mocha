@@ -4959,7 +4959,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.42, y: 20.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2609440399926120448}
   - {fileID: 4589144135990371402}
@@ -4984,7 +4984,7 @@ MonoBehaviour:
   respawns: 0
   respawnTime: 0
   animationStartPhase: 0
-  randomizeStartPhase: 1
+  startingPhaseType: 2
   animationSpeed: 2
   animationDepth: 0.3
   timeBeforeDestroy: 1
