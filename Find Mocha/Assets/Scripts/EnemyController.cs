@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour, IDamageble
         return data;
     }
 
-    public void Heal(float heal)
+    public void Heal(float heal, bool isSilent = false)
     {
         hp += heal;
         hp = Mathf.Clamp(hp, 0, maxHp);

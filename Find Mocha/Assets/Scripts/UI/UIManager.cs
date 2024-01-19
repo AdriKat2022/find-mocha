@@ -79,11 +79,10 @@ public class UIManager : MonoBehaviour
 
     private readonly float waitTimeBeforeAnimating = 1f;
 
-    private float maxHp;
     private float currentHp;
     private bool isLowHP;
     private float hpChange;
-    private float animationTimer;
+    private float timeSinceLastUpdate;
 
     private float _time;
     private bool isBlinking;
@@ -91,6 +90,10 @@ public class UIManager : MonoBehaviour
     private bool inGame;
 
     private HPBarAnimationState currentHPBarAnimationState;
+
+    private float currentDisplayedHPNormalized;
+    private float currentHPNormalized;
+    private float hurtBarAmount;
 
     private enum HPBarAnimationState
     {
@@ -143,6 +146,7 @@ public class UIManager : MonoBehaviour
         inGame = false;
         lowHpThreshold = 0;
         isBlinking = false;
+        currentDisplayedHPNormalized = 1;
     }
 
     private void Start()
@@ -157,13 +161,7 @@ public class UIManager : MonoBehaviour
             ActivateHPBar();
         }
 
-        IEnumerator animation_CR = AnimateHealthBar();
-        StartCoroutine(animation_CR);
-    }
-
-    private void Update()
-    {
-        CheckHPChange();
+        StartCoroutine(AnimateHealthBar());
     }
 
     public void SetHPAuraActive(bool active)
@@ -184,16 +182,18 @@ public class UIManager : MonoBehaviour
         if(PlayerController.Instance != null)
             lowHpThreshold = PlayerController.Instance.LowHpThreshold;
 
-        maxHp = stats.maxHp;
-
         hpChange = stats.hp - currentHp;
 
         currentHp = stats.hp;
 
-        isLowHP = currentHp / maxHp <= lowHpThreshold;
+        currentHPNormalized = currentHp / stats.maxHp;
+
+        isLowHP = currentHPNormalized <= lowHpThreshold;
 
         inGame = GameManager.Instance.InGame;
         
+        CheckHPChange();
+
         if(isLowHP && inGame)
         {
             SetHPAuraActive(true);
@@ -219,77 +219,88 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (hpChange < -hpDeltaDetect)
+        if(Mathf.Abs(hpChange) > hpDeltaDetect)
         {
-            currentHPBarAnimationState = HPBarAnimationState.Hurting;
-            StartCoroutine(BlinkHealthBar());
-            hpChange = 0;
-        }
-        else if(hpChange > hpDeltaDetect)
-        {
-            currentHPBarAnimationState = HPBarAnimationState.Healing;
+            SetCorrectHpBarAnimationState();
             StartCoroutine(BlinkHealthBar());
             hpChange = 0;
         }
     }
 
+    private void SetCorrectHpBarAnimationState()
+    {
+        if(hpChange > 0)
+        {
+            if(currentHPNormalized > currentDisplayedHPNormalized || hurtBarAmount < currentHPNormalized)
+                currentHPBarAnimationState = HPBarAnimationState.Healing;
+            else
+                currentHPBarAnimationState = HPBarAnimationState.Hurting;
+        }
+        else
+        {
+            if(currentHPNormalized > currentDisplayedHPNormalized)
+                currentHPBarAnimationState = HPBarAnimationState.Healing;
+            else
+                currentHPBarAnimationState = HPBarAnimationState.Hurting;
+        }
+    }
+
     private IEnumerator AnimateHealthBar()
     {
+        hurtBarAmount = 1;
+
         while (true)
         {
             if (Time.time - _time < waitTimeBeforeAnimating)
             {
-                if(maxHp != 0)
-                {
-                    hpFillBg.fillAmount = currentHp / maxHp;
-                    hpFill.fillAmount = currentHp / maxHp;
-                }
+                hpFillBg.fillAmount = currentHPNormalized;
+                hpFill.fillAmount = currentHPNormalized;
+
                 yield return null;
                 continue;
             }
-
-            //Debug.Log("low hp: " + isLowHP);
-            //Debug.Log("ingame: " + inGame);
 
             switch (currentHPBarAnimationState)
             {
                 case HPBarAnimationState.Hurting:
 
-                    hpFill.fillAmount = currentHp/maxHp;
-                    hpFillBg.color = hurtBg;
 
-                    if (animationTimer > animationHpDelay) {
-                        hpFillBg.fillAmount = Mathf.Lerp(hpFillBg.fillAmount, currentHp/maxHp, Time.deltaTime * animationHpSpeed);
+                    if (timeSinceLastUpdate > animationHpDelay) {
+                        hpFillBg.fillAmount = Mathf.Lerp(hpFillBg.fillAmount, currentHPNormalized, Time.deltaTime * animationHpSpeed);
+                        hurtBarAmount = hpFillBg.fillAmount;
                     }
                     else
                     {
-                        animationTimer += Time.deltaTime;
+                        hpFillBg.fillAmount = hurtBarAmount;
+                        timeSinceLastUpdate += Time.deltaTime;
                     }
 
+                    hpFill.fillAmount = currentHPNormalized;
+                    hpFillBg.color = hurtBg;
+
+                    
                     break;
 
                 case HPBarAnimationState.Healing:
 
-                    hpFillBg.fillAmount = currentHp / maxHp;
+                    hpFillBg.fillAmount = currentHPNormalized;
                     hpFillBg.color = healBg;
 
-                    if (animationTimer > animationHpDelay)
+                    if (timeSinceLastUpdate > animationHpDelay)
                     {
-                        hpFill.fillAmount = Mathf.Lerp(hpFill.fillAmount, currentHp / maxHp, Time.deltaTime * animationHpSpeed);
+                        hpFill.fillAmount = Mathf.Lerp(hpFill.fillAmount, currentHPNormalized, Time.deltaTime * animationHpSpeed);
                     }
                     else
                     {
-                        animationTimer += Time.deltaTime;
+                        timeSinceLastUpdate += Time.deltaTime;
                     }
+
+                    hurtBarAmount = hpFill.fillAmount;
 
                     break;
             }
 
-            /*timer += Time.deltaTime;
-
-            //Debug.Log(hpBarPos + healthBarBounceDepth * Mathf.Sin(timer * healthBarBounceSpeed) * Vector2.up);
-
-            hpBarRectTransform.anchoredPosition = hpBarPos + healthBarBounceDepth * Mathf.Sin(timer * healthBarBounceSpeed) * Vector2.up + hpBarRectTransform.anchoredPosition.x * Vector2.right;*/
+            currentDisplayedHPNormalized = hpFill.fillAmount;
 
             yield return null;
         }
@@ -297,7 +308,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator BlinkHealthBar()
     {
-        animationTimer = 0f;
+        timeSinceLastUpdate = 0f;
 
         if (isBlinking)
             yield break;
@@ -308,7 +319,7 @@ public class UIManager : MonoBehaviour
 
         Color color = currentHPBarAnimationState == HPBarAnimationState.Hurting ? blinkHurtColor : blinkHealColor;
 
-        while(animationTimer < animationHpDelay)
+        while(timeSinceLastUpdate < animationHpDelay)
         {
             flip = !flip;
 

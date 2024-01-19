@@ -51,7 +51,7 @@ public enum Team
 public interface IDamageble
 {
     void Damage(IDamageble from, DamageData damageData);
-    void Heal(float heal);
+    void Heal(float heal, bool isSilent = false);
     void InstaKill(IDamageble from, Vector2? knockback, float knockbackAngle = 0, float knockbackForce = 0);
 
     Team GetTeam();

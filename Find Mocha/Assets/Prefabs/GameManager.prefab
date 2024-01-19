@@ -660,7 +660,7 @@ MonoBehaviour:
   waitTimeBeforeGameOverScreen: 2
   waitTimeBeforeLoadingScene: 1.2
   lowHPColor: {r: 1, g: 0, b: 0, a: 1}
-  hpDeltaDetect: 0.01
+  hpDeltaDetect: 0.001
   animationHpDelay: 1
   animationHpSpeed: 5
   healBg: {r: 0.27771902, g: 1, b: 0, a: 1}
@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Milk
-  levelsNb: 8
+  levelsNb: 9
   mainMenu: {fileID: 3334721726336774872}
   uiManager: {fileID: 8425551456871622474}
   dialogueUI: {fileID: 3197270976864426312}

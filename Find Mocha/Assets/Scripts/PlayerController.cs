@@ -206,6 +206,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 
     #endregion
 
+
+#endif
+
     #region Debug events
     private bool warnedAboutDebugMode = false;
 
@@ -262,8 +265,6 @@ public class PlayerController : MonoBehaviour, IDamageble
     }
 
     #endregion
-
-#endif
 
     private void Awake()
 	{
@@ -742,18 +743,20 @@ public class PlayerController : MonoBehaviour, IDamageble
 		Damage(null, new DamageData(dmg));
 	}
 
-	public void Heal(float heal)
+	public void Heal(float heal, bool isSilent = false)
 	{
 		if (isKnockedOut)
 			return;
 
-		SoundManager.Instance.PlaySound(SoundManager.Instance.heal);
+		if(!isSilent)
+			SoundManager.Instance.PlaySound(SoundManager.Instance.heal);
 
-		currentHp += heal;
+		bool notOverhealing = currentHp < maxHp;
 
-		OnPlayerChangeHP?.Invoke(GetPlayerStats());
+		currentHp = Mathf.Clamp(currentHp + heal, 0f, maxHp);
 
-		currentHp = Mathf.Clamp(currentHp, 0f, maxHp);
+		if(notOverhealing)
+			OnPlayerChangeHP?.Invoke(GetPlayerStats());
 	}
 
 	public Team GetTeam() => team;
