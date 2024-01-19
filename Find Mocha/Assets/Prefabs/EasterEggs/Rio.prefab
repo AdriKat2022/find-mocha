@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpPerTick: 1
   startTickRate: 1
-  tickRateAcceleration: 3
+  tickRateAcceleration: 1
   isContinous: 1
 --- !u!212 &9084208699327674542
 SpriteRenderer:
