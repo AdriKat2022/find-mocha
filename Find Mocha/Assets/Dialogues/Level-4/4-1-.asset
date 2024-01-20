@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
   m_Name: 4-1-
   m_EditorClassIdentifier: 
-  dialogue: []
+  dialogue:
+  - '-- Attention --
+
+    Terrain dangereux'
+  - "Le sol ici peut \xEAtre glissant en pente, attention \xE0 ne pas tomber."
+  - "Cet endroit est r\xE9put\xE9 pour \xEAtre rempli de mauvaises pens\xE9es."

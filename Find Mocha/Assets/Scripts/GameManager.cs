@@ -31,12 +31,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject mainMenu;
     [SerializeField]
+    private GameObject winScreen;
+    [SerializeField]
     private UIManager uiManager;
     [SerializeField]
     private DialogueUI dialogueUI;
     [SerializeField]
     private GameObject bigNonoPanel;
 
+
+    public void EnableWinScreen() => winScreen.SetActive(true);
 
     #region Events
 
@@ -69,6 +73,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        winScreen.SetActive(false);
         pauseMenuManager = GetComponent<PauseMenuManager>();
 
         Player = GameObject.Find(playerName);

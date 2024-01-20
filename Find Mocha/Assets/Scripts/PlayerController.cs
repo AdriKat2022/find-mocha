@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStats
@@ -141,6 +140,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	private bool isKnockedOut;
 	private bool hasFallen;
 
+	private bool isActivated;
 
 	private bool hasUnlockedHeartGun;
 
@@ -209,7 +209,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 #endif
 
-    #region Debug events
+    #region Debug Events
+
     private bool warnedAboutDebugMode = false;
 
 	private void DebugFunc()
@@ -265,6 +266,15 @@ public class PlayerController : MonoBehaviour, IDamageble
     }
 
     #endregion
+
+	public void SetPlayerActive(bool activate)
+	{
+		isActivated = activate;
+	}
+	public void StepFinalAnimation()
+    {
+        animator.SetTrigger("endAnimation");
+    }
 
     private void Awake()
 	{
@@ -329,11 +339,15 @@ public class PlayerController : MonoBehaviour, IDamageble
 		playerInput = new PlayerInput();
 
 		OnPlayerReady?.Invoke();
+
+		isActivated = true;
 	}
 
 	private void Update()
 	{
-		DebugFunc();
+		if(!isActivated) return;
+
+		//DebugFunc();
 
 		if (isKnockedOut)
 			return;

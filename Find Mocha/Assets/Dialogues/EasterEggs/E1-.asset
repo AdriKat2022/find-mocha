@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: E1-
   m_EditorClassIdentifier: 
   dialogue:
-  - 
+  - "-- Journal de Mocha --\n(Entr\xE9e 1/4)"
+  - J'aime beaucoup me mettre dans mon atelier et travailler sur un projet personnel.
+  - "C'est vraiment tr\xE8s plaisant de voir quand on avance."
+  - "La meilleure partie, c'est de se rappeler qu'on va pouvoir le partager apr\xE8s
+    !"

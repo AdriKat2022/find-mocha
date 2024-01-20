@@ -94,7 +94,6 @@ public class CameraMovement : MonoBehaviour
     private Vector2 currentAheadOffset;
     private Zone2D cameraBoundsZone;
 
-
     private bool isInZoneFreeFall;
 
     private GameObject target;
@@ -160,7 +159,10 @@ public class CameraMovement : MonoBehaviour
 
 #endif
 
-
+    public void SetFinalPos(GameObject target)
+    {
+        this.target = target;
+    }
     private void Start()
     {
         mainCamera = Camera.main;

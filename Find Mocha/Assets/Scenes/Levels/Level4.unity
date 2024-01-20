@@ -6433,7 +6433,7 @@ PrefabInstance:
     - target: {fileID: 6372892741493385020, guid: 2466a5c57ffed5b46ba6317947d65b25, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 11400000, guid: 85ed70da97875f244a3a88db4c3690ca, type: 2}
+      objectReference: {fileID: 11400000, guid: 3f3d29fac3b7af8489bde0855d13a907, type: 2}
     - target: {fileID: 6372892741493385020, guid: 2466a5c57ffed5b46ba6317947d65b25, type: 3}
       propertyPath: defaultColor.b
       value: 0.735849
@@ -140352,7 +140352,7 @@ PrefabInstance:
     - target: {fileID: 6372892741493385020, guid: 2466a5c57ffed5b46ba6317947d65b25, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 11400000, guid: 85ed70da97875f244a3a88db4c3690ca, type: 2}
+      objectReference: {fileID: 11400000, guid: 7fc4f6f89c53cda45aeb722b5690e5bc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

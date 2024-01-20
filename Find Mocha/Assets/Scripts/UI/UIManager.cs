@@ -43,18 +43,19 @@ public class UIManager : MonoBehaviour
     private Color blinkHealColor;
     [SerializeField]
     private Color defaultBlinkColor;
-    [SerializeField]
 
     [Header("Idle bar animation")]
 
+    [SerializeField]
     private float healthBarBounceSpeed;
     [SerializeField]
     private float healthBarBounceDepth;
-    [SerializeField]
 
     [Header("References")]
 
     private Image hpBarOverlay;
+    [SerializeField]
+    private Animator coinDisplayer;
     [SerializeField]
     private Image hpFill;
     [SerializeField]
@@ -347,6 +348,7 @@ public class UIManager : MonoBehaviour
 
         hpBarAnimator.SetBool("hasWon", false);
         hpBarAnimator.SetBool("hasLost", false);
+        coinDisplayer.SetBool("hasWon", false);
         FetchAndUpdateHP();
     }
 
@@ -357,6 +359,7 @@ public class UIManager : MonoBehaviour
     private void PrepareWin()
     {
         hpBarAnimator.SetBool("hasWon", true);
+        coinDisplayer.SetBool("hasWon", true);
     }
 
     #endregion
