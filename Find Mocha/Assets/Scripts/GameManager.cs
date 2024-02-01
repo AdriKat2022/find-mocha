@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 
 
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     #region Events
 
     public static event Action<bool> OnSceneLoaded; // True = main menu ; False = in game
+    public static event Action OnTrueReset;
 
     #endregion
 
@@ -156,6 +158,10 @@ public class GameManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+        // Complete reset
+        OnTrueReset?.Invoke();
+        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+        SceneManager.MoveGameObjectToScene(SoundManager.Instance.gameObject, SceneManager.GetActiveScene());
         LoadLevelIndex(0, false);
     }
 

@@ -30,6 +30,7 @@ public class CollectibleManager : MonoBehaviour
         PlayerController.OnPlayerKnockedOut += OnLevelLose;
         PlayerController.OnPlayerReady += OnLevelStart;
         GameManager.OnSceneLoaded += OnSceneLoad;
+        GameManager.OnTrueReset += TrueReset;
     }
     private void OnDisable()
     {
@@ -37,6 +38,7 @@ public class CollectibleManager : MonoBehaviour
         PlayerController.OnPlayerKnockedOut -= OnLevelLose;
         PlayerController.OnPlayerReady -= OnLevelStart;
         GameManager.OnSceneLoaded -= OnSceneLoad;
+        GameManager.OnTrueReset -= TrueReset;
     }
 
     #endregion
@@ -84,6 +86,7 @@ public class CollectibleManager : MonoBehaviour
     {
         ShowCoinNumber();
     }
+    
     #endregion
 
     #region Public commands
@@ -108,6 +111,14 @@ public class CollectibleManager : MonoBehaviour
         ToogleCoinNumber(true);
     }
     #endregion
+
+    private void TrueReset()
+    {
+        nLevelCoinsCollected = 0;
+        nLevelCoinsReferenced = 0;
+        TotalCoinsCollected = 0;
+        TotalCoinsReferenced = 0;
+    }
 
     private void UpdateUI()
     {

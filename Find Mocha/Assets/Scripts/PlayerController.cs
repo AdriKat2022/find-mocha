@@ -68,30 +68,30 @@ public class PlayerController : MonoBehaviour, IDamageble
 	private float lowHpThreshold;
 
 	[Header("Stun")]
-    [SerializeField]
-    private float minStunAnimationStart;
-    [SerializeField]
-    private float stunAnimationMaxSpeed;
-    [SerializeField]
-    private float stunAnimationMaxStrength;
-    [SerializeField]
-    private bool isStunAnimationDeprogressive;
+	[SerializeField]
+	private float minStunAnimationStart;
+	[SerializeField]
+	private float stunAnimationMaxSpeed;
+	[SerializeField]
+	private float stunAnimationMaxStrength;
+	[SerializeField]
+	private bool isStunAnimationDeprogressive;
 
 
-    public float LowHpThreshold => lowHpThreshold;
+	public float LowHpThreshold => lowHpThreshold;
 
 	public IInteractable Interactable;
 
 	[Header("Power up visuals")]
-    [SerializeField]
-    private ParticleSystem jumpBoostVisual;
-    [SerializeField]
-    private ParticleSystem speedBoostVisual;
+	[SerializeField]
+	private ParticleSystem jumpBoostVisual;
+	[SerializeField]
+	private ParticleSystem speedBoostVisual;
 
 	private ParticleSystem.EmissionModule jumpBoostVisualModule;
 	private ParticleSystem.EmissionModule speedBoostVisualModule;
 
-    [Header("Internal components")]
+	[Header("Internal components")]
 	[SerializeField]
 	private GameObject sprite;
 
@@ -159,23 +159,23 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 	public static PlayerController Instance;
 
-    #region Events
+	#region Events
 
-    public static event Action OnPlayerInvincibility;
+	public static event Action OnPlayerInvincibility;
 	public static event Action OnPlayerInvincibilityEnd;
 	public static event Action OnPlayerKnockedOut;
 	public static event Action OnPlayerReady;
 
 	public static event Action<PlayerStats> OnPlayerChangeHP;
 
-    #endregion
+	#endregion
 
 
 #if UNITY_EDITOR
 
-    #region Debug stuff
+	#region Debug stuff
 
-    private void OnValidate()
+	private void OnValidate()
 	{
 		collider = GetComponent<CapsuleCollider2D>();
 
@@ -204,14 +204,14 @@ public class PlayerController : MonoBehaviour, IDamageble
 		Gizmos.DrawWireCube(collider.bounds.center+Vector3.down*jumpCheckDown, size);
 	}
 
-    #endregion
+	#endregion
 
 
 #endif
 
-    #region Debug Events
+	#region Debug Events
 
-    private bool warnedAboutDebugMode = false;
+	private bool warnedAboutDebugMode = false;
 
 	private void DebugFunc()
 	{
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 		if (Input.GetKeyDown(KeyCode.R))
 			GameManager.Instance.ReloadLevel();
 	
-        if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.E))
 			Damage(2);
 
 		if (Input.GetKeyDown(KeyCode.A))
@@ -236,20 +236,20 @@ public class PlayerController : MonoBehaviour, IDamageble
 		if (Input.GetKeyDown(KeyCode.S))
 			Damage(200);
 
-        if (Input.GetKeyDown(KeyCode.Q))
-            Damage(currentHp - 1);
+		if (Input.GetKeyDown(KeyCode.Q))
+			Damage(currentHp - 1);
 
-        if (Input.GetKeyDown(KeyCode.W))
-            FlagManager.Instance.PlayerWin();
+		if (Input.GetKeyDown(KeyCode.W))
+			FlagManager.Instance.PlayerWin();
 
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            speedBonus += 1;
+		if (Input.GetKeyDown(KeyCode.Alpha4))
+			speedBonus += 1;
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-            speedBonus = 0;
+		if (Input.GetKeyDown(KeyCode.Alpha5))
+			speedBonus = 0;
 
-        if (Input.GetKeyDown(KeyCode.I))
+		if (Input.GetKeyDown(KeyCode.I))
 		{
 			isInvincible = !isInvincible;
 			if (isInvincible)
@@ -258,25 +258,27 @@ public class PlayerController : MonoBehaviour, IDamageble
 				rainbow.Deactivate();
 		}
 
-        if (Input.GetKeyDown(KeyCode.U))
+		if (Input.GetKeyDown(KeyCode.U))
 		{
 			Debug.LogWarning("WARNING: HEARTGUN UNLOCKED");
 			UnlockHeartGun();
 		}
-    }
+	}
 
-    #endregion
+	#endregion
+
+	private bool IsGameOver => hasWon || isKnockedOut;
 
 	public void SetPlayerActive(bool activate)
 	{
 		isActivated = activate;
 	}
 	public void StepFinalAnimation()
-    {
-        animator.SetTrigger("endAnimation");
-    }
+	{
+		animator.SetTrigger("endAnimation");
+	}
 
-    private void Awake()
+	private void Awake()
 	{
 		// Overwrite method
 		if(Instance != null)
@@ -295,15 +297,15 @@ public class PlayerController : MonoBehaviour, IDamageble
 		heartParticlesEmissionModule = heartParticles.emission;
 		heartParticlesEmissionModule.enabled = false;
 
-        jumpBoostVisual.Play();
-        jumpBoostVisualModule = jumpBoostVisual.emission;
-        jumpBoostVisualModule.enabled = false;
+		jumpBoostVisual.Play();
+		jumpBoostVisualModule = jumpBoostVisual.emission;
+		jumpBoostVisualModule.enabled = false;
 
-        speedBoostVisual.Play();
-        speedBoostVisualModule = speedBoostVisual.emission;
-        speedBoostVisualModule.enabled = false;
+		speedBoostVisual.Play();
+		speedBoostVisualModule = speedBoostVisual.emission;
+		speedBoostVisualModule.enabled = false;
 
-        hasWon = false;
+		hasWon = false;
 		isKnockedOut = false;
 		isHurting = false;
 		isInvulnerable = false;
@@ -378,8 +380,6 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		_time += Time.deltaTime;
 	}
-
-	
 
 	private void FixedUpdate()
 	{
@@ -593,8 +593,8 @@ public class PlayerController : MonoBehaviour, IDamageble
 		return !isKnockedOut;
 	}
 
-    #region Animations
-    private IEnumerator VictoryDance()
+	#region Animations
+	private IEnumerator VictoryDance()
 	{
 		jumpForce = wonJumpForce;
 		rb.velocity = Vector3.zero;
@@ -613,7 +613,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	{
 		float timer = 0;
 		float total_time = 0;
-        float timeBetweenElementaryShake = 1 / stunAnimationMaxSpeed;
+		float timeBetweenElementaryShake = 1 / stunAnimationMaxSpeed;
 
 		bool _switch = true;
 
@@ -621,30 +621,30 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		float strength = stunAnimationMaxStrength;
 
-        while (total_time < duration)
+		while (total_time < duration)
 		{
 			if(isStunAnimationDeprogressive)
 				strength = Mathf.Lerp(stunAnimationMaxStrength, 0, total_time/duration);
 
 			Debug.Log(_switch);
 
-            if (_switch)
+			if (_switch)
 			{
 				if(timer > timeBetweenElementaryShake)
 					_switch = false;
 
-                spriteRenderer.transform.parent.localPosition = basePosition + Vector2.right * strength;
+				spriteRenderer.transform.parent.localPosition = basePosition + Vector2.right * strength;
 
 				timer += Time.deltaTime;
-            }
-            else
+			}
+			else
 			{
-                if (timer < 0)
-                    _switch = true;
+				if (timer < 0)
+					_switch = true;
 
-                spriteRenderer.transform.parent.localPosition = basePosition + Vector2.left * strength;
+				spriteRenderer.transform.parent.localPosition = basePosition + Vector2.left * strength;
 
-                timer -= Time.deltaTime;
+				timer -= Time.deltaTime;
 			}
 
 			total_time += Time.deltaTime;
@@ -654,9 +654,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 		spriteRenderer.transform.localPosition = basePosition;
 	}
 
-    #endregion
+	#endregion
 
-    private IEnumerator HurtPhase(bool overrideHitstun = false, float hitstun = 0)
+	private IEnumerator HurtPhase(bool overrideHitstun = false, float hitstun = 0)
 	{
 		if (isHurting || isInvulnerable)
 			yield break;
@@ -807,7 +807,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	private int jumpPowerUpsActive = 0;
 	private int speedPowerUpsActive = 0;
 
-    public void ApplyBonuses(PowerUp[] powerUps)
+	public void ApplyBonuses(PowerUp[] powerUps)
 	{
 		if (isKnockedOut)
 			return;
@@ -830,7 +830,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 				speedBoostVisualModule.enabled = true;
 
-				while (timer < powerUp.duration) {
+				while (timer < powerUp.duration || !IsGameOver) {
 					if (isKnockedOut)
 						yield break;
 
@@ -846,7 +846,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 				if (speedPowerUpsActive == 0)
 					speedBoostVisualModule.enabled = false;
 
-                speedBonus = 0;
+				speedBonus = 0;
 
 				break;
 
@@ -855,12 +855,12 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 			case PowerUpType.jumpBoost:
 
-                jumpPowerUpsActive++;
+				jumpPowerUpsActive++;
 
 				jumpBoostVisualModule.enabled = true;
 
-                while (timer < powerUp.duration)
-                {
+				while (timer < powerUp.duration || !IsGameOver)
+				{
 					if (isKnockedOut)
 						yield break;
 
@@ -873,13 +873,13 @@ public class PlayerController : MonoBehaviour, IDamageble
 				}
 
 
-                jumpPowerUpsActive--;
+				jumpPowerUpsActive--;
 
-                if (jumpPowerUpsActive == 0)
-                    jumpBoostVisualModule.enabled = false;
+				if (jumpPowerUpsActive == 0)
+					jumpBoostVisualModule.enabled = false;
 
 
-                jumpBonus = 0;
+				jumpBonus = 0;
 
 				break;
 
@@ -905,7 +905,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 				float previousMass = rb.mass ;
 				rb.mass = 9999;
 
-				while (invincibleTimer < powerUp.duration)
+				while (invincibleTimer < powerUp.duration || !IsGameOver)
 				{
 					isInvincible = true;
 
@@ -930,5 +930,5 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 		}
 	}
-    #endregion
+	#endregion
 }

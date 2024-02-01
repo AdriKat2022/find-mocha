@@ -21,11 +21,6 @@ public class DialogueUI : MonoBehaviour
     private Vector2 refPosition;
     private bool isReady;
 
-
-
-
-    //[SerializeField] private TMP_Text debugText;
-
     private void Start()
     {
         dialogBubble.TryGetComponent(out typeWritter);
