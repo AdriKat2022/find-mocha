@@ -16,9 +16,9 @@ public class PathController : MonoBehaviour
 	private float totalTime;
 	[SerializeField, Tooltip("If true, uses totalTime as reference for one cycle and ignores startSpeed.\nIf false, uses startSpeed and ignores totalTime.")]
 	private bool useTotalTime;
-	[SerializeField]
-	private bool activateOnAwake = true;
-	[SerializeField, Range(0f,1f)]
+    [SerializeField]
+    private bool activateOnAwake = true;
+    [SerializeField, Range(0f,1f)]
 	private float phaseNormalized = 0;
 
 	[Header("Path")]
@@ -99,6 +99,7 @@ public class PathController : MonoBehaviour
 			speed = GetSpeedFromTotalTime();
 
 		ComputePhase();
+
 
 		if (activateOnAwake)
 		{

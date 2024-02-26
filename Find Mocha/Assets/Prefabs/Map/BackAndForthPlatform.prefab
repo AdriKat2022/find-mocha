@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 1746137392878275088}
   - component: {fileID: 1922032332587720942}
   - component: {fileID: 6520864417607502646}
+  - component: {fileID: 828283586920148944}
   m_Layer: 6
   m_Name: RideModule (non used)
   m_TagString: Untagged
@@ -212,6 +213,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.6491337, y: 0.13841105}
   m_EdgeRadius: 0
+--- !u!114 &828283586920148944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654699938553796995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7ff5942d950274585ed1d56d0b4c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3256427215388502712}
+        m_TargetAssemblyTypeName: PathController, Assembly-CSharp
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  repetable: 0
+  isActive: 1
 --- !u!1 &7367055546990941063
 GameObject:
   m_ObjectHideFlags: 0
