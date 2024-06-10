@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     private float healthBarBounceDepth;
 
     [Header("References")]
-
+    [SerializeField]
     private Image hpBarOverlay;
     [SerializeField]
     private Animator coinDisplayer;
@@ -119,7 +119,9 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         SetHPAuraActive(false);
-        SoundManager.Instance?.StopLoopSound(force: true);
+
+        if(SoundManager.Instance != null)
+            SoundManager.Instance.StopLoopSound(force: true);
 
         PlayerController.OnPlayerInvincibility += ActivateInvincibilityVisuals;
         PlayerController.OnPlayerInvincibilityEnd += DeactivateInvincibilityVisuals;
@@ -158,8 +160,10 @@ public class UIManager : MonoBehaviour
         hpChange = 0;
 
 
-        if(GameManager.Instance != null && GameManager.Instance.InGame) {
-            ActivateHPBar();
+        if(GameManager.Instance != null) {
+            inGame = GameManager.Instance.InGame;
+            if(inGame)
+                ActivateHPBar();
         }
 
         StartCoroutine(AnimateHealthBar());
@@ -176,7 +180,8 @@ public class UIManager : MonoBehaviour
     #region Health Bar Animation
     private void FetchAndUpdateHP()
     {
-        UpdateCurrentHP(PlayerController.Instance.GetPlayerStats());
+        if(PlayerController.Instance != null)
+            UpdateCurrentHP(PlayerController.Instance.GetPlayerStats());
     }
     private void UpdateCurrentHP(PlayerStats stats)
     {
@@ -204,7 +209,8 @@ public class UIManager : MonoBehaviour
         else
         {
             SetHPAuraActive(false);
-            SoundManager.Instance.StopLoopSound(force: true);
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.StopLoopSound(force: true);
         }
     }
     public void ActivateHPBar(bool activate = true)
@@ -341,10 +347,12 @@ public class UIManager : MonoBehaviour
 
     private void PrepareStart()
     {
-        GameManager.Instance.SetCanButtonInteract(true);
-
-        if (GameManager.Instance.InGame)
-            ActivateHPBar();
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetCanButtonInteract(true);
+            if (GameManager.Instance.InGame)
+                        ActivateHPBar();
+        }
 
         hpBarAnimator.SetBool("hasWon", false);
         hpBarAnimator.SetBool("hasLost", false);
@@ -368,7 +376,8 @@ public class UIManager : MonoBehaviour
 
     private void PrepareGameOver()
     {
-        GameManager.Instance.SetCanPause(false);
+        if (GameManager.Instance != null)
+            GameManager.Instance.SetCanPause(false);
         hpBarAnimator.SetBool("hasLost", true);
         StartCoroutine(KnockAnimation());
     }
@@ -382,8 +391,10 @@ public class UIManager : MonoBehaviour
 
         gameOverScreen.SetActive(true);
 
-        SoundManager.Instance.PlaySound(SoundManager.Instance.gameOverSound);
-        SoundManager.Instance.PlayMusic(SoundManager.Instance.gameOver, 4f);
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySound(SoundManager.Instance.gameOverSound);
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.gameOver, 4f);
 
 
         yield return null;
@@ -391,7 +402,8 @@ public class UIManager : MonoBehaviour
 
     private void AnimateGameOverMenu()
     {
-        GameManager.Instance.SetCanButtonInteract(false);
+        if (GameManager.Instance != null)
+            GameManager.Instance.SetCanButtonInteract(false);
         gameOverMenuAnimator.SetTrigger("closeWindow");
     }
 

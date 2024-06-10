@@ -62,6 +62,12 @@ TagManager:
   - name: Milk
     uniqueID: 479956341
     locked: 0
+  - name: Front_Collectibles
+    uniqueID: 3692417455
+    locked: 0
   - name: Front_particles
     uniqueID: 2594670051
+    locked: 0
+  - name: UI
+    uniqueID: 4072238823
     locked: 0

@@ -903,6 +903,7 @@ MonoBehaviour:
   defaultBlinkColor: {r: 1, g: 1, b: 1, a: 1}
   healthBarBounceSpeed: 5
   healthBarBounceDepth: 6
+  hpBarOverlay: {fileID: 5679244875629329509}
   coinDisplayer: {fileID: 330577642896719170}
   hpFill: {fileID: 864358260963146232}
   hpFillBg: {fileID: 237569650623254114}

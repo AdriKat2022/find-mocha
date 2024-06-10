@@ -2,26 +2,58 @@ using UnityEngine;
 
 public class DialogueActivator : MonoBehaviour, IInteractable
 {
-    public DialogueObject dialogue;
+    [Header("Dialogue")]
+    [SerializeField]
+    private DialogueObject dialogue;
+    [SerializeField]
+    private bool isActiveOnAwake = true;
 
-    public Color defaultColor;
-    public float defaultSpeed;
-    public Color interactableColor;
-    public float interactableSpeed;
+
+
+    [Header("Particles")]
+
+
+    [SerializeField]
+    private bool useParticles = true;
+    [SerializeField]
+    private Color defaultColor;
+    [SerializeField]
+    private float defaultSpeed;
+    [SerializeField]
+    private Color interactableColor;
+    [SerializeField]
+    private float interactableSpeed;
+    [Space]
+    [SerializeField]
+    private new ParticleSystem particleSystem;
 
     private GameObject player;
     private PlayerController playerController;
 
-    private bool interactable;
+    private bool isActive;
+    private bool isCurrentlyInteractable = false;
 
-    [SerializeField] private new ParticleSystem particleSystem;
+    public void SetDialogueActive(bool active)
+    {
+        isActive = active;
+
+        if(!active && isCurrentlyInteractable)
+        {
+            ToggleInteractible(false);
+        }
+    }
+
 
     private void Start()
     {
+        isActive = isActiveOnAwake;
+        player = PlayerController.Instance.gameObject;
+
         if (player == null)
-            player = PlayerController.Instance.gameObject;
-        if (player == null)
+        {
             Debug.LogError("Error: no player found");
+            return;
+        }
 
         player.TryGetComponent(out playerController);
 
@@ -35,27 +67,44 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!isActive)
+            return;
+
         if(collision.gameObject == player)
         {
-            playerController.Interactable = this;
             ToggleInteractible(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (!isActive)
+            return;
+
         if (collision.gameObject == player)
         {
-            if(playerController.Interactable is DialogueActivator dialogueActivator && dialogueActivator == this)
-                playerController.Interactable = null;
-
             ToggleInteractible(false);
         }
     }
 
     private void ToggleInteractible(bool toggle)
     {
-        interactable = toggle;
+        if(!isCurrentlyInteractable && toggle)
+        {
+            playerController.Interactable = this;
+            isCurrentlyInteractable = toggle;
+        }
+        else if (isCurrentlyInteractable && !toggle)
+        {
+            if (playerController.Interactable is DialogueActivator dialogueActivator && dialogueActivator == this)
+                playerController.Interactable = null;
+
+            isCurrentlyInteractable = toggle;
+        }
+
+
+        if (!useParticles)
+            return;
 
         ParticleSystem.MainModule main = particleSystem.main;
             

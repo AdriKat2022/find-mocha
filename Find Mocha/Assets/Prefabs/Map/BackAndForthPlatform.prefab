@@ -241,7 +241,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   repetable: 0
-  isActive: 1
+  isActiveOnAwake: 1
 --- !u!1 &7367055546990941063
 GameObject:
   m_ObjectHideFlags: 0

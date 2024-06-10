@@ -67,7 +67,7 @@ public class HeartProjectile : MonoBehaviour
 	private void SetAlphaForTimer(float timer)
 	{
 		if (alphaTimeThreshold == 1)
-			return;
+            return;
 
 		float x = timer / baseLifetime;
 		float factor = 1 - alphaTimeThreshold;
