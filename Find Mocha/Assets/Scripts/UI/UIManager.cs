@@ -15,7 +15,11 @@ public class UIManager : MonoBehaviour
     private float waitTimeBeforeLoadingScene = .8f;
 
     [Header("Low HP settings")]
-    //[SerializeField] [Range(0f, 1f)]
+    [SerializeField]
+    private float timeBeforeLowHPSoundAttenuation;
+    [SerializeField, Range(0, 100), Tooltip("In volume percentage per second")]
+    private float lowHPSoundAttenuationSpeed;
+    [SerializeField, Range(0f, 1f)]
     private float lowHpThreshold;
     [SerializeField]
     private Color lowHPColor;
@@ -203,8 +207,12 @@ public class UIManager : MonoBehaviour
         if(isLowHP && inGame)
         {
             SetHPAuraActive(true);
-            if(currentHp != 0)
+            if(currentHp > 0)
+            {
+                print("update");
                 SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
+                SoundManager.Instance.ProgressivelyFadeOutLoopSound(timeBeforeLowHPSoundAttenuation, lowHPSoundAttenuationSpeed);
+            }
         }
         else
         {
@@ -366,6 +374,8 @@ public class UIManager : MonoBehaviour
 
     private void PrepareWin()
     {
+        SetHPAuraActive(false);
+        SoundManager.Instance.StopLoopSound(force: false);
         hpBarAnimator.SetBool("hasWon", true);
         coinDisplayer.SetBool("hasWon", true);
     }
@@ -451,11 +461,18 @@ public class UIManager : MonoBehaviour
 
     private void ActivateInvincibilityVisuals()
     {
+        SoundManager.Instance.StopLoopSound(force: true);
         StartRainbow(hpBarOverlayRainbow);
         StartRainbow(hpBarFillRainbow);
     }
     private void DeactivateInvincibilityVisuals()
     {
+        if (isLowHP)
+        {
+            SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
+            SoundManager.Instance.ProgressivelyFadeOutLoopSound(timeBeforeLowHPSoundAttenuation, lowHPSoundAttenuationSpeed);
+        }
+
         StartRainbow(hpBarOverlayRainbow, false);
         StartRainbow(hpBarFillRainbow, false);
     }

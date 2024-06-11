@@ -35,7 +35,7 @@ public class SoundManager : MonoBehaviour
         heartSpawn;
 
     private int requiredScene;
-
+    private bool fadingOutLoopSound = false;
 
     private AudioClip cachedMusic;
 
@@ -57,6 +57,12 @@ public class SoundManager : MonoBehaviour
             PlayMusicNow(cachedMusic);
             cachedMusic = null;
         }
+    }
+
+    public void ProgressivelyFadeOutLoopSound(float durationBeforeFadeout, float fadeoutSpeed)
+    {
+        fadingOutLoopSound = true;
+        StartCoroutine(FadeOutLoopSound(durationBeforeFadeout, fadeoutSpeed));
     }
 
     private void Awake()
@@ -93,6 +99,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayLoopSound(AudioClip clip, bool restart = false)
     {
+        fadingOutLoopSound = false;
         effectRepeatSource.loop = true;
         if (!restart && clip == effectRepeatSource.clip)
         {
@@ -107,6 +114,7 @@ public class SoundManager : MonoBehaviour
 
     public void StopLoopSound(bool force = false)
     {
+        fadingOutLoopSound = false;
         effectRepeatSource.loop = false;
         if (force)
             effectRepeatSource.Stop();
@@ -144,5 +152,20 @@ public class SoundManager : MonoBehaviour
 
         if (persist || requiredScene == GameManager.Instance.SceneLoadNumber)
             PlayMusicNow(clip);
+    }
+
+    private IEnumerator FadeOutLoopSound(float durationBeforeFadeout, float fadeoutSpeed)
+    {
+        yield return new WaitForSeconds(durationBeforeFadeout);
+
+
+        while (effectRepeatSource.volume > 0 && fadingOutLoopSound)
+        {
+            effectRepeatSource.volume -= fadeoutSpeed * Time.deltaTime/100;
+            yield return null;
+        }
+
+        effectRepeatSource.Stop();
+        effectRepeatSource.volume = 1;
     }
 }

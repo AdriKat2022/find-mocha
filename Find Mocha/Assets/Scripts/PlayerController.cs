@@ -830,7 +830,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 				speedBoostVisualModule.enabled = true;
 
-				while (timer < powerUp.duration || !IsGameOver) {
+				while (timer < powerUp.duration && !IsGameOver) {
 					if (isKnockedOut)
 						yield break;
 
@@ -857,7 +857,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 				jumpBoostVisualModule.enabled = true;
 
-				while (timer < powerUp.duration || !IsGameOver)
+				while (timer < powerUp.duration && !IsGameOver)
 				{
 					if (isKnockedOut)
 						yield break;
