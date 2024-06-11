@@ -34,14 +34,30 @@ public class SoundManager : MonoBehaviour
         fell_sound, milk_squeak,
         heartSpawn;
 
+    private int requiredScene;
+
+
+    private AudioClip cachedMusic;
+
 
     public AudioClip GetCurrentMusic()
     {
         return musicSource.clip;
     }
 
+    public void CacheCurrentMusic()
+    {
+        cachedMusic = musicSource.clip;
+    }
 
-    private int requiredScene;
+    public void RestoreCachedMusic()
+    {
+        if (cachedMusic != null)
+        {
+            PlayMusicNow(cachedMusic);
+            cachedMusic = null;
+        }
+    }
 
     private void Awake()
     {

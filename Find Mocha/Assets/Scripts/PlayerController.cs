@@ -851,8 +851,6 @@ public class PlayerController : MonoBehaviour, IDamageble
 				break;
 
 
-
-
 			case PowerUpType.jumpBoost:
 
 				jumpPowerUpsActive++;
@@ -896,7 +894,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 				heartParticlesEmissionModule.enabled = true;
 
-				AudioClip lastMusic = SoundManager.Instance.GetCurrentMusic();
+				SoundManager.Instance.CacheCurrentMusic();
 
 				SoundManager.Instance.PlayMusic(SoundManager.Instance.invincibility);
 
@@ -905,7 +903,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 				float previousMass = rb.mass ;
 				rb.mass = 9999;
 
-				while (invincibleTimer < powerUp.duration || !IsGameOver)
+				while (invincibleTimer < powerUp.duration && !IsGameOver)
 				{
 					isInvincible = true;
 
@@ -924,7 +922,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 
 				rb.mass = previousMass;
 
-				SoundManager.Instance.PlayMusic(lastMusic);
+				SoundManager.Instance.RestoreCachedMusic();
 
 				break;
 
