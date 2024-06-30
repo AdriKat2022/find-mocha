@@ -2,15 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.GraphicsBuffer;
 
 
 
 public class GameManager : MonoBehaviour
 {
     public string playerName;
-    public int levelsNb = 1;
 
+    [SerializeField]
+    private int nStoryLevels = 1;
+    [SerializeField]
+    private int nBonusLevels = 1;
     private int currentLevelIndex;
     private int sceneLoadNumber = 0;
 
@@ -105,16 +107,27 @@ public class GameManager : MonoBehaviour
             StartCoroutine(UnblockAfter(time));
     }
 
+    public void MoveToScene(int index)
+    {
+        print("DEBUG METHOD : Moving to scene " + index);
+        SceneManager.LoadScene(index);
+    }
+
+    public void StartBonusLevels()
+    {
+        LoadLevelIndex(nStoryLevels + 1, false, true);
+    }
+
     public void MoveToNextLevel()
     {
         LoadLevelIndex(currentLevelIndex + 1, false);
     }
 
-    private void LoadLevelIndex(int index, bool reload)
+    private void LoadLevelIndex(int index, bool reload, bool disableSave = false)
     {
-        index %= levelsNb;
+        index %= nStoryLevels + nBonusLevels + 1;
 
-        ClearBeforeLoading(saveLastStats : !reload && index > 1);
+        ClearBeforeLoading(saveLastStats: !reload && (index > 1) && !disableSave);
         SceneManager.LoadScene(index);
         
         SetSceneParameters(index);
