@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip damage, heal,
         hit1, hit2,
         coin,
+        power_up,   
         monsterHit,
         invincibled,
         explosion,
@@ -32,7 +33,9 @@ public class SoundManager : MonoBehaviour
         level_clear, revive,
         low_hp_sound, gameOverSound,
         fell_sound, milk_squeak,
-        heartSpawn;
+        heartSpawn,
+        pause_sound,
+        unpause_sound;
 
     private int requiredScene;
     private bool fadingOutLoopSound = false;

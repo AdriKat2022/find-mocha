@@ -178,16 +178,17 @@ MonoBehaviour:
   musicSource: {fileID: 1621398110310668860}
   effectSource: {fileID: 6152417766846096992}
   effectRepeatSource: {fileID: 4591255510115329901}
-  mainMenu: {fileID: 8300000, guid: 3e2a1b301f2d04e4a8a19fcbbc26cf10, type: 3}
-  defaultLevel: {fileID: 8300000, guid: 12eabb3960935cb46985c6a89b5773dc, type: 3}
-  invincibility: {fileID: 8300000, guid: 03d43e9d1cca29d4e875c4f7a363882a, type: 3}
-  gameOver: {fileID: 8300000, guid: 07898ca60cd1504488f7b792b9ff598e, type: 3}
+  mainMenu: {fileID: 8300000, guid: 45bca264d940e5b4e8fc2435a5d86657, type: 3}
+  defaultLevel: {fileID: 8300000, guid: 39684f6604ad3e841a1eb7b763bfc1e7, type: 3}
+  invincibility: {fileID: 8300000, guid: 5c232a81e9cf6f9488bba575fdfa5c2a, type: 3}
+  gameOver: {fileID: 8300000, guid: 98924c7632fd379419a73a50373acd58, type: 3}
   jump: {fileID: 8300000, guid: e2cf5c80d10f8db4d85b46224b8b6eb8, type: 3}
   damage: {fileID: 8300000, guid: 51028bcf3d2873c4c812e056b46f26dd, type: 3}
   heal: {fileID: 8300000, guid: b16d8a27c196c8743825fbe5beabc0fb, type: 3}
   hit1: {fileID: 8300000, guid: ae65a5f826d762746bff19d9d14d008b, type: 3}
   hit2: {fileID: 8300000, guid: 3bc8c6db61c79e145bd5b98760d5e227, type: 3}
   coin: {fileID: 8300000, guid: 116b84db588b9c448a8c14edf48012f3, type: 3}
+  power_up: {fileID: 8300000, guid: 9cf22b5680f442d46ada8694076e7809, type: 3}
   monsterHit: {fileID: 8300000, guid: c737c9f441d0c3f43b1589ba258cf652, type: 3}
   invincibled: {fileID: 8300000, guid: 4d4fac4a66002274c8ece9c8884e688e, type: 3}
   explosion: {fileID: 8300000, guid: f6892b3d505bdfe45b23fb67b449cceb, type: 3}
@@ -207,6 +208,8 @@ MonoBehaviour:
   fell_sound: {fileID: 8300000, guid: f20ce095c4e8b0540880b18e12f09329, type: 3}
   milk_squeak: {fileID: 8300000, guid: b170736a84c61bc48949e6ea3343621e, type: 3}
   heartSpawn: {fileID: 8300000, guid: 1977ff910bcc9a649ad67d2d83599aff, type: 3}
+  pause_sound: {fileID: 8300000, guid: 98ef5a9284b7f584a8f4d8c27ec20a69, type: 3}
+  unpause_sound: {fileID: 8300000, guid: 8b64b30e25d8acb4291d85c778606fa9, type: 3}
 --- !u!1 &5472833649646196872
 GameObject:
   m_ObjectHideFlags: 0

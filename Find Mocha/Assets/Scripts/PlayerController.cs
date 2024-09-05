@@ -447,7 +447,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 		if (IsJumpBuffered && CanJump)
 		{
 			jumpBufferUsed = true;
-			Jump();
+			Jump(makeSound: true);
 			coyoteUsable = false;
 		}
 
@@ -509,13 +509,16 @@ public class PlayerController : MonoBehaviour, IDamageble
 		//rb.AddForce(force);
 	}
 
-	private void Jump()
+	private void Jump(bool makeSound = true)
 	{
 		rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpBonus);
 		isJumping = true;
 
 		animator.SetTrigger("bufJump");
-	}
+
+		if(makeSound)
+			SoundManager.Instance.PlaySound(SoundManager.Instance.jump);
+    }
 
 	private void GroundCheck()
 	{
@@ -602,7 +605,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 		while (true)
 		{
 			if(!isJumping)
-				Jump();
+				Jump(makeSound: false);
 
 			yield return null;
 		}
@@ -812,7 +815,9 @@ public class PlayerController : MonoBehaviour, IDamageble
 		if (isKnockedOut)
 			return;
 
-		foreach (PowerUp powerUp in powerUps)
+        SoundManager.Instance.PlaySound(SoundManager.Instance.power_up);
+
+        foreach (PowerUp powerUp in powerUps)
 		{
 			StartCoroutine(ApplyPowerUp(powerUp));
 		}
@@ -822,7 +827,7 @@ public class PlayerController : MonoBehaviour, IDamageble
 	{
 		float timer = 0;
 
-		switch (powerUp.powerUpType)
+        switch (powerUp.powerUpType)
 		{
 			case PowerUpType.speedBoost:
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenuManager : MonoBehaviour
@@ -38,6 +36,7 @@ public class PauseMenuManager : MonoBehaviour
 
         Time.timeScale = 0f;
         isGamePaused = true;
+        SoundManager.Instance.PlaySound(SoundManager.Instance.pause_sound);
         pauseMenu.SetActive(true);
     }
 
@@ -45,6 +44,7 @@ public class PauseMenuManager : MonoBehaviour
     {
         isGamePaused = false;
         pauseMenu.SetActive(false);
+        SoundManager.Instance.PlaySound(SoundManager.Instance.unpause_sound);
         Time.timeScale = 1f;
     }
 }
