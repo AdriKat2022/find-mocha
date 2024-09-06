@@ -53,8 +53,6 @@ public class FallingPlatform : MonoBehaviour
 	private Vector2 startPosition;
 
 	[Header("References")]
-	//[SerializeField]
-	//private Transform slime;
 	[SerializeField]
 	private Animator animator;
 	private PlayerController playerController;
@@ -90,11 +88,9 @@ public class FallingPlatform : MonoBehaviour
 			Debug.Log("Warning: using ride module but no rideplatform assigned");
 
 		rb = GetComponent<Rigidbody2D>();
-
 		isFalling = false;
 		playerController = PlayerController.Instance;
 		speed = 0;
-
 		startPosition = transform.position;
 
         ComputeDirection();
@@ -113,17 +109,12 @@ public class FallingPlatform : MonoBehaviour
                 // Overwrite the dispawn axis with the special distance direction
                 xDispawn = speedDirection.x * distanceToSpecialDirection;
                 yDispawn = speedDirection.y * distanceToSpecialDirection;
-	}
+			}
         }
     }
 
 	private void Reset()
 	{
-		//Debug.Log(playerController.transform.parent);
-
-		//if(playerController.transform.parent == slime)
-		//    playerController.transform.SetParent(null, true);
-
 		rb.velocity = Vector2.zero;
 		speed = 0;
 		isFalling = false;
@@ -141,11 +132,8 @@ public class FallingPlatform : MonoBehaviour
 			if (useRideModule)
 			{
 				float xDisplacement = speed * Time.deltaTime * speedDirection.x;
-
 				transform.Translate(xDisplacement * Vector3.right);
-
 				ridePlatform.MoveRiders(xDisplacement);
-
 				rb.velocity = new Vector2(0, speedDirection.y * speed);
 			}
 			else
@@ -153,11 +141,8 @@ public class FallingPlatform : MonoBehaviour
 				rb.velocity = speedDirection * speed;
 			}
 
-
 			speed += acceleration * Time.deltaTime;
-
 			speed = Mathf.Clamp(speed, 0, maxSpeed);
-
 			yield return null;
 		}
 
@@ -169,10 +154,7 @@ public class FallingPlatform : MonoBehaviour
 		while(useDecelerate && rb.velocity.magnitude > .01f)
 		{
 			speed = Mathf.Lerp(speed, 0, Time.deltaTime * brakeForce);
-
 			transform.Translate(speed * Time.deltaTime * speedDirection);
-
-			//rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * brakeForce);
 
 			yield return null;
 		}
@@ -194,7 +176,6 @@ public class FallingPlatform : MonoBehaviour
 		if (!useSpecialDirection)
 			return transform.position.y < yDispawn;
 
-
 		bool isOutXBounds = specialDirection.x >= 0 ?
 			transform.position.x > startPosition.x + xDispawn - brakeDistance.x :
 			transform.position.x < startPosition.x + xDispawn + brakeDistance.x ;
@@ -202,7 +183,6 @@ public class FallingPlatform : MonoBehaviour
 		bool isOutYBounds = specialDirection.y >= 0 ?
 			transform.position.y > startPosition.y + yDispawn - brakeDistance.y :
 			transform.position.y < startPosition.y + yDispawn + brakeDistance.y ;
-
 
 		return dispawnAxis switch
 		{
@@ -217,7 +197,9 @@ public class FallingPlatform : MonoBehaviour
 	{
 		if (isFalling)
 			return;
-		if (collision?.gameObject == playerController.gameObject) {
+
+        // TODO: Fix this weird condition
+        if (collision?.gameObject == playerController.gameObject) {
 			if (collision.gameObject.transform.position.y - collision.collider.bounds.size.y/2 > transform.position.y)
 			{
 				isFalling = true;
