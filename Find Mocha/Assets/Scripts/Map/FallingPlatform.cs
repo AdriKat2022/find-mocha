@@ -42,6 +42,10 @@ public class FallingPlatform : MonoBehaviour
 	private bool useSpecialDirection;
 	[SerializeField]
 	private Vector2 specialDirection;
+	[SerializeField, Tooltip("Enables to calculate the wanted distance, instead of inputing a dispawn value for each axis.")]
+	private bool calculateDispawnAxisWithDistance;
+	[SerializeField, Tooltip("Distance that will be covered by the platform upon falling. Value ignored if the flag calculateDispawnAxisWithDistance is not set.")]
+	private float distanceToSpecialDirection;
 
 	private Vector2 speedDirection;
 	private float speed;
@@ -59,6 +63,12 @@ public class FallingPlatform : MonoBehaviour
 
 
 #if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if (useSpecialDirection)
+            ComputeDirection();
+    }
 
 	private void OnDrawGizmosSelected()
 	{
@@ -86,12 +96,26 @@ public class FallingPlatform : MonoBehaviour
 		speed = 0;
 
 		startPosition = transform.position;
+
+        ComputeDirection();
+    }
+
+    private void ComputeDirection()
+    {
 		speedDirection = Vector2.down;
 
 		if (useSpecialDirection)
+        {
 			speedDirection = specialDirection.normalized;
 
+            if (calculateDispawnAxisWithDistance)
+            {
+                // Overwrite the dispawn axis with the special distance direction
+                xDispawn = speedDirection.x * distanceToSpecialDirection;
+                yDispawn = speedDirection.y * distanceToSpecialDirection;
 	}
+        }
+    }
 
 	private void Reset()
 	{
