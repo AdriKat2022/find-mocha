@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aeba1ae724e3b40b4a20c7388b213d, type: 3}
+  m_Name: Cloud-warn
+  m_EditorClassIdentifier: 
+  dialogue:
+  - "-- Journal d'Hugo --\n(Journaliste ind\xE9pendant)"
+  - "\"Je vous conseille de bien faire attention aux diff\xE9rents nuages.\""
+  - '"Certains peuvent suporter votre poids,
+
+    mais d''autres tomberont avec vous."'
+  - "\"Si un nuage se met \xE0 chuter, ne restez pas plantez l\xE0 ! Sautez et r\xE9fugiez
+    vous sur une platforme stable !\""
