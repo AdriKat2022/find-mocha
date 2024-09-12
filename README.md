@@ -49,3 +49,6 @@ Licensed under Creative Commons: CC BY - ATTRIBUTION 4.0 License
 Many sound effects were produced with the help of this amazing site: [SFXR](https://sfxr.me)  
 Which allows many of us to shape our own 8bit like sounds as our wish.  
 
+# License
+This game must herby be licensed by Creative Common: `CC BY-SA 4.0 - ATTRIBUTION-SHAREALIKE 4.0 INTERNATIONAL`  
+Because of the SHAREALIKE attribute of the licence beared by the Time map set used for this project.
