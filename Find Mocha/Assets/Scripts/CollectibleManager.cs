@@ -10,7 +10,7 @@ public class CollectibleManager : MonoBehaviour
     public static int TotalCoinsReferenced { get; private set; }
     public static int TotalCoinsCollected { get; private set; }
     public static int TotalDepressions { get; private set; }
-    public static float TotalTime { get; private set; }
+    public static float TotalTimeSeconds { get; private set; }
 
     #endregion
 
@@ -62,7 +62,7 @@ public class CollectibleManager : MonoBehaviour
     private void Update()
     {
         if (isStopWatchRunning)
-            TotalTime += Time.deltaTime;
+            TotalTimeSeconds += Time.deltaTime;
     }
 
     #region Event functions
@@ -132,7 +132,7 @@ public class CollectibleManager : MonoBehaviour
         TotalCoinsCollected = 0;
         TotalCoinsReferenced = 0;
         TotalDepressions = 0;
-        TotalTime = 0;
+        TotalTimeSeconds = 0;
     }
 
     private void UpdateUI()

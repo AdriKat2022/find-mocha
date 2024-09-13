@@ -1,16 +1,45 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
+[Serializable]
+public struct TimeData
+{
+    public int minutes;
+    public int seconds;
+    public int milliseconds;
+
+    public TimeData(float time)
+    {
+        minutes = Mathf.FloorToInt(time / 60);
+        seconds = Mathf.FloorToInt(time % 60);
+        milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
+    }
+
+    public float TotalTimeSeconds()
+    {
+        return minutes * 60 + seconds + milliseconds / 1000;
+    }
+    public string FormatTime()
+    {
+        return string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
+    }
+}
+
 public class WinScreenManager : MonoBehaviour
 {
     [Header("Golden Stats")]
+    [SerializeField]
+    private TimeData maxGoldenTime;
     [SerializeField]
     private Color goldenColor;
     [SerializeField]
     private float pulseIntensity = 1.5f;
     [SerializeField]
     private float pulseDuration = 1.5f;
+    [SerializeField, Tooltip("Delay between each stat to be checked golden.")]
+    private float goldenStatDelay = .5f;
 
     [Header("Animations")]
     [SerializeField]
@@ -49,7 +78,7 @@ public class WinScreenManager : MonoBehaviour
     private void GetStats()
     {
         coinText.text = CollectibleManager.TotalCoinsCollected.ToString();
-        timeText.text = FormatTime(CollectibleManager.TotalTime);
+        timeText.text = new TimeData(CollectibleManager.TotalTimeSeconds).FormatTime();
         depressionsText.text = CollectibleManager.TotalDepressions.ToString();
     }
 
@@ -82,27 +111,18 @@ public class WinScreenManager : MonoBehaviour
         }
     }
 
-    private string FormatTime(float time)
-    {
-        int minutes = Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
-        int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
-
-        return string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
-    }
-
     private IEnumerator VerifyStats()
     {
         if (CollectibleManager.TotalCoinsCollected == CollectibleManager.TotalCoinsReferenced)
         {
             MakeStatGolden(coinText);
         }
-        yield return new WaitForSeconds(.5f);
-        if (CollectibleManager.TotalTime < 60*5)
+        yield return new WaitForSeconds(goldenStatDelay);
+        if (CollectibleManager.TotalTimeSeconds < maxGoldenTime.TotalTimeSeconds())
         {
             MakeStatGolden(timeText);
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(goldenStatDelay);
         if (CollectibleManager.TotalDepressions == 0)
         {
             MakeStatGolden(depressionsText);
@@ -118,7 +138,6 @@ public class WinScreenManager : MonoBehaviour
     private IEnumerator PulseAnimation(TextMeshProUGUI text)
     {
         float t = pulseIntensity;
-        float pulseDuration = .5f;
 
         text.transform.localScale = Vector3.one * t; 
 
