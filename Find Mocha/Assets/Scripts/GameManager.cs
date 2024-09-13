@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    
+
     public string playerName;
 
     [SerializeField]
@@ -34,7 +36,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject mainMenu;
     [SerializeField]
-    private GameObject winScreen;
+    private WinScreenManager winScreen;
     [SerializeField]
     private UIManager uiManager;
     [SerializeField]
@@ -43,7 +45,10 @@ public class GameManager : MonoBehaviour
     private GameObject bigNonoPanel;
 
 
-    public void EnableWinScreen() => winScreen.SetActive(true);
+    public void EnableWinScreen()
+    {
+        winScreen.gameObject.SetActive(true);
+    }
 
     #region Events
 
@@ -77,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        winScreen.SetActive(false);
+        winScreen.gameObject.SetActive(false);
         pauseMenuManager = GetComponent<PauseMenuManager>();
 
         Player = GameObject.Find(playerName);

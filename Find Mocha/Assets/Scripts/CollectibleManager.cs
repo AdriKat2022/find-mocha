@@ -9,6 +9,8 @@ public class CollectibleManager : MonoBehaviour
 
     public static int TotalCoinsReferenced { get; private set; }
     public static int TotalCoinsCollected { get; private set; }
+    public static int TotalDepressions { get; private set; }
+    public static float TotalTime { get; private set; }
 
     #endregion
 
@@ -20,7 +22,7 @@ public class CollectibleManager : MonoBehaviour
 
     private int nLevelCoinsCollected;
     private int nLevelCoinsReferenced;
-
+    private bool isStopWatchRunning = false;
 
     #region Event Subscribtions
 
@@ -57,6 +59,12 @@ public class CollectibleManager : MonoBehaviour
         nLevelCoinsReferenced = 0;
     }
 
+    private void Update()
+    {
+        if (isStopWatchRunning)
+            TotalTime += Time.deltaTime;
+    }
+
     #region Event functions
 
     private void OnSceneLoad(bool isMainMenu)
@@ -76,15 +84,20 @@ public class CollectibleManager : MonoBehaviour
 
         nLevelCoinsCollected = 0;
         nLevelCoinsReferenced = 0;
+
+        ToogleStopwatch(false);
     }
     private void OnLevelLose()
     {
         nLevelCoinsCollected = 0;
         nLevelCoinsReferenced = 0;
+        TotalDepressions++;
+        ToogleStopwatch(false);
     }
     private void OnLevelStart()
     {
         ShowCoinNumber();
+        ToogleStopwatch(true);
     }
     
     #endregion
@@ -118,6 +131,8 @@ public class CollectibleManager : MonoBehaviour
         nLevelCoinsReferenced = 0;
         TotalCoinsCollected = 0;
         TotalCoinsReferenced = 0;
+        TotalDepressions = 0;
+        TotalTime = 0;
     }
 
     private void UpdateUI()
@@ -125,4 +140,8 @@ public class CollectibleManager : MonoBehaviour
         coinTextCount.text = (TotalCoinsCollected+nLevelCoinsCollected).ToString();
     }
 
+    private void ToogleStopwatch(bool toggle)
+    {
+        isStopWatchRunning = toggle;
+    }
 }

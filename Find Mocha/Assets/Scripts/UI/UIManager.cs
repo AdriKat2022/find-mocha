@@ -209,7 +209,6 @@ public class UIManager : MonoBehaviour
             SetHPAuraActive(true);
             if(currentHp > 0)
             {
-                print("update");
                 SoundManager.Instance.PlayLoopSound(SoundManager.Instance.low_hp_sound);
                 SoundManager.Instance.ProgressivelyFadeOutLoopSound(timeBeforeLowHPSoundAttenuation, lowHPSoundAttenuationSpeed);
             }
