@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    
-
     public string playerName;
 
     [SerializeField]
@@ -35,6 +33,10 @@ public class GameManager : MonoBehaviour
     private PauseMenuManager pauseMenuManager;
     [SerializeField]
     private GameObject mainMenu;
+    [SerializeField]
+    private GameObject levelSelectionMenu;
+    [SerializeField]
+    private Animator mainMenuFadeAnimation;
     [SerializeField]
     private WinScreenManager winScreen;
     [SerializeField]
@@ -72,12 +74,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
 
         inGame = currentSceneIndex != 0;
+
+        if (!inGame)
+            mainMenuFadeAnimation.SetTrigger("MenuFadeIn");
     }
 
     private void Start()
@@ -92,8 +98,6 @@ public class GameManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
         
-
-
         currentLevelIndex = currentSceneIndex;
 
         SetSceneParameters(currentSceneIndex);
@@ -118,9 +122,15 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(index);
     }
 
-    public void StartBonusLevels()
+    public void ToogleLevelSelectionMenu(bool toggle)
     {
-        LoadLevelIndex(nStoryLevels + 1, false, true);
+        levelSelectionMenu.SetActive(toggle);
+        mainMenu.SetActive(!toggle);
+    }
+
+    public void StartBonusLevel(int number)
+    {
+        LoadLevelIndex(nStoryLevels + number, false, true);
     }
 
     public void MoveToNextLevel()
@@ -137,7 +147,6 @@ public class GameManager : MonoBehaviour
         
         SetSceneParameters(index);
     }
-
 
     private void SetSceneParameters(int index)
     {
