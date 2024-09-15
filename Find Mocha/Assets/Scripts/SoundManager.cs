@@ -35,7 +35,9 @@ public class SoundManager : MonoBehaviour
         fell_sound, milk_squeak,
         heartSpawn,
         pause_sound,
-        unpause_sound;
+        unpause_sound,
+        golden_stat_sound,
+        perfect_label_sound;
 
     private int requiredScene;
     private bool fadingOutLoopSound = false;

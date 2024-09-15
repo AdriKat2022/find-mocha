@@ -32,11 +32,7 @@ public class GameManager : MonoBehaviour
 
     private PauseMenuManager pauseMenuManager;
     [SerializeField]
-    private GameObject mainMenu;
-    [SerializeField]
-    private GameObject levelSelectionMenu;
-    [SerializeField]
-    private Animator mainMenuFadeAnimation;
+    private MainMenuManager mainMenuManager;
     [SerializeField]
     private WinScreenManager winScreen;
     [SerializeField]
@@ -74,16 +70,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-
-        if (Instance == null)
+        if (!Instance)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
+        {
             Destroy(gameObject);
+            return;
+        }
 
         inGame = currentSceneIndex != 0;
 
-        if (!inGame)
-            mainMenuFadeAnimation.SetTrigger("MenuFadeIn");
+        SetCanButtonInteract(true);
     }
 
     private void Start()
@@ -95,9 +95,6 @@ public class GameManager : MonoBehaviour
         if (Player != null)
             playerController = Player.GetComponent<PlayerController>();
 
-        
-        DontDestroyOnLoad(gameObject);
-        
         currentLevelIndex = currentSceneIndex;
 
         SetSceneParameters(currentSceneIndex);
@@ -122,12 +119,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(index);
     }
 
-    public void ToogleLevelSelectionMenu(bool toggle)
-    {
-        levelSelectionMenu.SetActive(toggle);
-        mainMenu.SetActive(!toggle);
-    }
-
     public void StartBonusLevel(int number)
     {
         LoadLevelIndex(nStoryLevels + number, false, true);
@@ -150,16 +141,25 @@ public class GameManager : MonoBehaviour
 
     private void SetSceneParameters(int index)
     {
-        inGame = index != 0;
-        currentLevelIndex = index;
-        SetCanButtonInteract(index != 0, 7f);
-        mainMenu.SetActive(index == 0);
-        canPauseGame = index != 0;
-
         if (index == 0)
+        {
+            // Main menu
+            inGame = false;
+            canPauseGame = false;
+            mainMenuManager.StartMenu();
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.mainMenu);
+        }
         else
+        {
+            // In game
+            inGame = true;
+            canPauseGame = true;
+            mainMenuManager.HideMenu();
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.defaultLevel);
+            print("game is launched");
+        }
+
+        currentLevelIndex = index;
 
         sceneLoadNumber++;
 

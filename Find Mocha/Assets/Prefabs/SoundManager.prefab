@@ -210,6 +210,8 @@ MonoBehaviour:
   heartSpawn: {fileID: 8300000, guid: 1977ff910bcc9a649ad67d2d83599aff, type: 3}
   pause_sound: {fileID: 8300000, guid: 98ef5a9284b7f584a8f4d8c27ec20a69, type: 3}
   unpause_sound: {fileID: 8300000, guid: 8b64b30e25d8acb4291d85c778606fa9, type: 3}
+  golden_stat_sound: {fileID: 8300000, guid: bdae2ec2efa047e4ebcbd0e022a3c3b2, type: 3}
+  perfect_label_sound: {fileID: 8300000, guid: 1b096d28d2b827845a24a0b618e441b1, type: 3}
 --- !u!1 &5472833649646196872
 GameObject:
   m_ObjectHideFlags: 0
