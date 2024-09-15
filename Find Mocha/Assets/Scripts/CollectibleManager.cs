@@ -103,6 +103,15 @@ public class CollectibleManager : MonoBehaviour
     #endregion
 
     #region Public commands
+
+    static public void ResetRun()
+    {
+        TotalCoinsReferenced = 0;
+        TotalCoinsCollected = 0;
+        TotalDepressions = 0;
+        TotalTimeSeconds = 0;
+    }
+
     public void RegisterCollectibleForLevel()
     {
         nLevelCoinsReferenced++;

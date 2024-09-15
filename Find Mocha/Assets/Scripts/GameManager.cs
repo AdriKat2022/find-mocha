@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
             inGame = false;
             canPauseGame = false;
             mainMenuManager.StartMenu();
+            CollectibleManager.ResetRun();
             SoundManager.Instance.PlayMusicNow(SoundManager.Instance.mainMenu);
         }
         else
