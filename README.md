@@ -19,9 +19,9 @@ All elements used in this game have been made by myself or are cited below.
 Feel free to reach to me if you believe I'm using something that belongs to someone I forgot to mention in this section.
 
 ### Character concept
-- **Milk and Mocha bears**:
-Characters inspired from the entity [MilkMochaBear](https://x.com/milkmochabear)
-*Unknown Licence* but probably under Creative Commons: Attribution-NonCommercial-NoDerivatives 4.0 International 
+- **Milk and Mocha bears**:  
+Characters inspired from the entity [MilkMochaBear](https://x.com/milkmochabear)  
+*Unknown Licence* but probably under Creative Commons: Attribution-NonCommercial-NoDerivatives 4.0 International  
 
 ### Art
 - **Tile map set**:  
