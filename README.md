@@ -50,9 +50,9 @@ Licensed under Creative Commons: CC0 1.0 Universal - Public Domain Dedication (C
 http://creativecommons.org/licenses/by/4.0/  
 Licensed under Creative Commons: CC BY - ATTRIBUTION 4.0 License  
 
-- **Perfect Bonus**:
-"Final level Bonus" Unknown Author
-https://mixkit.co/free-sound-effects/game/
+- **Perfect Bonus**:  
+"Final level Bonus" Unknown Author  
+https://mixkit.co/free-sound-effects/game/  
 *Unknown licence*
 
 ### Sound effects
@@ -60,5 +60,4 @@ Many sound effects were produced with the help of this amazing site: [SFXR](http
 Which allows many of us to shape our own 8bit like sounds as our wish.  
 
 # License
-This game must herby be licensed by Creative Common: `CC BY-SA 4.0 - ATTRIBUTION-SHAREALIKE 4.0 INTERNATIONAL`  
-Because of the SHAREALIKE attribute of the licence beared by the Time map set used for this project.
+This game must herby be licensed under Creative Common: `CC BY-SA-ND-NC 4.0 - ATTRIBUTION-SHAREALIKE-NONDERIVATIVE-NONCOMMERCIALUSE 4.0 INTERNATIONAL`  
