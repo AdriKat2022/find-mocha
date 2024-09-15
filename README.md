@@ -15,8 +15,13 @@ The game language is french.
 Estimated play time : 15 min
 
 ## Credits
-All elements used in this game have been created by myself or are cited below (and are completely royalty free provided attribution).  
+All elements used in this game have been made by myself or are cited below.
 Feel free to reach to me if you believe I'm using something that belongs to someone I forgot to mention in this section.
+
+### Character concept
+- **Milk and Mocha bears**:
+Characters inspired from the entity [MilkMochaBear](https://x.com/milkmochabear)
+*Unknown Licence* but probably under Creative Commons: Attribution-NonCommercial-NoDerivatives 4.0 International 
 
 ### Art
 - **Tile map set**:  
@@ -44,6 +49,11 @@ Licensed under Creative Commons: CC0 1.0 Universal - Public Domain Dedication (C
 "Flying Kerfuffle" Kevin MacLeod (incompetech.com)  
 http://creativecommons.org/licenses/by/4.0/  
 Licensed under Creative Commons: CC BY - ATTRIBUTION 4.0 License  
+
+- **Perfect Bonus**:
+"Final level Bonus" Unknown Author
+https://mixkit.co/free-sound-effects/game/
+*Unknown licence*
 
 ### Sound effects
 Many sound effects were produced with the help of this amazing site: [SFXR](https://sfxr.me)  

@@ -29,7 +29,29 @@ public struct TimeData
 
 public class WinScreenManager : MonoBehaviour
 {
+    [Header("Perfect Label Animations")]
+    [SerializeField]
+    private CanvasGroup perfectLabel;
+    [SerializeField]
+    private PulseAnimation perfectLabelPulseAnimation;
+    [SerializeField]
+    private float perfectLabelDelay;
+    [SerializeField, Tooltip("Number total of turns for the animation")]
+    private int perfectLabelTotalTurns;
+    [SerializeField]
+    private float perfectLabelAnimationDuration;
+    [SerializeField, Range(0f, 1f), Tooltip("Percentage of the animation the label begins to fade IN")]
+    private float perfectLabelFadeStartThreshold = .3f;
+    [SerializeField, Range(0f, 1f), Tooltip("Percentage of the animation the label finishes to fade IN, should be greater than the start threshold")]
+    private float perfectLabelFadeEndThreshold = .3f;
+    [SerializeField]
+    private float perfectLabelStartScale = 2f;
+    [SerializeField]
+    private float perfectLabelEndScale = 1f;
+
     [Header("Golden Stats")]
+    [SerializeField]
+    private int statNumber = 3;
     [SerializeField]
     private TimeData maxGoldenTime;
     [SerializeField]
@@ -63,8 +85,11 @@ public class WinScreenManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI depressionsText;
 
+    private int goldenStats = 0;
+
     private void Awake()
     {
+        perfectLabel.alpha = 0;
         headerCoinText.alpha = 0;
         headerTimeText.alpha = 0;
         headerDepressionsText.alpha = 0;
@@ -127,11 +152,18 @@ public class WinScreenManager : MonoBehaviour
         {
             MakeStatGolden(depressionsText);
         }
+
+        if (goldenStats == statNumber)
+        {
+            StartCoroutine(AnimatePerfectLabel());
+        }
     }
 
     private void MakeStatGolden(TextMeshProUGUI text)
     {
+        goldenStats++;
         text.color = goldenColor;
+        SoundManager.Instance.PlaySound(SoundManager.Instance.golden_stat_sound);
         StartCoroutine(PulseAnimation(text));
     }
 
@@ -149,5 +181,35 @@ public class WinScreenManager : MonoBehaviour
         }
 
         text.transform.localScale = Vector3.one;
+    }
+
+    private IEnumerator AnimatePerfectLabel()
+    {
+        SoundManager.Instance.PlaySound(SoundManager.Instance.perfect_label_sound);
+
+        float t = 0;
+        float turnSpeed = 360 * perfectLabelTotalTurns/perfectLabelAnimationDuration;
+        float fadeStart = perfectLabelFadeStartThreshold * perfectLabelAnimationDuration;
+        float fadeEnd = perfectLabelFadeEndThreshold * perfectLabelAnimationDuration;
+
+        while (t < perfectLabelAnimationDuration)
+        {
+            t += Time.deltaTime;
+
+            // Manage Scale
+            perfectLabel.transform.localScale = Vector3.one * Mathf.Lerp(perfectLabelStartScale, perfectLabelEndScale, t / perfectLabelAnimationDuration);
+
+            // Spin the label
+            perfectLabel.gameObject.transform.Rotate(Vector3.forward, turnSpeed * Time.deltaTime);
+
+            if (t > fadeStart && t < fadeEnd)
+            {
+                perfectLabel.alpha = Mathf.Lerp(0, 1, (t - fadeStart) / (fadeEnd - fadeStart));
+            }
+
+            yield return null;
+        }
+
+        perfectLabelPulseAnimation.Pulse();
     }
 }

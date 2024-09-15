@@ -433,8 +433,8 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.ToMainMenu();
         ResetGameOverScreen();
-
     }
+
     private IEnumerator WaitAndReload(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
